@@ -1,17 +1,20 @@
 ﻿// Copyright 2018-2019 Fabulous contributors. See LICENSE.md for license.
+
 namespace FabBooks
 
+open System
 open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
-
 module App = 
     type Model = 
       { Count : int
         Step : int
-        TimerOn: bool }
+        TimerOn: bool
+        EnteredText : string
+         }
 
     type Msg = 
         | Increment 
@@ -20,8 +23,9 @@ module App =
         | SetStep of int
         | TimerToggled of bool
         | TimedTick
+        | UpdateEnteredText of string
 
-    let initModel = { Count = 0; Step = 1; TimerOn=false }
+    let initModel = { Count = 0; Step = 1; TimerOn=false; EnteredText = "" }
 
     let init () = initModel, Cmd.none
 
@@ -37,6 +41,7 @@ module App =
         | Reset -> init ()
         | SetStep n -> { model with Step = n }, Cmd.none
         | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
+        | UpdateEnteredText text -> {model with EnteredText = text}, Cmd.none
         | TimedTick -> 
             if model.TimerOn then 
                 { model with Count = model.Count + model.Step }, timerCmd
@@ -46,11 +51,13 @@ module App =
     let view (model: Model) dispatch =
         View.ContentPage(
           content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Center,
-            children = [ 
+            children = [
+                View.Entry( width = 200.0, textChanged = fun textArgs  -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
+                View.Label(text = model.EnteredText)
                 View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
                 View.Button(text = "Increment", command = (fun () -> dispatch Increment), horizontalOptions = LayoutOptions.Center)
                 View.Button(text = "Decrement", command = (fun () -> dispatch Decrement), horizontalOptions = LayoutOptions.Center)
-                View.Label(text = "Timer", horizontalOptions = LayoutOptions.Center, textColor = Color.Red)
+                View.Label(text = "Timer", horizontalOptions = LayoutOptions.Center, textColor = Color.Blue)
                 View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)), horizontalOptions = LayoutOptions.Center)
                 View.Slider(minimumMaximum = (0.0, 10.0), value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))), horizontalOptions = LayoutOptions.FillAndExpand)
                 View.Label(text = sprintf "Step size: %d" model.Step, horizontalOptions = LayoutOptions.Center) 
@@ -79,7 +86,7 @@ type App () as app =
 
     // Uncomment this code to save the application state to app.Properties using Newtonsoft.Json
     // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/models.html#saving-application-state for further  instructions.
-#if APPSAVE
+
     let modelId = "model"
     override __.OnSleep() = 
 
@@ -107,6 +114,3 @@ type App () as app =
     override this.OnStart() = 
         Console.WriteLine "OnStart: using same logic as OnResume()"
         this.OnResume()
-#endif
-
-
