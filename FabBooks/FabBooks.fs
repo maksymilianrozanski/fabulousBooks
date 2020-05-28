@@ -10,58 +10,33 @@ open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 module App = 
     type Model = 
-      { Count : int
-        Step : int
-        TimerOn: bool
+      { 
         EnteredText : string
          }
 
     type Msg = 
-        | Increment 
-        | Decrement 
-        | Reset
-        | SetStep of int
-        | TimerToggled of bool
-        | TimedTick
         | UpdateEnteredText of string
 
-    let initModel = { Count = 0; Step = 1; TimerOn=false; EnteredText = "" }
+    let initModel = {  EnteredText = "" }
 
     let init () = initModel, Cmd.none
 
-    let timerCmd =
-        async { do! Async.Sleep 200
-                return TimedTick }
-        |> Cmd.ofAsyncMsg
 
     let update msg model =
         match msg with
-        | Increment -> { model with Count = model.Count + model.Step }, Cmd.none
-        | Decrement -> { model with Count = model.Count - model.Step }, Cmd.none
-        | Reset -> init ()
-        | SetStep n -> { model with Step = n }, Cmd.none
-        | TimerToggled on -> { model with TimerOn = on }, (if on then timerCmd else Cmd.none)
         | UpdateEnteredText text -> {model with EnteredText = text}, Cmd.none
-        | TimedTick -> 
-            if model.TimerOn then 
-                { model with Count = model.Count + model.Step }, timerCmd
-            else 
-                model, Cmd.none
 
     let view (model: Model) dispatch =
         View.ContentPage(
-          content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Center,
+          content = View.StackLayout(padding = Thickness 20.0, verticalOptions = LayoutOptions.Start,
             children = [
-                View.Entry( width = 200.0, textChanged = fun textArgs  -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
+                View.Entry( width = 200.0, placeholder = "Search",  textChanged = fun textArgs  -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
                 View.Label(text = model.EnteredText)
-                View.Label(text = sprintf "%d" model.Count, horizontalOptions = LayoutOptions.Center, width=200.0, horizontalTextAlignment=TextAlignment.Center)
-                View.Button(text = "Increment", command = (fun () -> dispatch Increment), horizontalOptions = LayoutOptions.Center)
-                View.Button(text = "Decrement", command = (fun () -> dispatch Decrement), horizontalOptions = LayoutOptions.Center)
-                View.Label(text = "Timer", horizontalOptions = LayoutOptions.Center, textColor = Color.Blue)
-                View.Switch(isToggled = model.TimerOn, toggled = (fun on -> dispatch (TimerToggled on.Value)), horizontalOptions = LayoutOptions.Center)
-                View.Slider(minimumMaximum = (0.0, 10.0), value = double model.Step, valueChanged = (fun args -> dispatch (SetStep (int (args.NewValue + 0.5)))), horizontalOptions = LayoutOptions.FillAndExpand)
-                View.Label(text = sprintf "Step size: %d" model.Step, horizontalOptions = LayoutOptions.Center) 
-                View.Button(text = "Reset", horizontalOptions = LayoutOptions.Center, command = (fun () -> dispatch Reset), commandCanExecute = (model <> initModel))
+                View.ScrollView(verticalOptions = LayoutOptions.Center,  content = View.StackLayout(children = [
+                            View.Label(text = "first item")
+                            View.Label(text = "second item")
+                            ]),
+                        height = 50.0)
             ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
