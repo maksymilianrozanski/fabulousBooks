@@ -10,6 +10,7 @@ open Android.Runtime
 open Android.Views
 open Android.Widget
 open Android.OS
+open FabBooks
 open Xamarin.Forms.Platform.Android
 
 [<Activity (Label = "FabBooks.Android", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = (ConfigChanges.ScreenSize ||| ConfigChanges.Orientation))>]
@@ -24,7 +25,7 @@ type MainActivity() =
 
         Xamarin.Forms.Forms.Init (this, bundle)
 
-        let appcore  = new FabBooks.App()
+        let appcore  = new CompilerDirectives.App()
         this.LoadApplication (appcore)
 
     override this.OnRequestPermissionsResult(requestCode: int, permissions: string[], [<GeneratedEnum>] grantResults: Android.Content.PM.Permission[]) =

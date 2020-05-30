@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="FabBooks.fs" />
+    <Compile Include="CompilerDirectives.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1" />
