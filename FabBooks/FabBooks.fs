@@ -10,15 +10,32 @@ open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 
 module App =
+
+    type BookItem(author: string, title: string) =
+        member this.Author = author
+        member this.Title = title
+
     type Model =
-        { EnteredText: string }
+        { EnteredText: string
+          BookItems: List<BookItem> }
+
+    let mockBooks =
+        [ BookItem("author0", "title0")
+          BookItem("author1", "title1")
+          BookItem("author2", "title2")
+          BookItem("author3", "title3")
+          BookItem("author4", "title4")
+          BookItem("author5", "title5")
+          BookItem("author6", "title6")
+          BookItem("author7", "title7") ]
 
     type Msg = UpdateEnteredText of string
 
-    let initModel = { EnteredText = "" }
+    let initModel =
+        { EnteredText = ""
+          BookItems = mockBooks }
 
     let init () = initModel, Cmd.none
-
 
     let update msg model =
         match msg with
@@ -35,12 +52,7 @@ module App =
                               textChanged = fun textArgs -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
                            View.Label(text = model.EnteredText)
                            View.ScrollView
-                               (verticalOptions = LayoutOptions.Center,
-                                content =
-                                    View.StackLayout
-                                        (children =
-                                            [ View.Label(text = "first item hello")
-                                              View.Label(text = "second item") ]), height = 50.0) ]))
+                               (View.StackLayout(children = [ View.Label(text = model.BookItems.[3].Author) ])) ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
