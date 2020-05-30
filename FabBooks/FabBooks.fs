@@ -52,7 +52,10 @@ module App =
                               textChanged = fun textArgs -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
                            View.Label(text = model.EnteredText)
                            View.ScrollView
-                               (View.StackLayout(children = [ View.Label(text = model.BookItems.[3].Author) ])) ]))
+                               (View.StackLayout
+                                   (children =
+                                       [ for b in model.BookItems do
+                                           yield View.Label(text = b.Title) ])) ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
