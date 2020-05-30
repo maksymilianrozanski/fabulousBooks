@@ -11,23 +11,25 @@ open Xamarin.Forms
 
 module App =
 
-    type BookItem(author: string, title: string) =
+    type BookItem(author: string, title: string, imageUrl: string, smallImageUrl: string) =
         member this.Author = author
         member this.Title = title
+        member this.ImageUrl = imageUrl
+        member this.SmallImageUrl = smallImageUrl
 
     type Model =
         { EnteredText: string
           BookItems: List<BookItem> }
 
     let mockBooks =
-        [ BookItem("author0", "title0")
-          BookItem("author1", "title1")
-          BookItem("author2", "title2")
-          BookItem("author3", "title3")
-          BookItem("author4", "title4")
-          BookItem("author5", "title5")
-          BookItem("author6", "title6")
-          BookItem("author7", "title7") ]
+        [ BookItem("author0", "title0", "bigImageUrl", "smallImageUrl")
+          BookItem("author1", "title1", "bigImageUrl", "smallImageUrl")
+          BookItem("author2", "title2", "bigImageUrl", "smallImageUrl")
+          BookItem("author3", "title3", "bigImageUrl", "smallImageUrl")
+          BookItem("author4", "title4", "bigImageUrl", "smallImageUrl")
+          BookItem("author5", "title5", "bigImageUrl", "smallImageUrl")
+          BookItem("author6", "title6", "bigImageUrl", "smallImageUrl")
+          BookItem("author7", "title7", "bigImageUrl", "smallImageUrl") ]
 
     type Msg = UpdateEnteredText of string
 
