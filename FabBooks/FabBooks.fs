@@ -43,6 +43,12 @@ module App =
         match msg with
         | UpdateEnteredText text -> { model with EnteredText = text }, Cmd.none
 
+    let bookViewLayout (bookItem: BookItem) =
+        View.StackLayout
+            (children =
+                [ View.Label(text = bookItem.Title)
+                  View.Label(text = bookItem.Author) ])
+
     let view (model: Model) dispatch =
         View.ContentPage
             (content =
@@ -58,10 +64,7 @@ module App =
                                    View.StackLayout
                                        (children =
                                            [ for b in model.BookItems do
-                                               yield View.StackLayout
-                                                         (children =
-                                                             [ View.Label(text = b.Title)
-                                                               View.Label(text = b.Author) ]) ])) ]))
+                                               yield bookViewLayout (b) ])) ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
