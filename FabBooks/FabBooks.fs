@@ -8,14 +8,10 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
+open BookItem
+open BookItemLayout
 
 module App =
-
-    type BookItem(author: string, title: string, imageUrl: string, smallImageUrl: string) =
-        member this.Author = author
-        member this.Title = title
-        member this.ImageUrl = imageUrl
-        member this.SmallImageUrl = smallImageUrl
 
     type Model =
         { EnteredText: string
@@ -42,12 +38,6 @@ module App =
     let update msg model =
         match msg with
         | UpdateEnteredText text -> { model with EnteredText = text }, Cmd.none
-
-    let bookItemLayout (bookItem: BookItem) =
-        View.StackLayout
-            (children =
-                [ View.Label(text = bookItem.Title)
-                  View.Label(text = bookItem.Author) ])
 
     let view (model: Model) dispatch =
         View.ContentPage
