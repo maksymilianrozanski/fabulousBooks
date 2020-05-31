@@ -13,14 +13,5 @@
     <content url="file://$MODULE_DIR$/../../FabBooks.Android" />
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="support-annotations-28.0.0.3" level="project" />
-    <orderEntry type="library" name="design-28.0.0.3" level="project" />
-    <orderEntry type="library" name="support-v4-28.0.0.3" level="project" />
-    <orderEntry type="library" name="appcompat-v7-28.0.0.3" level="project" />
-    <orderEntry type="library" name="cardview-v7-28.0.0.3" level="project" />
-    <orderEntry type="library" name="mediarouter-v7-28.0.0.3" level="project" />
-    <orderEntry type="library" name="palette-v7-28.0.0.3" level="project" />
-    <orderEntry type="library" name="recyclerview-v7-28.0.0.3" level="project" />
-    <orderEntry type="library" name="support-vector-drawable-28.0.0.3" level="project" />
   </component>
 </module>

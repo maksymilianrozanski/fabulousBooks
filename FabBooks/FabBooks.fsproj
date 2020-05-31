@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1" />
+    <PackageReference Include="Fabulous.XamarinForms.FFImageLoading" Version="0.54.1" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="Fabulous.XamarinForms" Version="0.54.1" />

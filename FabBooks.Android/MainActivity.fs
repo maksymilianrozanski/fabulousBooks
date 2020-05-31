@@ -19,6 +19,8 @@ type MainActivity() =
     override this.OnCreate (bundle: Bundle) =
         FormsAppCompatActivity.TabLayoutResource <- Resources.Layout.Tabbar
         FormsAppCompatActivity.ToolbarResource <- Resources.Layout.Toolbar
+        FFImageLoading.Forms.Platform.CachedImageRenderer.Init(Nullable(true))
+
         base.OnCreate (bundle)
 
         Xamarin.Essentials.Platform.Init(this, bundle)

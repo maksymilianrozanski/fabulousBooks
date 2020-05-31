@@ -5,9 +5,10 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
+   
 type App() as app =
     inherit Application()
-
+    
     let runner =
         App.program
 

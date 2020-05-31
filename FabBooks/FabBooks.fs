@@ -18,7 +18,7 @@ module App =
           BookItems: List<BookItem> }
 
     let mockBooks =
-        [ BookItem("author0", "title0", "bigImageUrl", "smallImageUrl")
+        [ BookItem("author0", "title0", "bigImageUrl", "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1408303130l/375802._SY75_.jpg")
           BookItem("author1", "title1", "bigImageUrl", "smallImageUrl")
           BookItem("author2", "title2", "bigImageUrl", "smallImageUrl")
           BookItem("author3", "title3", "bigImageUrl", "smallImageUrl")
@@ -54,7 +54,7 @@ module App =
                                    View.StackLayout
                                        (children =
                                            [ for b in model.BookItems do
-                                               yield bookItemLayout (b) ])) ]))
+                                               yield bookItemLayout(b) ])) ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
