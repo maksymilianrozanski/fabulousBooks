@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="MockXmlResponse.fs" />
+    <Compile Include="XmlParser.fs" />
     <Compile Include="BookItem.fs" />
+    <Compile Include="GoodreadsResponseModel.fs" />
     <Compile Include="BookItemLayout.fs" />
     <Compile Include="FabBooks.fs" />
     <Compile Include="CompilerDirectives.fs" />
-    <Compile Include="XmlParser.fs" />
     <Folder Include="xml" />
   </ItemGroup>
   <ItemGroup>

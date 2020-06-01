@@ -10,22 +10,19 @@ open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
 open BookItem
 open BookItemLayout
+open FabBooks.GoodreadsResponseModel
+open FabBooks.MockXmlResponse
+open System.Collections.Generic
 
 module App =
 
+    let responseModel = goodreadsFromXml(mockGoodreadsResponse)
+    
     type Model =
         { EnteredText: string
           BookItems: List<BookItem> }
 
-    let mockBooks =
-        [ BookItem("author0", "title0", "bigImageUrl", "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1408303130l/375802._SY75_.jpg")
-          BookItem("author1", "title1", "bigImageUrl", "smallImageUrl")
-          BookItem("author2", "title2", "bigImageUrl", "smallImageUrl")
-          BookItem("author3", "title3", "bigImageUrl", "smallImageUrl")
-          BookItem("author4", "title4", "bigImageUrl", "smallImageUrl")
-          BookItem("author5", "title5", "bigImageUrl", "smallImageUrl")
-          BookItem("author6", "title6", "bigImageUrl", "smallImageUrl")
-          BookItem("author7", "title7", "bigImageUrl", "smallImageUrl") ]
+    let mockBooks = responseModel.BookItems
 
     type Msg = UpdateEnteredText of string
 
