@@ -1,6 +1,8 @@
-module FabBooks.BookItem
+namespace FabBooks
 
-  type BookItem(author: string, title: string, imageUrl: string, smallImageUrl: string) =
+module BookItemModule =
+
+    type BookItem(author: string, title: string, imageUrl: string, smallImageUrl: string) =
         member this.Author = author
         member this.Title = title
         member this.ImageUrl = imageUrl

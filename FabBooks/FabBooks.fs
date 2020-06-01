@@ -8,27 +8,26 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
-open BookItem
-open BookItemLayout
-open FabBooks.GoodreadsResponseModel
+open BookItemModule
+open BookItemLayoutModule
+open FabBooks.GoodreadsResponseModelModule
 open FabBooks.MockXmlResponse
 open System.Collections.Generic
+open XmlParser
 
 module App =
 
-    let responseModel = goodreadsFromXml(mockGoodreadsResponse)
-    
+    let responseModel = goodreadsFromXml (mockGoodreadsResponse)
+
     type Model =
         { EnteredText: string
-          BookItems: List<BookItem> }
-
-    let mockBooks = responseModel.BookItems
+          ResponseModel: GoodreadsResponseModel }
 
     type Msg = UpdateEnteredText of string
 
     let initModel =
         { EnteredText = ""
-          BookItems = mockBooks }
+          ResponseModel = responseModel }
 
     let init () = initModel, Cmd.none
 
@@ -46,12 +45,13 @@ module App =
                              (width = 200.0, placeholder = "Search",
                               textChanged = fun textArgs -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
                            View.Label(text = model.EnteredText)
+                           View.Label(text = "HELLO ?! >.< :_)       :)_")
                            View.ScrollView
                                (content =
                                    View.StackLayout
                                        (children =
-                                           [ for b in model.BookItems do
-                                               yield bookItemLayout(b) ])) ]))
+                                           [ for b in model.ResponseModel.BookItems do
+                                               yield bookItemLayout (b) ])) ]))
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view

@@ -1,13 +1,10 @@
-module FabBooks.XmlParser
-
-open System.Xml.Serialization
-
-//#r "../../../bin/lib/net45/FSharp.Data.dll"
-//#r "System.Xml.Linq.dll"
+namespace FabBooks
 
 open FSharp.Data
+open System.Xml.Linq
 
-type GoodreadsResponse = XmlProvider<"""<?xml version="1.0" encoding="UTF-8"?>
+module XmlParser =
+    type GoodreadsResponse = XmlProvider<"""<?xml version="1.0" encoding="UTF-8"?>
 <GoodreadsResponse>
     <Request>
         <authentication>true</authentication>

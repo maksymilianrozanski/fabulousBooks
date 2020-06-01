@@ -146,6 +146,10 @@
       <HintPath>..\packages\Xamarin.FFImageLoading.2.4.11.982\lib\Xamarin.iOS10\FFImageLoading.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FSharp.Data, Version=3.3.3.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\FSharp.Data.3.3.3\lib\netstandard2.0\FSharp.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />

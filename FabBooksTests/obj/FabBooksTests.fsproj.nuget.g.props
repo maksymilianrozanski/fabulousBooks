@@ -25,5 +25,6 @@
     <PkgNUnit Condition=" '$(PkgNUnit)' == '' ">C:\Users\Max\.nuget\packages\nunit\3.12.0</PkgNUnit>
     <PkgMicrosoft_NET_Test_Sdk Condition=" '$(PkgMicrosoft_NET_Test_Sdk)' == '' ">C:\Users\Max\.nuget\packages\microsoft.net.test.sdk\16.4.0</PkgMicrosoft_NET_Test_Sdk>
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Max\.nuget\packages\fsharp.core\4.7.1</PkgFSharp_Core>
+    <PkgFSharp_Data Condition=" '$(PkgFSharp_Data)' == '' ">C:\Users\Max\.nuget\packages\fsharp.data\3.3.3</PkgFSharp_Data>
   </PropertyGroup>
 </Project>

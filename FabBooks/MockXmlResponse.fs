@@ -1,6 +1,8 @@
-module FabBooks.MockXmlResponse
+namespace FabBooks
 
-let mockGoodreadsResponse = """<?xml version="1.0" encoding="UTF-8"?>
+module MockXmlResponse =
+
+    let mockGoodreadsResponse = """<?xml version="1.0" encoding="UTF-8"?>
 <GoodreadsResponse>
     <Request>
         <authentication>true</authentication>
