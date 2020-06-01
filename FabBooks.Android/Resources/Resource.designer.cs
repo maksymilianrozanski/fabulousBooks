@@ -9009,13 +9009,10 @@ namespace FabBooks.Android
 			public const int notify_panel_notification_icon_bg = 2131165497;
 			
 			// aapt resource value: 0x7F07013A
-			public const int smile = 2131165498;
+			public const int tooltip_frame_dark = 2131165498;
 			
 			// aapt resource value: 0x7F07013B
-			public const int tooltip_frame_dark = 2131165499;
-			
-			// aapt resource value: 0x7F07013C
-			public const int tooltip_frame_light = 2131165500;
+			public const int tooltip_frame_light = 2131165499;
 			
 			static Drawable()
 			{

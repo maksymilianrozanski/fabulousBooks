@@ -10,10 +10,13 @@
     <Compile Include="BookItemLayout.fs" />
     <Compile Include="FabBooks.fs" />
     <Compile Include="CompilerDirectives.fs" />
+    <Compile Include="XmlParser.fs" />
+    <Folder Include="xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1" />
     <PackageReference Include="Fabulous.XamarinForms.FFImageLoading" Version="0.54.1" />
+    <PackageReference Include="FSharp.Data" Version="3.3.3" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
     <PackageReference Include="Fabulous.XamarinForms" Version="0.54.1" />
