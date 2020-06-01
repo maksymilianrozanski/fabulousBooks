@@ -9,7 +9,9 @@ let shouldPass () = Assert.AreEqual(2, 2)
 [<Test>]
 let ShouldParseXmlTest () =
 
-    let input = """<?xml version="1.0" encoding="UTF-8"?>
+    let totalResults = 752
+    
+    let input = sprintf """<?xml version="1.0" encoding="UTF-8"?>
 <GoodreadsResponse>
     <Request>
         <authentication>true</authentication>
@@ -20,7 +22,7 @@ let ShouldParseXmlTest () =
         <query><![CDATA[Ender's Game]]></query>
         <results-start>1</results-start>
         <results-end>20</results-end>
-        <total-results>752</total-results>
+        <total-results>%i</total-results>
         <source>Goodreads</source>
         <query-time-seconds>0.06</query-time-seconds>
         <results>
@@ -77,9 +79,7 @@ let ShouldParseXmlTest () =
         </results>
     </search>
 
-</GoodreadsResponse>"""
+</GoodreadsResponse>""" totalResults
 
     let result = GoodreadsResponse.Parse(input)
-
-    Assert.AreEqual(752, result.Search.TotalResults)
-//    Assert.AreEqual(2,2)
+    Assert.AreEqual(totalResults, result.Search.TotalResults)
