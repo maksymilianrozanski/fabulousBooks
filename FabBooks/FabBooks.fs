@@ -23,7 +23,7 @@ open FabBooks.GoodreadsApiKey
 
 module App =
 
-    let responseModel = goodreadsFromXml (mockGoodreadsResponse)
+    //    let responseModel = goodreadsFromXml (mockGoodreadsResponse)
 
     type Status =
         | Success
@@ -42,8 +42,8 @@ module App =
 
     let initModel =
         { EnteredText = ""
-          Status = Loading
-          ResponseModel = responseModel }
+          Status = Success
+          ResponseModel = emptyGoodreadsModel }
 
     let init () = initModel, Cmd.none
 

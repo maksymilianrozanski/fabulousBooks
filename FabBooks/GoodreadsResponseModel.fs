@@ -12,6 +12,8 @@ module GoodreadsResponseModelModule =
         member this.Total = totalResults
         member this.BookItems = bookItems
 
+    let emptyGoodreadsModel = GoodreadsResponseModel(0, 0, 0, List())
+
     let goodreadsFromXml xmlString =
         let response = FabBooks.XmlParser.GoodreadsResponse.Parse(xmlString)
 
