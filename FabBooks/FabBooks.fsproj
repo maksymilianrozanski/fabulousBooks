@@ -7,13 +7,13 @@
 
   <ItemGroup>
     <Compile Include="MockXmlResponse.fs" />
+    <Compile Include="network\GoodreadsQuery.fs" />
     <Compile Include="XmlParser.fs" />
     <Compile Include="BookItem.fs" />
     <Compile Include="GoodreadsResponseModel.fs" />
     <Compile Include="BookItemLayout.fs" />
     <Compile Include="FabBooks.fs" />
     <Compile Include="CompilerDirectives.fs" />
-    <Folder Include="xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1" />

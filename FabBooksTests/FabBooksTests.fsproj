@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <Compile Include="XmlParserTest.fs" />
+        <Compile Include="NetworkQueryTests.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
