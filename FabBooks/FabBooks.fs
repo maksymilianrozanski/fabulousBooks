@@ -13,11 +13,10 @@ open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open FabBooks.MockXmlResponse
 open System.Collections.Generic
-open XmlParser
 
 module App =
 
-    let responseModel = goodreadsFromXml (mockGoodreadsResponse)
+    let responseModel = goodreadsFromXml2 (mockGoodreadsResponse)
 
     type Model =
         { EnteredText: string

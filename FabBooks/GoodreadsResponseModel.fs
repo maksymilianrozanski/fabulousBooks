@@ -1,8 +1,9 @@
 namespace FabBooks
 
+open System
 open System.Collections.Generic
+open System.Xml.Linq
 open BookItemModule
-open FabBooks.XmlParser
 
 module GoodreadsResponseModelModule =
 
@@ -12,16 +13,26 @@ module GoodreadsResponseModelModule =
         member this.Total = totalResults
         member this.BookItems = bookItems
 
-    let goodreadsFromXml xmlString =
-        let response = FabBooks.XmlParser.GoodreadsResponse.Parse(xmlString)
+    let goodreadsFromXml2 xmlString =
+        let xn s = XName.Get(s)
+        let xd = XDocument.Parse(xmlString)
+        let root = xd.Element(xn "GoodreadsResponse")
+        let search = root.Element(xn "search")
+        let resultsStart = search.Element(xn "results-start").Value |> int
+        let resultsEnd = search.Element(xn "results-end").Value |> int
+        let totalResults = search.Element(xn "total-results").Value |> int
+        let results = search.Elements(xn "results")
+        let works = results.Elements(xn "work")
 
         let bookItems =
             seq {
-                for child in response.Search.Results.Works do
+                for child in works do
+                    let avgRating = child.Elements(xn "average_rating")
+                    let bestBook = child.Element(xn "best_book")
                     yield BookItem
-                              (child.BestBook.Author.Name, child.BestBook.Title, child.BestBook.ImageUrl,
-                               child.BestBook.SmallImageUrl)
+                              (bestBook.Element(xn "author").Element(xn "name").Value,
+                               bestBook.Element(xn "title").Value, bestBook.Element(xn "image_url").Value,
+                               bestBook.Element(xn "small_image_url").Value)
             }
 
-        GoodreadsResponseModel
-            (response.Search.ResultsStart, response.Search.ResultsEnd, response.Search.TotalResults, List(bookItems))
+        GoodreadsResponseModel(resultsStart, resultsEnd, totalResults, List(bookItems))
