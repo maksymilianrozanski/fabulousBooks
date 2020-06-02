@@ -3,6 +3,7 @@
 namespace FabBooks
 
 open System
+open System.Data
 open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
@@ -13,6 +14,8 @@ open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open FabBooks.MockXmlResponse
 open System.Collections.Generic
+open Xamarin.Forms
+open Xamarin.Forms
 open XmlParser
 open FabBooks.GoodreadsQuery
 open FabBooks.GoodreadsApiKey
@@ -22,8 +25,14 @@ module App =
 
     let responseModel = goodreadsFromXml (mockGoodreadsResponse)
 
+    type Status =
+        | Success
+        | Failure
+        | Loading
+
     type Model =
         { EnteredText: string
+          Status: Status
           ResponseModel: GoodreadsResponseModel }
 
     type Msg =
@@ -32,6 +41,7 @@ module App =
 
     let initModel =
         { EnteredText = ""
+          Status = Loading
           ResponseModel = responseModel }
 
     let init () = initModel, Cmd.none
@@ -51,6 +61,12 @@ module App =
         | SearchResultReceived update ->
             { model with ResponseModel = update }, Cmd.none
 
+    let statusLayout status =
+        match status with
+        | Success -> View.Label(text = "Success", textColor = Color.Green)
+        | Failure -> View.Label(text = "Failed", textColor = Color.Red)
+        | Loading -> View.Label(text = "Loading...", textColor = Color.Yellow)
+
     let view (model: Model) dispatch =
         View.ContentPage
             (content =
@@ -62,6 +78,7 @@ module App =
                               textChanged = fun textArgs -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
                            View.Label(text = model.EnteredText)
                            View.Label(text = "HELLO ?! >.< :_)       :)_")
+                           statusLayout (model.Status)
                            View.ScrollView
                                (content =
                                    View.StackLayout
