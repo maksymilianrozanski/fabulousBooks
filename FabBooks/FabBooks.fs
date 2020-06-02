@@ -38,6 +38,7 @@ module App =
     type Msg =
         | UpdateEnteredText of string
         | SearchResultReceived of GoodreadsResponseModel
+        | UpdateStatus of Status
 
     let initModel =
         { EnteredText = ""
@@ -58,8 +59,14 @@ module App =
                 //todo: add error handling
                 | Choice2Of2 _ -> None)
             |> Cmd.ofAsyncMsgOption
-        | SearchResultReceived update ->
-            { model with ResponseModel = update }, Cmd.none
+        | SearchResultReceived result ->
+            { model with ResponseModel = result },
+            match result.Total with
+            | 0 -> Status.Failure
+            | _ -> Status.Success
+            |> UpdateStatus
+            |> Cmd.ofMsg
+        | UpdateStatus status -> { model with Status = status }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -75,7 +82,10 @@ module App =
                      children =
                          [ View.Entry
                              (width = 200.0, placeholder = "Search",
-                              textChanged = fun textArgs -> UpdateEnteredText textArgs.NewTextValue |> dispatch)
+                              textChanged =
+                                  fun textArgs ->
+                                      UpdateStatus Status.Loading |> dispatch
+                                      UpdateEnteredText textArgs.NewTextValue |> dispatch)
                            View.Label(text = model.EnteredText)
                            View.Label(text = "HELLO ?! >.< :_)       :)_")
                            statusLayout (model.Status)
