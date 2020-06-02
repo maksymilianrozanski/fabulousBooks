@@ -53,11 +53,7 @@ module App =
             { model with EnteredText = text },
             searchGet goodreadsApiKey text
             |> Async.map SearchResultReceived
-            |> Async.Catch
-            |> Async.map (function
-                | Choice1Of2 x -> Some x
-                //todo: add error handling
-                | Choice2Of2 _ -> None)
+            |> Async.map (fun x -> Some x)
             |> Cmd.ofAsyncMsgOption
         | SearchResultReceived result ->
             { model with ResponseModel = result },
