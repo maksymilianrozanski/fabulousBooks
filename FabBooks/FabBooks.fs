@@ -78,10 +78,10 @@ module App =
                      children =
                          [ View.Entry
                              (width = 200.0, placeholder = "Search",
-                              textChanged =
+                              completed =
                                   fun textArgs ->
                                       UpdateStatus Status.Loading |> dispatch
-                                      UpdateEnteredText textArgs.NewTextValue |> dispatch)
+                                      UpdateEnteredText textArgs |> dispatch)
                            View.Label(text = model.EnteredText)
                            View.Label(text = "HELLO ?! >.< :_)       :)_")
                            statusLayout (model.Status)
