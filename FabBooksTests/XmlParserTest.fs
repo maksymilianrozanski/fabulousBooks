@@ -104,14 +104,14 @@ let ShouldParseXmlTest () =
     Assert.AreEqual(resultsEnd, result.Search.ResultsEnd)
     Assert.AreEqual(totalResults, result.Search.TotalResults)
     
-    Assert.AreEqual(originalPublicationYear1, result.Search.Results.Works.[0].OriginalPublicationYear.Value.Value)
+    Assert.AreEqual(originalPublicationYear1, result.Search.Results.Works.[0].OriginalPublicationYear.Value)
     Assert.AreEqual(averageRating1, result.Search.Results.Works.[0].AverageRating)
     Assert.AreEqual(title1, result.Search.Results.Works.[0].BestBook.Title)
     Assert.AreEqual(author1, result.Search.Results.Works.[0].BestBook.Author.Name)
     Assert.AreEqual(imageUrl1, result.Search.Results.Works.[0].BestBook.ImageUrl.Trim().TrimEnd())
     Assert.AreEqual(smallImageUrl1, result.Search.Results.Works.[0].BestBook.SmallImageUrl.Trim().TrimEnd())
     
-    Assert.AreEqual(originalPublicationYear2, result.Search.Results.Works.[1].OriginalPublicationYear.Value.Value)
+    Assert.AreEqual(originalPublicationYear2, result.Search.Results.Works.[1].OriginalPublicationYear.Value)
     Assert.AreEqual(averageRating2, result.Search.Results.Works.[1].AverageRating)
     Assert.AreEqual(title2, result.Search.Results.Works.[1].BestBook.Title)
     Assert.AreEqual(author2, result.Search.Results.Works.[1].BestBook.Author.Name)
