@@ -14,6 +14,9 @@ open FabBooks.GoodreadsResponseModelModule
 open FabBooks.MockXmlResponse
 open System.Collections.Generic
 open XmlParser
+open FabBooks.GoodreadsQuery
+open FabBooks.GoodreadsApiKey
+
 
 module App =
 
@@ -23,7 +26,9 @@ module App =
         { EnteredText: string
           ResponseModel: GoodreadsResponseModel }
 
-    type Msg = UpdateEnteredText of string
+    type Msg =
+        | UpdateEnteredText of string
+        | SearchResultReceived of GoodreadsResponseModel
 
     let initModel =
         { EnteredText = ""
@@ -33,7 +38,18 @@ module App =
 
     let update msg model =
         match msg with
-        | UpdateEnteredText text -> { model with EnteredText = text }, Cmd.none
+        | UpdateEnteredText text ->
+            { model with EnteredText = text },
+            searchGet goodreadsApiKey text
+            |> Async.map SearchResultReceived
+            |> Async.Catch
+            |> Async.map (function
+                | Choice1Of2 x -> Some x
+                //todo: add error handling
+                | Choice2Of2 _ -> None)
+            |> Cmd.ofAsyncMsgOption
+        | SearchResultReceived update ->
+            { model with ResponseModel = update }, Cmd.none
 
     let view (model: Model) dispatch =
         View.ContentPage
