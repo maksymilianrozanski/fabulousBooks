@@ -6,13 +6,14 @@ open FabBooks.XmlParser
 
 module GoodreadsResponseModelModule =
 
-    type GoodreadsResponseModel(resultsStart: int, resultsEnd: int, totalResults: int, bookItems: List<BookItem>) =
+    type GoodreadsResponseModel(isSuccessful: bool, resultsStart: int, resultsEnd: int, totalResults: int, bookItems: List<BookItem>) =
+        member this.IsSuccessful = isSuccessful
         member this.Start = resultsStart
         member this.End = resultsEnd
         member this.Total = totalResults
         member this.BookItems = bookItems
 
-    let emptyGoodreadsModel = GoodreadsResponseModel(0, 0, 0, List())
+    let emptyGoodreadsModel = GoodreadsResponseModel(false, 0, 0, 0, List())
 
     let goodreadsFromXml xmlString =
         let response = FabBooks.XmlParser.GoodreadsResponse.Parse(xmlString)
@@ -26,4 +27,5 @@ module GoodreadsResponseModelModule =
             }
 
         GoodreadsResponseModel
-            (response.Search.ResultsStart, response.Search.ResultsEnd, response.Search.TotalResults, List(bookItems))
+            (true, response.Search.ResultsStart, response.Search.ResultsEnd, response.Search.TotalResults,
+             List(bookItems))

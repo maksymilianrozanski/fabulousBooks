@@ -57,9 +57,9 @@ module App =
             |> Cmd.ofAsyncMsgOption
         | SearchResultReceived result ->
             { model with ResponseModel = result },
-            match result.Total with
-            | 0 -> Status.Failure
-            | _ -> Status.Success
+            match result.IsSuccessful with
+            | true -> Status.Success
+            | _ -> Status.Failure
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
