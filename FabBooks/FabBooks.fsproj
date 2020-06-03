@@ -14,6 +14,7 @@
     <Compile Include="GoodreadsResponseModel.fs" />
     <Compile Include="GoodreadsApiKey.fs" />
     <Compile Include="GoodreadsQuery.fs" />
+    <Compile Include="Messages.fs" />
     <Compile Include="BookItemLayout.fs" />
     <Compile Include="FabBooks.fs" />
     <Compile Include="CompilerDirectives.fs" />

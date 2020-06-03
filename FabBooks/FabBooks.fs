@@ -2,6 +2,7 @@
 
 namespace FabBooks
 
+open FabBooks.Messages
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -11,24 +12,16 @@ open GoodreadsQuery
 
 module App =
 
-    type Status =
-        | Success
-        | Failure
-        | Loading
-
     type Model =
         { EnteredText: string
           Status: Status
+          DisplayedDetailsPage: int
           ResponseModel: GoodreadsResponseModel }
-
-    type Msg =
-        | UpdateEnteredText of string
-        | SearchResultReceived of GoodreadsResponseModel
-        | UpdateStatus of Status
 
     let initModel =
         { EnteredText = ""
           Status = Success
+          DisplayedDetailsPage = -1
           ResponseModel = emptyGoodreadsModel }
 
     let init () = initModel, Cmd.none
@@ -49,6 +42,7 @@ module App =
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
+        | DisplayDetailsPage index -> { model with DisplayedDetailsPage = index }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -57,26 +51,33 @@ module App =
         | Loading -> View.Label(text = "Loading...", textColor = Color.Yellow)
 
     let view (model: Model) dispatch =
-        View.ContentPage
-            (content =
-                View.StackLayout
-                    (padding = Thickness 20.0, verticalOptions = LayoutOptions.Start,
-                     children =
-                         [ View.Entry
-                             (width = 200.0, placeholder = "Search",
-                              completed =
-                                  fun textArgs ->
-                                      UpdateStatus Status.Loading |> dispatch
-                                      UpdateEnteredText textArgs |> dispatch)
-                           View.Label(text = model.EnteredText)
-                           View.Label(text = "HELLO ?! >.< :_)       :)_")
-                           statusLayout (model.Status)
-                           View.ScrollView
-                               (content =
-                                   View.StackLayout
-                                       (children =
-                                           [ for b in model.ResponseModel.BookItems do
-                                               yield bookItemLayout (b) ])) ]))
+        let rootPage dispatch =
+            View.ContentPage
+                (content =
+                    View.StackLayout
+                        (padding = Thickness 20.0, verticalOptions = LayoutOptions.Start,
+                         children =
+                             [ View.Entry
+                                 (width = 200.0, placeholder = "Search",
+                                  completed =
+                                      fun textArgs ->
+                                          UpdateStatus Status.Loading |> dispatch
+                                          UpdateEnteredText textArgs |> dispatch)
+                               View.Label(text = model.EnteredText)
+                               statusLayout (model.Status)
+                               View.ScrollView
+                                   (content =
+                                       View.StackLayout
+                                           (children =
+                                               [ for b in model.ResponseModel.BookItems do
+                                                   yield bookItemLayout (b, dispatch) ])) ]))
+
+        let detailsPage dispatch =
+            View.ContentPage(content = View.StackLayout(children = [ View.Label(text = "text of details page") ]))
+        View.NavigationPage
+            (pages =
+                [ yield rootPage dispatch
+                  if (model.DisplayedDetailsPage <> -1) then yield detailsPage dispatch ])
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
