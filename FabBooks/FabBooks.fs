@@ -14,13 +14,13 @@ module App =
     type Model =
         { EnteredText: string
           Status: Status
-          IsDisplayingDetails: bool
+          DisplayedPage: DisplayedPage
           ResponseModel: GoodreadsResponseModel }
 
     let initModel =
         { EnteredText = ""
           Status = Success
-          IsDisplayingDetails = false
+          DisplayedPage = SearchPage
           ResponseModel = emptyGoodreadsModel }
 
     let init () = initModel, Cmd.none
@@ -41,8 +41,8 @@ module App =
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
-        | DisplayDetailsPage -> { model with IsDisplayingDetails = true }, Cmd.none
-        | DisplaySearchPage -> { model with IsDisplayingDetails = false }, Cmd.none
+        | DisplaySearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
+        | DisplayDetailsPage -> { model with DisplayedPage = DetailsPage }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -81,7 +81,7 @@ module App =
             View.NavigationPage
                 (pages =
                     [ yield searchPage
-                      if (model.IsDisplayingDetails) then yield detailsPage ],
+                      if (model.DisplayedPage = DetailsPage) then yield detailsPage ],
                  popped = fun _ -> DisplaySearchPage |> dispatch)
 
         rootView
