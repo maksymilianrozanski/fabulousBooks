@@ -2,15 +2,13 @@ namespace FabBooks
 
 module BookItemLayoutModule =
 
-    open FabBooks
     open FabBooks.BookItemModule
     open Fabulous.XamarinForms
-    open Messages
 
-    let bookItemLayout (b: BookItem, dispatch) =
+    let bookItemLayout (b: BookItem, action) =
         View.StackLayout
             (children =
                 [ View.Label(text = b.Title)
                   View.Label(text = b.Author)
                   View.Image(source = ImagePath b.SmallImageUrl, width = 100.0, height = 100.0)
-                  View.Button(text = "details", command = (fun () -> dispatch (DisplayDetailsPage 2))) ])
+                  View.Button(text = "details", command = action(2)) ])

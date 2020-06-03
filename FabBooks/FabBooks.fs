@@ -51,6 +51,9 @@ module App =
         | Loading -> View.Label(text = "Loading...", textColor = Color.Yellow)
 
     let view (model: Model) dispatch =
+
+        let openDetailsPage x = fun () -> dispatch (DisplayDetailsPage x)
+
         let rootPage dispatch =
             View.ContentPage
                 (content =
@@ -70,7 +73,7 @@ module App =
                                        View.StackLayout
                                            (children =
                                                [ for b in model.ResponseModel.BookItems do
-                                                   yield bookItemLayout (b, dispatch) ])) ]))
+                                                   yield bookItemLayout (b, openDetailsPage) ])) ]))
 
         let detailsPage dispatch =
             View.ContentPage(content = View.StackLayout(children = [ View.Label(text = "text of details page") ]))
