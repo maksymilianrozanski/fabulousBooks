@@ -41,8 +41,10 @@ module App =
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
-        | DisplaySearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
-        | DisplayDetailsPage -> { model with DisplayedPage = DetailsPage }, Cmd.none
+        | ChangeDisplayedPage page ->
+            match page with
+            | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
+            | DetailsPage -> { model with DisplayedPage = DetailsPage }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -69,7 +71,8 @@ module App =
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
                                View.Button
-                                   (text = "Open details page", command = fun () -> DisplayDetailsPage |> dispatch)
+                                   (text = "Open details page",
+                                    command = fun () -> ChangeDisplayedPage DetailsPage |> dispatch)
                                View.ScrollView
                                    (content =
                                        View.StackLayout
@@ -82,7 +85,7 @@ module App =
                 (pages =
                     [ yield searchPage
                       if (model.DisplayedPage = DetailsPage) then yield detailsPage ],
-                 popped = fun _ -> DisplaySearchPage |> dispatch)
+                 popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView
 

@@ -19,5 +19,4 @@ module Messages =
         | UpdateEnteredText of string
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateStatus of Status
-        | DisplayDetailsPage
-        | DisplaySearchPage
+        | ChangeDisplayedPage of DisplayedPage
