@@ -2,7 +2,6 @@ namespace FabBooks
 
 open System.Collections.Generic
 open BookItemModule
-open FabBooks.XmlParser
 
 module GoodreadsResponseModelModule =
 

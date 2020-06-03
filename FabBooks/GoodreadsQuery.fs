@@ -1,10 +1,10 @@
 namespace FabBooks
 
 open System
-open System.IO
 open System.Web
 open FSharp.Data
 open GoodreadsResponseModelModule
+open GoodreadsApiKey
 
 module GoodreadsQuery =
 
@@ -17,7 +17,7 @@ module GoodreadsQuery =
     let goodreadsRequestBuilder query =
         UriBuilder(Scheme = "https", Host = "goodreads.com", Path = "search/index.xml", Query = query.ToString()).Uri
 
-    let searchGet key search =
+    let private searchGet key search =
         let getRequest = goodreadsRequestBuilder (searchQuery key search)
         getRequest.ToString()
         |> Http.AsyncRequest
@@ -28,3 +28,5 @@ module GoodreadsQuery =
                 | Text text -> text |> goodreadsFromXml
                 | _ -> emptyGoodreadsModel
             | Choice2Of2 _ -> emptyGoodreadsModel)
+
+    let searchWithKey = searchGet goodreadsApiKey

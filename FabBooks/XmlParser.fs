@@ -1,7 +1,6 @@
 namespace FabBooks
 
 open FSharp.Data
-open System.Xml.Linq
 
 module XmlParser =
     type GoodreadsResponse = XmlProvider<"""<?xml version="1.0" encoding="UTF-8"?>

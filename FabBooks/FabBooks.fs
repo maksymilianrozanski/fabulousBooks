@@ -2,28 +2,14 @@
 
 namespace FabBooks
 
-open System
-open System.Data
-open System.Diagnostics
 open Fabulous
 open Fabulous.XamarinForms
-open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
-open BookItemModule
 open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
-open FabBooks.MockXmlResponse
-open System.Collections.Generic
-open Xamarin.Forms
-open Xamarin.Forms
-open XmlParser
-open FabBooks.GoodreadsQuery
-open FabBooks.GoodreadsApiKey
-
+open GoodreadsQuery
 
 module App =
-
-    //    let responseModel = goodreadsFromXml (mockGoodreadsResponse)
 
     type Status =
         | Success
@@ -51,7 +37,7 @@ module App =
         match msg with
         | UpdateEnteredText text ->
             { model with EnteredText = text },
-            searchGet goodreadsApiKey text
+            searchWithKey text
             |> Async.map SearchResultReceived
             |> Async.map (fun x -> Some x)
             |> Cmd.ofAsyncMsgOption

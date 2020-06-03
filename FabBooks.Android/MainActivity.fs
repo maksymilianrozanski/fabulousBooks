@@ -4,11 +4,8 @@ namespace FabBooks.Android
 open System
 
 open Android.App
-open Android.Content
 open Android.Content.PM
 open Android.Runtime
-open Android.Views
-open Android.Widget
 open Android.OS
 open FabBooks
 open Xamarin.Forms.Platform.Android
