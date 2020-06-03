@@ -8,9 +8,11 @@ module Messages =
         | Success
         | Failure
         | Loading
-
+        
+    type NavigateToDetailsPageMsg =
+        | NavigateToDetailsPageMsg of int 
     type Msg =
         | UpdateEnteredText of string
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateStatus of Status
-        | DisplayDetailsPage of int
+        | DisplayDetailsPage of NavigateToDetailsPageMsg

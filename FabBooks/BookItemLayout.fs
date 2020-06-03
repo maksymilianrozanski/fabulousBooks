@@ -5,10 +5,10 @@ module BookItemLayoutModule =
     open FabBooks.BookItemModule
     open Fabulous.XamarinForms
 
-    let bookItemLayout (b: BookItem, action) =
+    let bookItemLayout (b: BookItem) =
         View.StackLayout
             (children =
                 [ View.Label(text = b.Title)
                   View.Label(text = b.Author)
                   View.Image(source = ImagePath b.SmallImageUrl, width = 100.0, height = 100.0)
-                  View.Button(text = "details", command = action(2)) ])
+                  View.Button(text = "details") ])

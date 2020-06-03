@@ -9,19 +9,20 @@ open Xamarin.Forms
 open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open GoodreadsQuery
+open BookDetailsPage
 
 module App =
 
     type Model =
         { EnteredText: string
           Status: Status
-          DisplayedDetailsPage: int
+          IsDisplayingDetails: bool
           ResponseModel: GoodreadsResponseModel }
 
     let initModel =
         { EnteredText = ""
           Status = Success
-          DisplayedDetailsPage = -1
+          IsDisplayingDetails = false
           ResponseModel = emptyGoodreadsModel }
 
     let init () = initModel, Cmd.none
@@ -42,7 +43,7 @@ module App =
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
-        | DisplayDetailsPage index -> { model with DisplayedDetailsPage = index }, Cmd.none
+        | DisplayDetailsPage i -> { model with IsDisplayingDetails = true }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -52,9 +53,9 @@ module App =
 
     let view (model: Model) dispatch =
 
-        let openDetailsPage x = fun () -> dispatch (DisplayDetailsPage x)
+        let detailsPage = BookDetailsPage.view (BookDetailsPage.initModel) dispatch
 
-        let rootPage dispatch =
+        let rootPage =
             View.ContentPage
                 (content =
                     View.StackLayout
@@ -73,14 +74,9 @@ module App =
                                        View.StackLayout
                                            (children =
                                                [ for b in model.ResponseModel.BookItems do
-                                                   yield bookItemLayout (b, openDetailsPage) ])) ]))
+                                                   yield bookItemLayout (b) ])) ]))
 
-        let detailsPage dispatch =
-            View.ContentPage(content = View.StackLayout(children = [ View.Label(text = "text of details page") ]))
-        View.NavigationPage
-            (pages =
-                [ yield rootPage dispatch
-                  if (model.DisplayedDetailsPage <> -1) then yield detailsPage dispatch ])
+        if (model.IsDisplayingDetails) then detailsPage else rootPage
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view
