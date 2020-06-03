@@ -42,6 +42,7 @@ module App =
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
         | DisplayDetailsPage -> { model with IsDisplayingDetails = true }, Cmd.none
+        | DisplaySearchPage -> { model with IsDisplayingDetails = false }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -53,7 +54,7 @@ module App =
 
         let detailsPage = BookDetailsPage.view (BookDetailsPage.initModel) dispatch
 
-        let rootPage =
+        let searchPage =
             View.ContentPage
                 (content =
                     View.StackLayout
@@ -76,7 +77,14 @@ module App =
                                                [ for b in model.ResponseModel.BookItems do
                                                    yield bookItemLayout (b) ])) ]))
 
-        if (model.IsDisplayingDetails) then detailsPage else rootPage
+        let rootView =
+            View.NavigationPage
+                (pages =
+                    [ yield searchPage
+                      if (model.IsDisplayingDetails) then yield detailsPage ],
+                 popped = fun _ -> DisplaySearchPage |> dispatch)
+
+        rootView
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = XamarinFormsProgram.mkProgram init update view

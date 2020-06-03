@@ -16,3 +16,4 @@ module Messages =
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateStatus of Status
         | DisplayDetailsPage
+        | DisplaySearchPage

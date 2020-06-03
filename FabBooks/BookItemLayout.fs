@@ -10,5 +10,4 @@ module BookItemLayoutModule =
             (children =
                 [ View.Label(text = b.Title)
                   View.Label(text = b.Author)
-                  View.Image(source = ImagePath b.SmallImageUrl, width = 100.0, height = 100.0)
-                  View.Button(text = "details") ])
+                  View.Image(source = ImagePath b.SmallImageUrl, width = 100.0, height = 100.0) ])
