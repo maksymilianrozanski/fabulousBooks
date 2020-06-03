@@ -9,10 +9,8 @@ open Xamarin.Forms
 open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open GoodreadsQuery
-open BookDetailsPage
 
 module App =
-
     type Model =
         { EnteredText: string
           Status: Status
@@ -43,7 +41,7 @@ module App =
             |> UpdateStatus
             |> Cmd.ofMsg
         | UpdateStatus status -> { model with Status = status }, Cmd.none
-        | DisplayDetailsPage i -> { model with IsDisplayingDetails = true }, Cmd.none
+        | DisplayDetailsPage -> { model with IsDisplayingDetails = true }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -69,6 +67,8 @@ module App =
                                           UpdateEnteredText textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
+                               View.Button
+                                   (text = "Open details page", command = fun () -> DisplayDetailsPage |> dispatch)
                                View.ScrollView
                                    (content =
                                        View.StackLayout
