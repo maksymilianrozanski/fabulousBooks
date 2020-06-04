@@ -19,7 +19,7 @@ let shouldBuildSearchQuery () =
 let shouldBuildRequest () =
     let query = HttpUtility.ParseQueryString(String.Empty)
     query.["Hello"] <- "World"
-    let result = goodreadsRequestBuilder query
+    let result = goodreadsSearchRequestBuilder query
     Assert.AreEqual("https", result.Scheme)
     Assert.AreEqual("goodreads.com", result.Host)
     Assert.AreEqual("/search/index.xml", result.LocalPath)
