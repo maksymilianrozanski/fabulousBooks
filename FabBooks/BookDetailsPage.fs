@@ -1,19 +1,28 @@
 namespace FabBooks
 
 open FabBooks.BookItemModule
+open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open Messages
 
 module BookDetailsPage =
-    type BookDetailsPageModel =
-        { DisplayedBook: Option<BookItem> }
 
-    let initModel = { DisplayedBook = None }
+    type Msg = | BookResultReceived
+
+    type BookDetailsPageModel =
+        { DisplayedBook: Option<BookItem>
+          BookDetails: Option<SingleBookResponseModel> }
+
+    let initModel =
+        { DisplayedBook = None
+          BookDetails = None }
 
     let init () = initModel, Cmd.none
 
-    let initFromId id = { DisplayedBook = id }
+    let initFromId id =
+        { DisplayedBook = id
+          BookDetails = None }
 
     let update msg model =
         match msg with
