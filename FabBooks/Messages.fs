@@ -4,7 +4,7 @@ open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 open SingleBookResponseModelModule
 
-module Messages =
+module MainMessages =
     type DisplayedPage =
         | SearchPage
         | DetailsPage of BookItem

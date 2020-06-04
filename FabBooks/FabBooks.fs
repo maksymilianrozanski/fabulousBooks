@@ -2,7 +2,7 @@
 
 namespace FabBooks
 
-open FabBooks.Messages
+open FabBooks.MainMessages
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms

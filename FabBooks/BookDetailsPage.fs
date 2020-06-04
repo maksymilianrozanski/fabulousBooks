@@ -4,7 +4,7 @@ open FabBooks.BookItemModule
 open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
-open Messages
+open MainMessages
 open DetailsMessages
 
 module BookDetailsPage =

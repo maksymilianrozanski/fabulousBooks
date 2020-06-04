@@ -2,7 +2,7 @@ namespace FabBooks
 
 open Fabulous.XamarinForms
 open Xamarin.Forms
-open Messages
+open MainMessages
 
 module StatusLayout =
     let statusLayout status =
