@@ -1,12 +1,13 @@
 namespace FabBooks
 
+open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 
 module Messages =
 
     type DisplayedPage =
         | SearchPage
-        | DetailsPage
+        | DetailsPage of int
 
     type Status =
         | Success

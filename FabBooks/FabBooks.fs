@@ -44,7 +44,7 @@ module App =
         | ChangeDisplayedPage page ->
             match page with
             | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
-            | DetailsPage -> { model with DisplayedPage = DetailsPage }, Cmd.none
+            | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, Cmd.none
 
     let statusLayout status =
         match status with
@@ -54,7 +54,8 @@ module App =
 
     let view (model: Model) dispatch =
 
-        let detailsPage = BookDetailsPage.view (BookDetailsPage.initModel) dispatch
+        let detailsPage x = BookDetailsPage.view (BookDetailsPage.initFromId x) dispatch
+        let openDetailsPage x = fun () -> ChangeDisplayedPage(DetailsPage(x)) |> dispatch
 
         let searchPage =
             View.ContentPage
@@ -72,20 +73,21 @@ module App =
                                statusLayout (model.Status)
                                View.Button
                                    (text = "Open details page",
-                                    command = fun () -> ChangeDisplayedPage DetailsPage |> dispatch)
+                                    command = fun () -> ChangeDisplayedPage(DetailsPage(42)) |> dispatch)
                                View.ScrollView
                                    (content =
                                        View.StackLayout
                                            (children =
                                                [ for b in model.ResponseModel.BookItems do
-                                                   yield bookItemLayout (b) ])) ]))
+                                                   yield bookItemLayout (b, openDetailsPage (b.Id)) ])) ]))
 
         let rootView =
             View.NavigationPage
                 (pages =
                     [ yield searchPage
-                      if (model.DisplayedPage = DetailsPage) then yield detailsPage ],
-                 popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
+                      match model.DisplayedPage with
+                      | DetailsPage x -> yield detailsPage x
+                      | _ -> () ], popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView
 
