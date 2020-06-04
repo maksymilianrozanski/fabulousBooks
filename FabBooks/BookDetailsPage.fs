@@ -1,14 +1,15 @@
 namespace FabBooks
 
+open FabBooks.BookItemModule
 open Fabulous
 open Fabulous.XamarinForms
 open Messages
 
 module BookDetailsPage =
     type BookDetailsPageModel =
-        { DisplayedBook: int }
+        { DisplayedBook: Option<BookItem> }
 
-    let initModel = { DisplayedBook = 0 }
+    let initModel = { DisplayedBook = None }
 
     let init () = initModel, Cmd.none
 
@@ -16,8 +17,8 @@ module BookDetailsPage =
 
     let update msg model =
         match msg with
-        | NavigateToDetailsPageMsg ->
-            { model with DisplayedBook = 2 }, Cmd.none
+        | NavigateToDetailsPageMsg book ->
+            { model with DisplayedBook = Some(book) }, Cmd.none
 
     let view (model: BookDetailsPageModel) dispatch =
         View.ContentPage
@@ -25,4 +26,4 @@ module BookDetailsPage =
                 View.StackLayout
                     (children =
                         [ View.Label(text = "details page.")
-                          View.Label(text = "current id = " + model.DisplayedBook.ToString()) ]))
+                          View.Label(text = "current title = " + model.DisplayedBook.Value.Title.ToString()) ]))

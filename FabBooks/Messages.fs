@@ -7,14 +7,14 @@ module Messages =
 
     type DisplayedPage =
         | SearchPage
-        | DetailsPage of int
+        | DetailsPage of BookItem
 
     type Status =
         | Success
         | Failure
         | Loading
 
-    type NavigateToDetailsPageMsg = NavigateToDetailsPageMsg of int
+    type NavigateToDetailsPageMsg = NavigateToDetailsPageMsg of BookItem
 
     type Msg =
         | UpdateEnteredText of string

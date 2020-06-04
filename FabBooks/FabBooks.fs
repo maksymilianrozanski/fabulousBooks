@@ -71,22 +71,19 @@ module App =
                                           UpdateEnteredText textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
-                               View.Button
-                                   (text = "Open details page",
-                                    command = fun () -> ChangeDisplayedPage(DetailsPage(42)) |> dispatch)
                                View.ScrollView
                                    (content =
                                        View.StackLayout
                                            (children =
                                                [ for b in model.ResponseModel.BookItems do
-                                                   yield bookItemLayout (b, openDetailsPage (b.Id)) ])) ]))
+                                                   yield bookItemLayout (b, openDetailsPage) ])) ]))
 
         let rootView =
             View.NavigationPage
                 (pages =
                     [ yield searchPage
                       match model.DisplayedPage with
-                      | DetailsPage x -> yield detailsPage x
+                      | DetailsPage x -> yield detailsPage (Some(x))
                       | _ -> () ], popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView
