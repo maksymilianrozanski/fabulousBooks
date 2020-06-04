@@ -17,7 +17,7 @@ module GoodreadsQuery =
     let goodreadsSearchRequestBuilder query =
         UriBuilder(Scheme = "https", Host = "goodreads.com", Path = "search/index.xml", Query = query.ToString()).Uri
 
-    let private searchGet key search =
+    let private searchGet (key: ApiKey) search =
         let getRequest = goodreadsSearchRequestBuilder (searchQuery key search)
         getRequest.ToString()
         |> Http.AsyncRequest

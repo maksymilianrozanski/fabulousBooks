@@ -1,5 +1,6 @@
 namespace FabBooks
 
+open System.Data
 open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 open SingleBookResponseModelModule
@@ -24,3 +25,5 @@ module DetailsMessages =
     type Msg =
         | NavigateToDetailsPageMsg of BookItem
         | BookResultReceived of SingleBookResponseModel
+        | UpdateBookDetails of BookItem
+        | UpdateStatus of MainMessages.Status

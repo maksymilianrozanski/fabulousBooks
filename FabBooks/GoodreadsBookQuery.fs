@@ -19,8 +19,8 @@ module GoodreadsBookQuery =
             (Scheme = "https", Host = "goodreads.com", Path = sprintf "book/show/%i.xml" goodreadsBookId,
              Query = query.ToString())).Uri
 
-    let private bookGet key goodreadsBookId =
-        let getRequest = goodreadsBookRequestBuilder (goodreadsBookId bookQuery key)
+    let private bookGet (key: ApiKey) (goodreadsBookId: int) =
+        let getRequest = goodreadsBookRequestBuilder goodreadsBookId (bookQuery key)
         getRequest.ToString()
         |> Http.AsyncRequest
         |> Async.Catch
