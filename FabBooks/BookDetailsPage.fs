@@ -5,10 +5,9 @@ open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open Messages
+open DetailsMessages
 
 module BookDetailsPage =
-
-    type Msg = | BookResultReceived
 
     type BookDetailsPageModel =
         { DisplayedBook: Option<BookItem>
@@ -28,6 +27,8 @@ module BookDetailsPage =
         match msg with
         | NavigateToDetailsPageMsg book ->
             { model with DisplayedBook = Some(book) }, Cmd.none
+        | BookResultReceived details ->
+            {model with BookDetails = Some(details)}, Cmd.none
 
     let view (model: BookDetailsPageModel) dispatch =
         View.ContentPage

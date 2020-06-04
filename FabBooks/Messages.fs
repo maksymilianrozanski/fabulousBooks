@@ -2,9 +2,9 @@ namespace FabBooks
 
 open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
+open SingleBookResponseModelModule
 
 module Messages =
-
     type DisplayedPage =
         | SearchPage
         | DetailsPage of BookItem
@@ -14,10 +14,13 @@ module Messages =
         | Failure
         | Loading
 
-    type NavigateToDetailsPageMsg = NavigateToDetailsPageMsg of BookItem
-
     type Msg =
         | UpdateEnteredText of string
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateStatus of Status
         | ChangeDisplayedPage of DisplayedPage
+
+module DetailsMessages =
+    type NavigateToDetailsPageMsg =
+        | NavigateToDetailsPageMsg of BookItem
+        | BookResultReceived of SingleBookResponseModel
