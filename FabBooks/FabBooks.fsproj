@@ -12,8 +12,10 @@
     <Compile Include="XmlParser.fs" />
     <Compile Include="BookItem.fs" />
     <Compile Include="GoodreadsResponseModel.fs" />
+    <Compile Include="SingleBookResponseModel.fs" />
     <Compile Include="GoodreadsApiKey.fs" />
     <Compile Include="GoodreadsQuery.fs" />
+    <Compile Include="GoodreadsBookQuery.fs" />
     <Compile Include="Messages.fs" />
     <Compile Include="BookItemLayout.fs" />
     <Compile Include="BookDetailsPage.fs" />

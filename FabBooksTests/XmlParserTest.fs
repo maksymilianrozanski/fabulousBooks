@@ -99,7 +99,7 @@ let ShouldParseXmlTest () =
 </GoodreadsResponse>""" resultsStart resultsEnd totalResults originalPublicationYear1 averageRating1 title1 author1
             imageUrl1 smallImageUrl1 originalPublicationYear2 averageRating2 title2 author2 imageUrl2 smallImageUrl2
 
-    let result = GoodreadsResponse.Parse(input)
+    let result = GoodreadsSearchResponse.Parse(input)
     Assert.AreEqual(resultsStart, result.Search.ResultsStart)
     Assert.AreEqual(resultsEnd, result.Search.ResultsEnd)
     Assert.AreEqual(totalResults, result.Search.TotalResults)
