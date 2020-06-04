@@ -18,6 +18,7 @@
     <Compile Include="GoodreadsBookQuery.fs" />
     <Compile Include="Messages.fs" />
     <Compile Include="BookItemLayout.fs" />
+    <Compile Include="StatusLayout.fs" />
     <Compile Include="BookDetailsPage.fs" />
     <Compile Include="FabBooks.fs" />
     <Compile Include="CompilerDirectives.fs" />

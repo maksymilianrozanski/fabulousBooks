@@ -9,6 +9,7 @@ open Xamarin.Forms
 open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open GoodreadsQuery
+open StatusLayout
 
 module App =
     type Model =
@@ -45,12 +46,6 @@ module App =
             match page with
             | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
             | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, Cmd.none
-
-    let statusLayout status =
-        match status with
-        | Success -> View.Label(text = "Success", textColor = Color.Green)
-        | Failure -> View.Label(text = "Failed", textColor = Color.Red)
-        | Loading -> View.Label(text = "Loading...", textColor = Color.Yellow)
 
     let view (model: Model) dispatch =
 
