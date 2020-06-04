@@ -3,7 +3,7 @@ namespace FabBooks
 open FSharp.Data
 
 module XmlParser =
-    type GoodreadsResponse = XmlProvider<"""<?xml version="1.0" encoding="UTF-8"?>
+    type GoodreadsSearchResponse = XmlProvider<"""<?xml version="1.0" encoding="UTF-8"?>
 <GoodreadsResponse>
     <Request>
         <authentication>true</authentication>

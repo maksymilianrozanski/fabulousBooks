@@ -15,7 +15,7 @@ module GoodreadsResponseModelModule =
     let emptyGoodreadsModel = GoodreadsResponseModel(false, 0, 0, 0, List())
 
     let goodreadsFromXml xmlString =
-        let response = FabBooks.XmlParser.GoodreadsResponse.Parse(xmlString)
+        let response = FabBooks.XmlParser.GoodreadsSearchResponse.Parse(xmlString)
 
         let bookItems =
             seq {
