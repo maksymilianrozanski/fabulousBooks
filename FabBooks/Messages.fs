@@ -21,6 +21,6 @@ module Messages =
         | ChangeDisplayedPage of DisplayedPage
 
 module DetailsMessages =
-    type NavigateToDetailsPageMsg =
+    type Msg =
         | NavigateToDetailsPageMsg of BookItem
         | BookResultReceived of SingleBookResponseModel
