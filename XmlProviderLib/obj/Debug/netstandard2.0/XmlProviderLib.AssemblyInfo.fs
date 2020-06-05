@@ -7,11 +7,11 @@ open System
 open System.Reflection
 
 
-[<assembly: System.Reflection.AssemblyCompanyAttribute("FabBooksTests")>]
+[<assembly: System.Reflection.AssemblyCompanyAttribute("XmlProviderLib")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
 [<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")>]
-[<assembly: System.Reflection.AssemblyProductAttribute("FabBooksTests")>]
-[<assembly: System.Reflection.AssemblyTitleAttribute("FabBooksTests")>]
+[<assembly: System.Reflection.AssemblyProductAttribute("XmlProviderLib")>]
+[<assembly: System.Reflection.AssemblyTitleAttribute("XmlProviderLib")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
 do()

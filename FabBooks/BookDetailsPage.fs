@@ -30,7 +30,7 @@ module BookDetailsPage =
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
         let descriptionView =
             match model.BookDetails with
-            | Some -> View.Label(text = model.BookDetails.Value.Description)
+            | Some x -> View.Label(text = model.BookDetails.Value.Description)
             | None -> View.Label("no description...")
 
         View.ContentPage

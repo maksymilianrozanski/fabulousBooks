@@ -1,5 +1,7 @@
 namespace FabBooks
 
+open XmlProviderLib
+
 module SingleBookResponseModelModule =
 
     type SingleBookResponseModel(isSuccessful: bool, description: string, link: string) =
@@ -10,5 +12,5 @@ module SingleBookResponseModelModule =
     let emptySingleBookModel = SingleBookResponseModel(false, "", "")
 
     let singleBookFromXml xmlString =
-        let response = FabBooks.XmlParser.GoodreadsBookResponse.Parse(xmlString)
+        let response = XmlParser.GoodreadsBookResponse.Parse(xmlString)
         SingleBookResponseModel(true, response.Book.Description, response.Book.Url)
