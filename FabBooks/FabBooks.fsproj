@@ -1,40 +1,44 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="Async.fs" />
-    <Content Include="bookdetailsresponse.xml" />
-    <Content Include="ResponseModelMock.txt" />
-    <Compile Include="MockXmlResponse.fs" />
-    <Compile Include="XmlParser.fs" />
-    <Compile Include="BookItem.fs" />
-    <Compile Include="GoodreadsResponseModel.fs" />
-    <Compile Include="SingleBookResponseModel.fs" />
-    <Compile Include="GoodreadsApiKey.fs" />
-    <Compile Include="GoodreadsQuery.fs" />
-    <Compile Include="GoodreadsBookQuery.fs" />
-    <Compile Include="Messages.fs" />
-    <Compile Include="BookItemLayout.fs" />
-    <Compile Include="StatusLayout.fs" />
-    <Compile Include="BookDetailsPage.fs" />
-    <Compile Include="FabBooks.fs" />
-    <Compile Include="CompilerDirectives.fs" />
-    <EmbeddedResource Include="searchresponse.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1" />
-    <PackageReference Include="Fabulous.XamarinForms.FFImageLoading" Version="0.54.1" />
-    <PackageReference Include="FSharp.Data" Version="3.3.3" />
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
-    <PackageReference Include="Fabulous.XamarinForms" Version="0.54.1" />
-    <PackageReference Include="Fabulous.XamarinForms.LiveUpdate" Version="0.54.1" />
-    <PackageReference Include="FSharp.Core" Version="4.7.1" />
-    <PackageReference Update="FSharp.Core" Version="4.7.1" /> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 --> 
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Async.fs"/>
+        <EmbeddedResource Include="bookdetailsresponse.xml">
+            <Link>bookdetailsresponse.xml</Link>
+        </EmbeddedResource>
+        <Content Include="ResponseModelMock.txt"/>
+        <Compile Include="MockXmlResponse.fs"/>
+        <Compile Include="XmlParser.fs"/>
+        <Compile Include="BookItem.fs"/>
+        <Compile Include="GoodreadsResponseModel.fs"/>
+        <Compile Include="SingleBookResponseModel.fs"/>
+        <Compile Include="GoodreadsApiKey.fs"/>
+        <Compile Include="GoodreadsQuery.fs"/>
+        <Compile Include="GoodreadsBookQuery.fs"/>
+        <Compile Include="Messages.fs"/>
+        <Compile Include="BookItemLayout.fs"/>
+        <Compile Include="StatusLayout.fs"/>
+        <Compile Include="BookDetailsPage.fs"/>
+        <Compile Include="FabBooks.fs"/>
+        <Compile Include="CompilerDirectives.fs"/>
+        <EmbeddedResource Include="searchresponse.xml">
+            <Link>searchresponse.xml</Link>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Fabulous.LiveUpdate" Version="0.54.1"/>
+        <PackageReference Include="Fabulous.XamarinForms.FFImageLoading" Version="0.54.1"/>
+        <PackageReference Include="FSharp.Data" Version="3.3.3"/>
+        <PackageReference Include="Xamarin.Forms" Version="4.6.0.726"/>
+        <PackageReference Include="Xamarin.Essentials" Version="1.5.1"/>
+        <PackageReference Include="Fabulous.XamarinForms" Version="0.54.1"/>
+        <PackageReference Include="Fabulous.XamarinForms.LiveUpdate" Version="0.54.1"/>
+        <PackageReference Include="FSharp.Core" Version="4.7.1"/>
+        <PackageReference Update="FSharp.Core" Version="4.7.1"/> <!-- workaround for VSMac bug https://github.com/mono/monodevelop/pull/5137 -->
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+    </ItemGroup>
 </Project>
