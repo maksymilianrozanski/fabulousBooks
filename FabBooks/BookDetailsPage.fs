@@ -28,6 +28,11 @@ module BookDetailsPage =
           Status = Success }
 
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
+        let descriptionView =
+            match model.BookDetails with
+            | Some -> View.Label(text = model.BookDetails.Value.Description)
+            | None -> View.Label("no description...")
+
         View.ContentPage
             (content =
                 View.StackLayout
@@ -35,4 +40,5 @@ module BookDetailsPage =
                         [ View.Label(text = "details page.")
                           StatusLayout.statusLayout (model.Status)
                           View.Label(text = "current title = " + model.DisplayedBook.Value.Title.ToString())
-                          View.Label(text = "has description: " + model.BookDetails.IsSome.ToString()) ]))
+                          //todo: handle html tags in description
+                          descriptionView ]))
