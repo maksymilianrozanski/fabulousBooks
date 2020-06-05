@@ -2,6 +2,7 @@
 
 namespace FabBooks
 
+open FabBooks.BookDetailsPage
 open FabBooks.MainMessages
 open Fabulous
 open Fabulous.XamarinForms
@@ -10,23 +11,26 @@ open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
 open GoodreadsQuery
 open StatusLayout
+open GoodreadsBookQuery
 
 module App =
     type Model =
         { EnteredText: string
           Status: Status
           DisplayedPage: DisplayedPage
-          ResponseModel: GoodreadsResponseModel }
+          ResponseModel: GoodreadsResponseModel
+          BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
           Status = Success
           DisplayedPage = SearchPage
-          ResponseModel = emptyGoodreadsModel }
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel = None }
 
     let init () = initModel, Cmd.none
 
-    let update msg model =
+    let update (msg: Msg) (model: Model) =
         match msg with
         | UpdateEnteredText text ->
             { model with EnteredText = text },
@@ -39,17 +43,35 @@ module App =
             match result.IsSuccessful with
             | true -> Status.Success
             | _ -> Status.Failure
-            |> UpdateStatus
+            |> UpdateSearchStatus
             |> Cmd.ofMsg
-        | UpdateStatus status -> { model with Status = status }, Cmd.none
+        | UpdateSearchStatus status -> { model with Status = status }, Cmd.none
         | ChangeDisplayedPage page ->
             match page with
             | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
             | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, Cmd.none
+        | NavigateToDetailsPageMsg book ->
+            { model with BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book))) }, Cmd.none
+        | BookResultReceived result ->
+            { model with BookDetailsPageModel =
+                  Some({ model.BookDetailsPageModel.Value with BookDetails = Some(result) }) },
+            match result.IsSuccessful with
+            | true -> Status.Success
+            | _ -> Status.Failure
+            |> UpdateDetailsStatus
+            |> Cmd.ofMsg
+        | UpdateBookDetails book ->
+            model,
+            bookWithKey book.Id
+            |> Async.map BookResultReceived
+            |> Async.map (fun x -> Some x)
+            |> Cmd.ofAsyncMsgOption
+        | UpdateDetailsStatus status ->
+            { model with Status = status }, Cmd.none
 
     let view (model: Model) dispatch =
 
-        let detailsPage x = BookDetailsPage.view (BookDetailsPage.initFromId x) dispatch
+        let detailsPage x = BookDetailsPage.bookDetailsPageView (BookDetailsPage.initFromId x) dispatch
         let openDetailsPage x = fun () -> ChangeDisplayedPage(DetailsPage(x)) |> dispatch
 
         let searchPage =
@@ -62,7 +84,7 @@ module App =
                                  (width = 200.0, placeholder = "Search",
                                   completed =
                                       fun textArgs ->
-                                          UpdateStatus Status.Loading |> dispatch
+                                          UpdateSearchStatus Status.Loading |> dispatch
                                           UpdateEnteredText textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)

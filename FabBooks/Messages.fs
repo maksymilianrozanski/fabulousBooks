@@ -1,6 +1,7 @@
 namespace FabBooks
 
 open System.Data
+open FabBooks
 open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 open SingleBookResponseModelModule
@@ -16,14 +17,13 @@ module MainMessages =
         | Loading
 
     type Msg =
+        //search messages
         | UpdateEnteredText of string
         | SearchResultReceived of GoodreadsResponseModel
-        | UpdateStatus of Status
+        | UpdateSearchStatus of Status
         | ChangeDisplayedPage of DisplayedPage
-
-module DetailsMessages =
-    type Msg =
+        //details messages
         | NavigateToDetailsPageMsg of BookItem
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
-        | UpdateStatus of MainMessages.Status
+        | UpdateDetailsStatus of Status
