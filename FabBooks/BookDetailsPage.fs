@@ -7,6 +7,7 @@ open Fabulous
 open Fabulous.XamarinForms
 open MainMessages
 open Xamarin.Forms
+open Xamarin.Forms
 
 module BookDetailsPage =
 
@@ -39,6 +40,10 @@ module BookDetailsPage =
                     (children =
                         [ View.Label(text = "details page.")
                           StatusLayout.statusLayout (model.Status)
-                          View.Label(text = "current title = " + model.DisplayedBook.Value.Title.ToString())
+                          View.Label(text = "current title  = " + model.DisplayedBook.Value.Title.ToString())
+                          View.Label(text = "author:" + model.DisplayedBook.Value.Author.ToString())
+                          View.Image
+                              (source = ImagePath model.DisplayedBook.Value.ImageUrl, width = 250.0, height = 200.0,
+                               aspect = Aspect.AspectFit)
                           //todo: handle html tags in description
                           descriptionView ]))

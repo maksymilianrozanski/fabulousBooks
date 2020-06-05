@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Fabulous/0.54.1": {
+      "Fabulous/0.55.0-preview3": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Fabulous.dll": {}
@@ -11,10 +11,10 @@
           "lib/netstandard2.0/Fabulous.dll": {}
         }
       },
-      "Fabulous.LiveUpdate/0.54.1": {
+      "Fabulous.LiveUpdate/0.55.0-preview3": {
         "type": "package",
         "dependencies": {
-          "Fabulous": "0.54.1",
+          "Fabulous": "0.55.0-preview3",
           "Newtonsoft.Json": "12.0.1"
         },
         "compile": {
@@ -24,10 +24,10 @@
           "lib/netstandard2.0/Fabulous.LiveUpdate.dll": {}
         }
       },
-      "Fabulous.XamarinForms/0.54.1": {
+      "Fabulous.XamarinForms/0.55.0-preview3": {
         "type": "package",
         "dependencies": {
-          "Fabulous": "0.54.1",
+          "Fabulous": "0.55.0-preview3",
           "Xamarin.Forms": "4.6.0.726"
         },
         "compile": {
@@ -37,10 +37,10 @@
           "lib/netstandard2.0/Fabulous.XamarinForms.dll": {}
         }
       },
-      "Fabulous.XamarinForms.FFImageLoading/0.54.1": {
+      "Fabulous.XamarinForms.FFImageLoading/0.55.0-preview3": {
         "type": "package",
         "dependencies": {
-          "Fabulous.XamarinForms": "0.54.1",
+          "Fabulous.XamarinForms": "0.55.0-preview3",
           "Xamarin.FFImageLoading.Forms": "2.4.11.982"
         },
         "compile": {
@@ -1204,10 +1204,11 @@
         "dependencies": {
           "FSharp.Core": "4.7.1",
           "FSharp.Data": "3.3.3",
-          "Fabulous.LiveUpdate": "0.54.1",
-          "Fabulous.XamarinForms": "0.54.1",
-          "Fabulous.XamarinForms.FFImageLoading": "0.54.1",
+          "Fabulous.LiveUpdate": "0.55.0-preview3",
+          "Fabulous.XamarinForms": "0.55.0-preview3",
+          "Fabulous.XamarinForms.FFImageLoading": "0.55.0-preview3",
           "Fabulous.XamarinForms.LiveUpdate": "0.54.1",
+          "NetworkLib": "1.0.0",
           "Newtonsoft.Json": "12.0.3",
           "Xamarin.Essentials": "1.5.1",
           "Xamarin.Forms": "4.6.0.726",
@@ -1218,6 +1219,20 @@
         },
         "runtime": {
           "bin/placeholder/FabBooks.dll": {}
+        }
+      },
+      "NetworkLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "FSharp.Core": "4.7.1",
+          "XmlProviderLib": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/NetworkLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NetworkLib.dll": {}
         }
       },
       "XmlProviderLib/1.0.0": {
@@ -1237,56 +1252,56 @@
     }
   },
   "libraries": {
-    "Fabulous/0.54.1": {
-      "sha512": "U/Q294+6DQupIKlviqA+QPpEbeBcw19G4coBDPfKz7H9JO1MUBACuq3NJ57vZMFHQTTvqXouDq79O9G/Zjrj7A==",
+    "Fabulous/0.55.0-preview3": {
+      "sha512": "cwI0d+pnaGP+ObFDQPpzpxkNM99HU+Sp0bRHQ9SKLjg1O48inU0q14ZWpgIVffDLaI5OimChFJVJir91o4IWdg==",
       "type": "package",
-      "path": "fabulous/0.54.1",
+      "path": "fabulous/0.55.0-preview3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fabulous.0.54.1.nupkg.sha512",
+        "fabulous.0.55.0-preview3.nupkg.sha512",
         "fabulous.nuspec",
         "lib/netstandard2.0/Fabulous.dll",
         "lib/netstandard2.0/Fabulous.xml",
         "nuget-icon.png"
       ]
     },
-    "Fabulous.LiveUpdate/0.54.1": {
-      "sha512": "hgl9IrAJ0PVsBP9vLbFU3/Mw0klB5/RsJ+QMIW6DgEZWKQKPB8sz82VXEQFahyZtx8kJIinnzGT9SOhdnIThyg==",
+    "Fabulous.LiveUpdate/0.55.0-preview3": {
+      "sha512": "VpUFFMFa+5fI22RKo9i8zBL86iJ6r3grWqi6GQOsJ/ltPaf4BBsdsnyiRzwicoCRI2B8tkO+6BpjuW6vIFe5rw==",
       "type": "package",
-      "path": "fabulous.liveupdate/0.54.1",
+      "path": "fabulous.liveupdate/0.55.0-preview3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fabulous.liveupdate.0.54.1.nupkg.sha512",
+        "fabulous.liveupdate.0.55.0-preview3.nupkg.sha512",
         "fabulous.liveupdate.nuspec",
         "lib/netstandard2.0/Fabulous.LiveUpdate.dll",
         "lib/netstandard2.0/Fabulous.LiveUpdate.xml",
         "nuget-icon.png"
       ]
     },
-    "Fabulous.XamarinForms/0.54.1": {
-      "sha512": "C4YvbIrioCygQ80Cz4pNJt9A9dh/pCMtgSOlNDnjt9PqtHeZCC5F48xizwL/CgAE+sv5ys9eNETuhVyxiulfZA==",
+    "Fabulous.XamarinForms/0.55.0-preview3": {
+      "sha512": "eOUvk3WSpPsOreyyzMe8nqMssT6oAS14um67D8Zcv0L5KYd13hq+CDc710TPcVKHKfyJvcT6aqRFK19ipapnTA==",
       "type": "package",
-      "path": "fabulous.xamarinforms/0.54.1",
+      "path": "fabulous.xamarinforms/0.55.0-preview3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fabulous.xamarinforms.0.54.1.nupkg.sha512",
+        "fabulous.xamarinforms.0.55.0-preview3.nupkg.sha512",
         "fabulous.xamarinforms.nuspec",
         "lib/netstandard2.0/Fabulous.XamarinForms.dll",
         "lib/netstandard2.0/Fabulous.XamarinForms.xml",
         "nuget-icon.png"
       ]
     },
-    "Fabulous.XamarinForms.FFImageLoading/0.54.1": {
-      "sha512": "Ypn+1ygVn0yDlpospU1kI4bGL7MnoPi/eu6uFH0OuGBhlWqRWCAUAMn/10AmmaDgF0IXza/KrER8QXOvUGAImQ==",
+    "Fabulous.XamarinForms.FFImageLoading/0.55.0-preview3": {
+      "sha512": "FlD4qoNV6P5Zg57SWsleBhw4+MUeeJb4b8xI+5ijfZqlr1bmkgDcN0mwK5PuW9B4gwzSSQiXdqlpyh2cLHpM1Q==",
       "type": "package",
-      "path": "fabulous.xamarinforms.ffimageloading/0.54.1",
+      "path": "fabulous.xamarinforms.ffimageloading/0.55.0-preview3",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "fabulous.xamarinforms.ffimageloading.0.54.1.nupkg.sha512",
+        "fabulous.xamarinforms.ffimageloading.0.55.0-preview3.nupkg.sha512",
         "fabulous.xamarinforms.ffimageloading.nuspec",
         "lib/netstandard2.0/Fabulous.XamarinForms.FFImageLoading.dll",
         "lib/netstandard2.0/Fabulous.XamarinForms.FFImageLoading.xml",
@@ -4704,6 +4719,11 @@
       "type": "project",
       "path": "../FabBooks/FabBooks.fsproj",
       "msbuildProject": "../FabBooks/FabBooks.fsproj"
+    },
+    "NetworkLib/1.0.0": {
+      "type": "project",
+      "path": "../NetworkLib/NetworkLib.fsproj",
+      "msbuildProject": "../NetworkLib/NetworkLib.fsproj"
     },
     "XmlProviderLib/1.0.0": {
       "type": "project",

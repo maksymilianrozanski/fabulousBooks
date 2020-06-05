@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "EBoI7HtY6PVHJkkPu129Zj5X5Gf1vHCNvf7mHURdGhvy37NPIOm11Xg+wxt7+jWQmPtm4S5jb9yMsxlrYhLjNw==",
+  "dgSpecHash": "SwAvvd6DmG8RPg2a8dV3IW94sODmSow6juJTGpt6IkAQLB9fCVsiSMfTsLB415E0z54eveGq/WV2N+KCrafsug==",
   "success": true,
   "projectFilePath": "I:\\xamarin\\fabulous\\fabBooks\\FabBooksTests\\FabBooksTests.fsproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Max\\.nuget\\packages\\fabulous\\0.54.1\\fabulous.0.54.1.nupkg.sha512",
-    "C:\\Users\\Max\\.nuget\\packages\\fabulous.liveupdate\\0.54.1\\fabulous.liveupdate.0.54.1.nupkg.sha512",
-    "C:\\Users\\Max\\.nuget\\packages\\fabulous.xamarinforms\\0.54.1\\fabulous.xamarinforms.0.54.1.nupkg.sha512",
-    "C:\\Users\\Max\\.nuget\\packages\\fabulous.xamarinforms.ffimageloading\\0.54.1\\fabulous.xamarinforms.ffimageloading.0.54.1.nupkg.sha512",
+    "C:\\Users\\Max\\.nuget\\packages\\fabulous\\0.55.0-preview3\\fabulous.0.55.0-preview3.nupkg.sha512",
+    "C:\\Users\\Max\\.nuget\\packages\\fabulous.liveupdate\\0.55.0-preview3\\fabulous.liveupdate.0.55.0-preview3.nupkg.sha512",
+    "C:\\Users\\Max\\.nuget\\packages\\fabulous.xamarinforms\\0.55.0-preview3\\fabulous.xamarinforms.0.55.0-preview3.nupkg.sha512",
+    "C:\\Users\\Max\\.nuget\\packages\\fabulous.xamarinforms.ffimageloading\\0.55.0-preview3\\fabulous.xamarinforms.ffimageloading.0.55.0-preview3.nupkg.sha512",
     "C:\\Users\\Max\\.nuget\\packages\\fabulous.xamarinforms.liveupdate\\0.54.1\\fabulous.xamarinforms.liveupdate.0.54.1.nupkg.sha512",
     "C:\\Users\\Max\\.nuget\\packages\\fsharp.core\\4.7.1\\fsharp.core.4.7.1.nupkg.sha512",
     "C:\\Users\\Max\\.nuget\\packages\\fsharp.data\\3.3.3\\fsharp.data.3.3.3.nupkg.sha512",

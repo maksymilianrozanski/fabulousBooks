@@ -126,8 +126,20 @@
     </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Fabulous.XamarinForms.FFImageLoading, Version=0.54.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Fabulous.XamarinForms.FFImageLoading.0.54.1\lib\netstandard2.0\Fabulous.XamarinForms.FFImageLoading.dll</HintPath>
+    <Reference Include="Fabulous, Version=0.55.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.0.55.0-preview3\lib\netstandard2.0\Fabulous.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.LiveUpdate, Version=0.55.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.LiveUpdate.0.55.0-preview3\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms, Version=0.55.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.XamarinForms.0.55.0-preview3\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fabulous.XamarinForms.FFImageLoading, Version=0.55.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Fabulous.XamarinForms.FFImageLoading.0.55.0-preview3\lib\netstandard2.0\Fabulous.XamarinForms.FFImageLoading.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FFImageLoading, Version=2.4.11.982, Culture=neutral, PublicKeyToken=null">
@@ -177,15 +189,6 @@
     </Reference>
     <Reference Include="Xamarin.Essentials">
       <HintPath>..\packages\Xamarin.Essentials.1.5.1\lib\monoandroid71\Xamarin.Essentials.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous">
-      <HintPath>..\packages\Fabulous.0.54.1\lib\netstandard2.0\Fabulous.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.LiveUpdate">
-      <HintPath>..\packages\Fabulous.LiveUpdate.0.54.1\lib\netstandard2.0\Fabulous.LiveUpdate.dll</HintPath>
-    </Reference>
-    <Reference Include="Fabulous.XamarinForms">
-      <HintPath>..\packages\Fabulous.XamarinForms.0.54.1\lib\netstandard2.0\Fabulous.XamarinForms.dll</HintPath>
     </Reference>
     <Reference Include="Fabulous.XamarinForms.LiveUpdate">
       <HintPath>..\packages\Fabulous.XamarinForms.LiveUpdate.0.54.1\lib\netstandard2.0\Fabulous.XamarinForms.LiveUpdate.dll</HintPath>

@@ -1,6 +1,7 @@
 namespace FabBooks
 
 open System
+open System.Net
 open System.Web
 open FSharp.Data
 open GoodreadsResponseModelModule
