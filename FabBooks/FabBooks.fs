@@ -51,7 +51,12 @@ module App =
             | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
             | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, Cmd.none
         | NavigateToDetailsPageMsg book ->
-            { model with BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book))) }, Cmd.none
+            { model with
+                  BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book)))
+                  DisplayedPage = DetailsPage book },
+            book
+            |> UpdateBookDetails
+            |> Cmd.ofMsg
         | BookResultReceived result ->
             { model with BookDetailsPageModel =
                   Some({ model.BookDetailsPageModel.Value with BookDetails = Some(result) }) },
@@ -61,18 +66,18 @@ module App =
             |> UpdateDetailsStatus
             |> Cmd.ofMsg
         | UpdateBookDetails book ->
-            model,
+            { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
             bookWithKey book.Id
             |> Async.map BookResultReceived
             |> Async.map (fun x -> Some x)
             |> Cmd.ofAsyncMsgOption
         | UpdateDetailsStatus status ->
-            { model with Status = status }, Cmd.none
+            { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = status }) },
+            Cmd.none
 
     let view (model: Model) dispatch =
 
-        let detailsPage x = BookDetailsPage.bookDetailsPageView (BookDetailsPage.initFromId x) dispatch
-        let openDetailsPage x = fun () -> ChangeDisplayedPage(DetailsPage(x)) |> dispatch
+        let openDetailsPage x = fun () -> NavigateToDetailsPageMsg x |> dispatch
 
         let searchPage =
             View.ContentPage
@@ -100,7 +105,7 @@ module App =
                 (pages =
                     [ yield searchPage
                       match model.DisplayedPage with
-                      | DetailsPage x -> yield detailsPage (Some(x))
+                      | DetailsPage x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                       | _ -> () ], popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView

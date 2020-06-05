@@ -6,6 +6,7 @@ open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open MainMessages
+open Xamarin.Forms
 
 module BookDetailsPage =
 
@@ -33,4 +34,5 @@ module BookDetailsPage =
                     (children =
                         [ View.Label(text = "details page.")
                           StatusLayout.statusLayout (model.Status)
-                          View.Label(text = "current title = " + model.DisplayedBook.Value.Title.ToString()) ]))
+                          View.Label(text = "current title = " + model.DisplayedBook.Value.Title.ToString())
+                          View.Label(text = "has description: " + model.BookDetails.IsSome.ToString()) ]))
