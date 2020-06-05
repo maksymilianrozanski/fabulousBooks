@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="XmlParser.fs" />
+        <Compile Include="BookItem.fs" />
+        <Compile Include="GoodreadsResponseModel.fs" />
+        <Compile Include="SingleBookResponseModel.fs" />
+        <Compile Include="Library.fs" />
+        <EmbeddedResource Include="searchresponse.xml">
+          <Link>searchresponse.xml</Link>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="bookdetailsresponse.xml">
+          <Link>bookdetailsresponse.xml</Link>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    </ItemGroup>
+
+</Project>

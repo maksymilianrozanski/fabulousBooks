@@ -2,6 +2,7 @@ namespace FabBooks
 
 open System.Collections.Generic
 open BookItemModule
+open XmlProviderLib
 
 module GoodreadsResponseModelModule =
 
@@ -15,7 +16,7 @@ module GoodreadsResponseModelModule =
     let emptyGoodreadsModel = GoodreadsResponseModel(false, 0, 0, 0, List())
 
     let goodreadsFromXml xmlString =
-        let response = FabBooks.XmlParser.GoodreadsSearchResponse.Parse(xmlString)
+        let response = XmlParser.GoodreadsSearchResponse.Parse(xmlString)
 
         let bookItems =
             seq {
