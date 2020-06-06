@@ -20,14 +20,12 @@ module App =
     type Model =
         { EnteredText: string
           Status: Status
-          DisplayedPage: DisplayedPage
           ResponseModel: GoodreadsResponseModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
           Status = Success
-          DisplayedPage = SearchPage
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
@@ -73,12 +71,10 @@ module App =
                   Status = statusFromBool (result.IsSuccessful) }, []
         | Msg.ChangeDisplayedPage page ->
             match page with
-            | SearchPage -> { model with DisplayedPage = SearchPage }, []
-            | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, []
-        | Msg.NavigateToDetailsPageMsg book ->
-            { model with
-                  BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book)))
-                  DisplayedPage = DetailsPage book }, [ book |> NavigateToDetailsPageMsg ]
+            | SearchPage -> { model with BookDetailsPageModel = None }, []
+            | DetailsPage book ->
+                { model with BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book))) },
+                [ book |> UpdateBookDetails ]
         | Msg.BookResultReceived result ->
             { model with BookDetailsPageModel =
                   Some({ model.BookDetailsPageModel.Value with BookDetails = Some(result) }) },
@@ -92,7 +88,7 @@ module App =
 
     let view model dispatch =
 
-        let openDetailsPage x = fun () -> Msg.NavigateToDetailsPageMsg x |> dispatch
+        let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
 
         let searchPage =
             View.ContentPage
@@ -116,8 +112,8 @@ module App =
             View.NavigationPage
                 (pages =
                     [ yield searchPage
-                      match model.DisplayedPage with
-                      | DetailsPage x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
+                      match model.BookDetailsPageModel with
+                      | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                       | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView
@@ -128,7 +124,6 @@ module App =
         | SearchResultReceived _ -> []
         | ChangeDisplayedPage page -> changeDisplayedPageCmd page
         //details messages
-        | NavigateToDetailsPageMsg bookItem -> navigateToDetailsPageCmd bookItem
         | BookResultReceived responseModel -> bookResultReceivedCmd responseModel
         | UpdateBookDetails bookItem -> updateBookDetailsCmd bookItem
         | UpdateDetailsStatus status -> updateDetailsStatusCmd status

@@ -22,7 +22,6 @@ module MainMessages =
         | SearchResultReceived of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
         //details messages
-        | NavigateToDetailsPageMsg of BookItem
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
         | UpdateDetailsStatus of Status
@@ -33,7 +32,6 @@ module MainMessages =
         | SearchResultReceived of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
         //details messages
-        | NavigateToDetailsPageMsg of BookItem
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
         | UpdateDetailsStatus of Status

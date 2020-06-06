@@ -26,7 +26,7 @@ module BookDetailsPage =
     let initFromId id =
         { DisplayedBook = id
           BookDetails = None
-          Status = Success }
+          Status = Loading }
 
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
         let descriptionView =
