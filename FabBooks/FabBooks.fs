@@ -68,7 +68,7 @@ module App =
             match page with
             | SearchPage -> { model with BookDetailsPageModel = None }, []
             | DetailsPage book ->
-                { model with BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book))) },
+                { model with BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) },
                 [ book |> UpdateBookDetails ]
         | Msg.BookResultReceived result ->
             { model with BookDetailsPageModel =

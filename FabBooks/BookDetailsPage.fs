@@ -21,9 +21,7 @@ module BookDetailsPage =
           BookDetails = None
           Status = Success }
 
-    let init () = initModel, Cmd.none
-
-    let initFromId id =
+    let initFromBook id =
         { DisplayedBook = id
           BookDetails = None
           Status = Loading }
