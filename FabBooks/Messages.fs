@@ -26,10 +26,5 @@ module MainMessages =
         | UpdateBookDetails of BookItem
 
     type CmdMsg =
-        //search messages
-        | PerformSearch of string
-        | SearchResultReceived of GoodreadsResponseModel
-        | ChangeDisplayedPage of DisplayedPage
-        //details messages
-        | BookResultReceived of SingleBookResponseModel
-        | UpdateBookDetails of BookItem
+        | PerformSearchCmd of string
+        | UpdateBookDetailsCmd of BookItem

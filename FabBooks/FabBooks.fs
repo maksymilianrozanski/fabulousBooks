@@ -36,8 +36,6 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
-    let changeDisplayedPageCmd page = Cmd.none
-
     let updateBookDetailsCmd (bookItem: BookItem) =
         bookWithKey bookItem.Id
         |> Async.map Msg.BookResultReceived
@@ -49,7 +47,7 @@ module App =
         | Msg.PerformSearch text ->
             { model with
                   EnteredText = text
-                  Status = Status.Loading }, [ text |> PerformSearch ]
+                  Status = Status.Loading }, [ text |> PerformSearchCmd ]
         | Msg.SearchResultReceived result ->
             { model with
                   ResponseModel = result
@@ -59,7 +57,7 @@ module App =
             | SearchPage -> { model with BookDetailsPageModel = None }, []
             | DetailsPage book ->
                 { model with BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) },
-                [ book |> UpdateBookDetails ]
+                [ book |> UpdateBookDetailsCmd ]
         | Msg.BookResultReceived result ->
             { model with
                   BookDetailsPageModel =
@@ -69,7 +67,7 @@ module App =
                                  Status = statusFromBool (result.IsSuccessful) }) }, []
         | Msg.UpdateBookDetails book ->
             { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
-            [ book |> UpdateBookDetails ]
+            [ book |> UpdateBookDetailsCmd ]
 
     let view model dispatch =
 
@@ -105,12 +103,8 @@ module App =
 
     let mapCommands cmdMsg =
         match cmdMsg with
-        | PerformSearch searchText -> performSearchCmd searchText
-        | SearchResultReceived _ -> []
-        | ChangeDisplayedPage page -> changeDisplayedPageCmd page
-        //details messages
-        | BookResultReceived _ -> []
-        | UpdateBookDetails bookItem -> updateBookDetailsCmd bookItem
+        | PerformSearchCmd searchText -> performSearchCmd searchText
+        | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands
