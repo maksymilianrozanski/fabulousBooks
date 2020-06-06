@@ -39,8 +39,6 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
-    let updateSearchStatusCmd status = Cmd.none
-
     let changeDisplayedPageCmd page = Cmd.none
 
     let navigateToDetailsPageCmd bookItem =
@@ -73,7 +71,6 @@ module App =
             { model with
                   ResponseModel = result
                   Status = statusFromBool (result.IsSuccessful) }, []
-        | Msg.UpdateSearchStatus status -> { model with Status = status }, []
         | Msg.ChangeDisplayedPage page ->
             match page with
             | SearchPage -> { model with DisplayedPage = SearchPage }, []
@@ -129,7 +126,6 @@ module App =
         match cmdMsg with
         | PerformSearch searchText -> performSearchCmd searchText
         | SearchResultReceived _ -> []
-        | UpdateSearchStatus status -> updateSearchStatusCmd status
         | ChangeDisplayedPage page -> changeDisplayedPageCmd page
         //details messages
         | NavigateToDetailsPageMsg bookItem -> navigateToDetailsPageCmd bookItem

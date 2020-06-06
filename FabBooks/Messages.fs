@@ -20,7 +20,6 @@ module MainMessages =
         //search messages
         | PerformSearch of string
         | SearchResultReceived of GoodreadsResponseModel
-        | UpdateSearchStatus of Status
         | ChangeDisplayedPage of DisplayedPage
         //details messages
         | NavigateToDetailsPageMsg of BookItem
@@ -32,7 +31,6 @@ module MainMessages =
         //search messages
         | PerformSearch of string
         | SearchResultReceived of GoodreadsResponseModel
-        | UpdateSearchStatus of Status
         | ChangeDisplayedPage of DisplayedPage
         //details messages
         | NavigateToDetailsPageMsg of BookItem
