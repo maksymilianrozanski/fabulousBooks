@@ -27,3 +27,15 @@ module MainMessages =
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
         | UpdateDetailsStatus of Status
+
+    type CmdMsg =
+        //search messages
+        | UpdateEnteredText of string
+        | SearchResultReceived of GoodreadsResponseModel
+        | UpdateSearchStatus of Status
+        | ChangeDisplayedPage of DisplayedPage
+        //details messages
+        | NavigateToDetailsPageMsg of BookItem
+        | BookResultReceived of SingleBookResponseModel
+        | UpdateBookDetails of BookItem
+        | UpdateDetailsStatus of Status

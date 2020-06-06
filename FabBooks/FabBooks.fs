@@ -4,6 +4,7 @@ namespace FabBooks
 
 open FabBooks.BookDetailsPage
 open FabBooks.MainMessages
+open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -12,6 +13,7 @@ open FabBooks.GoodreadsResponseModelModule
 open GoodreadsQuery
 open StatusLayout
 open GoodreadsBookQuery
+open BookItemModule
 
 module App =
     type Model =
@@ -28,56 +30,74 @@ module App =
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
-    let init () = initModel, Cmd.none
+    let init () = initModel, []
 
-    let update (msg: Msg) (model: Model) =
+    let updateEnteredTextCmd text =
+        searchWithKey text
+        |> Async.map Msg.SearchResultReceived
+        |> Async.map (fun x -> Some x)
+        |> Cmd.ofAsyncMsgOption
+
+    let searchResultReceivedCmd (result: GoodreadsResponseModel) =
+        match result.IsSuccessful with
+        | true -> Status.Success
+        | _ -> Status.Failure
+        |> Msg.UpdateSearchStatus
+        |> Cmd.ofMsg
+
+    let updateSearchStatusCmd status = Cmd.none
+
+    let changeDisplayedPageCmd page = Cmd.none
+
+    let navigateToDetailsPageCmd bookItem =
+        bookItem
+        |> Msg.UpdateBookDetails
+        |> Cmd.ofMsg
+
+    let bookResultReceivedCmd (bookItem: SingleBookResponseModel) =
+        match bookItem.IsSuccessful with
+        | true -> Status.Success
+        | _ -> Status.Failure
+        |> Msg.UpdateDetailsStatus
+        |> Cmd.ofMsg
+
+    let updateBookDetailsCmd (bookItem: BookItem) =
+        bookWithKey bookItem.Id
+        |> Async.map Msg.BookResultReceived
+        |> Async.map (fun x -> Some x)
+        |> Cmd.ofAsyncMsgOption
+
+    let updateDetailsStatusCmd status = Cmd.none
+
+    let update msg (model: Model) =
         match msg with
-        | UpdateEnteredText text ->
-            { model with EnteredText = text },
-            searchWithKey text
-            |> Async.map SearchResultReceived
-            |> Async.map (fun x -> Some x)
-            |> Cmd.ofAsyncMsgOption
-        | SearchResultReceived result ->
-            { model with ResponseModel = result },
-            match result.IsSuccessful with
-            | true -> Status.Success
-            | _ -> Status.Failure
-            |> UpdateSearchStatus
-            |> Cmd.ofMsg
-        | UpdateSearchStatus status -> { model with Status = status }, Cmd.none
-        | ChangeDisplayedPage page ->
+        | Msg.UpdateEnteredText text ->
+            { model with EnteredText = text }, [ text |> UpdateEnteredText ]
+        | Msg.SearchResultReceived result ->
+            { model with ResponseModel = result }, [ result |> SearchResultReceived ]
+        | Msg.UpdateSearchStatus status -> { model with Status = status }, []
+        | Msg.ChangeDisplayedPage page ->
             match page with
-            | SearchPage -> { model with DisplayedPage = SearchPage }, Cmd.none
-            | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, Cmd.none
-        | NavigateToDetailsPageMsg book ->
+            | SearchPage -> { model with DisplayedPage = SearchPage }, []
+            | DetailsPage x -> { model with DisplayedPage = DetailsPage x }, []
+        | Msg.NavigateToDetailsPageMsg book ->
             { model with
                   BookDetailsPageModel = Some(BookDetailsPage.initFromId (Some(book)))
-                  DisplayedPage = DetailsPage book },
-            book
-            |> UpdateBookDetails
-            |> Cmd.ofMsg
-        | BookResultReceived result ->
+                  DisplayedPage = DetailsPage book }, [ book |> NavigateToDetailsPageMsg ]
+        | Msg.BookResultReceived result ->
             { model with BookDetailsPageModel =
                   Some({ model.BookDetailsPageModel.Value with BookDetails = Some(result) }) },
-            match result.IsSuccessful with
-            | true -> Status.Success
-            | _ -> Status.Failure
-            |> UpdateDetailsStatus
-            |> Cmd.ofMsg
-        | UpdateBookDetails book ->
+            [ result |> BookResultReceived ]
+        | Msg.UpdateBookDetails book ->
             { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
-            bookWithKey book.Id
-            |> Async.map BookResultReceived
-            |> Async.map (fun x -> Some x)
-            |> Cmd.ofAsyncMsgOption
-        | UpdateDetailsStatus status ->
+            [ book |> UpdateBookDetails ]
+        | Msg.UpdateDetailsStatus status ->
             { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = status }) },
-            Cmd.none
+            [ status |> UpdateDetailsStatus ]
 
-    let view (model: Model) dispatch =
+    let view model dispatch =
 
-        let openDetailsPage x = fun () -> NavigateToDetailsPageMsg x |> dispatch
+        let openDetailsPage x = fun () -> Msg.NavigateToDetailsPageMsg x |> dispatch
 
         let searchPage =
             View.ContentPage
@@ -89,8 +109,8 @@ module App =
                                  (width = 200.0, placeholder = "Search",
                                   completed =
                                       fun textArgs ->
-                                          UpdateSearchStatus Status.Loading |> dispatch
-                                          UpdateEnteredText textArgs |> dispatch)
+                                          Msg.UpdateSearchStatus Status.Loading |> dispatch
+                                          Msg.UpdateEnteredText textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
                                View.ScrollView
@@ -106,9 +126,21 @@ module App =
                     [ yield searchPage
                       match model.DisplayedPage with
                       | DetailsPage x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
-                      | _ -> () ], popped = fun _ -> ChangeDisplayedPage SearchPage |> dispatch)
+                      | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
 
         rootView
 
+    let mapCommands cmdMsg =
+        match cmdMsg with
+        | UpdateEnteredText s -> updateEnteredTextCmd s
+        | SearchResultReceived responseModel -> searchResultReceivedCmd responseModel
+        | UpdateSearchStatus status -> updateSearchStatusCmd status
+        | ChangeDisplayedPage page -> changeDisplayedPageCmd page
+        //details messages
+        | NavigateToDetailsPageMsg bookItem -> navigateToDetailsPageCmd bookItem
+        | BookResultReceived responseModel -> bookResultReceivedCmd responseModel
+        | UpdateBookDetails bookItem -> updateBookDetailsCmd bookItem
+        | UpdateDetailsStatus status -> updateDetailsStatusCmd status
+
     // Note, this declaration is needed if you enable LiveUpdate
-    let program = XamarinFormsProgram.mkProgram init update view
+    let program = Program.mkProgramWithCmdMsg init update view mapCommands
