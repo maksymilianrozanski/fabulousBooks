@@ -66,7 +66,9 @@ module App =
     let update msg (model: Model) =
         match msg with
         | Msg.PerformSearch text ->
-            { model with EnteredText = text }, [ text |> PerformSearch ]
+            { model with
+                  EnteredText = text
+                  Status = Status.Loading }, [ text |> PerformSearch ]
         | Msg.SearchResultReceived result ->
             { model with
                   ResponseModel = result
@@ -103,10 +105,7 @@ module App =
                          children =
                              [ View.Entry
                                  (width = 200.0, placeholder = "Search",
-                                  completed =
-                                      fun textArgs ->
-                                          Msg.UpdateSearchStatus Status.Loading |> dispatch
-                                          Msg.PerformSearch textArgs |> dispatch)
+                                  completed = fun textArgs -> Msg.PerformSearch textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
                                View.ScrollView
