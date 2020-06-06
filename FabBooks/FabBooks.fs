@@ -39,11 +39,6 @@ module App =
 
     let changeDisplayedPageCmd page = Cmd.none
 
-    let navigateToDetailsPageCmd bookItem =
-        bookItem
-        |> Msg.UpdateBookDetails
-        |> Cmd.ofMsg
-
     let bookResultReceivedCmd (bookItem: SingleBookResponseModel) =
         match bookItem.IsSuccessful with
         | true -> Status.Success
