@@ -4,7 +4,6 @@ namespace FabBooks
 
 open FabBooks.BookDetailsPage
 open FabBooks.MainMessages
-open FabBooks.SingleBookResponseModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -39,20 +38,11 @@ module App =
 
     let changeDisplayedPageCmd page = Cmd.none
 
-    let bookResultReceivedCmd (bookItem: SingleBookResponseModel) =
-        match bookItem.IsSuccessful with
-        | true -> Status.Success
-        | _ -> Status.Failure
-        |> Msg.UpdateDetailsStatus
-        |> Cmd.ofMsg
-
     let updateBookDetailsCmd (bookItem: BookItem) =
         bookWithKey bookItem.Id
         |> Async.map Msg.BookResultReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
-
-    let updateDetailsStatusCmd status = Cmd.none
 
     let update msg (model: Model) =
         match msg with
@@ -71,15 +61,15 @@ module App =
                 { model with BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) },
                 [ book |> UpdateBookDetails ]
         | Msg.BookResultReceived result ->
-            { model with BookDetailsPageModel =
-                  Some({ model.BookDetailsPageModel.Value with BookDetails = Some(result) }) },
-            [ result |> BookResultReceived ]
+            { model with
+                  BookDetailsPageModel =
+                      Some
+                          ({ model.BookDetailsPageModel.Value with
+                                 BookDetails = Some(result)
+                                 Status = statusFromBool (result.IsSuccessful) }) }, []
         | Msg.UpdateBookDetails book ->
             { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
             [ book |> UpdateBookDetails ]
-        | Msg.UpdateDetailsStatus status ->
-            { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = status }) },
-            [ status |> UpdateDetailsStatus ]
 
     let view model dispatch =
 
@@ -119,9 +109,8 @@ module App =
         | SearchResultReceived _ -> []
         | ChangeDisplayedPage page -> changeDisplayedPageCmd page
         //details messages
-        | BookResultReceived responseModel -> bookResultReceivedCmd responseModel
+        | BookResultReceived _ -> []
         | UpdateBookDetails bookItem -> updateBookDetailsCmd bookItem
-        | UpdateDetailsStatus status -> updateDetailsStatusCmd status
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands

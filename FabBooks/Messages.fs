@@ -24,7 +24,6 @@ module MainMessages =
         //details messages
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
-        | UpdateDetailsStatus of Status
 
     type CmdMsg =
         //search messages
@@ -34,4 +33,3 @@ module MainMessages =
         //details messages
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
-        | UpdateDetailsStatus of Status
