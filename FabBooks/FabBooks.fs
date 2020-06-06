@@ -14,6 +14,7 @@ open GoodreadsQuery
 open StatusLayout
 open GoodreadsBookQuery
 open BookItemModule
+open Utils
 
 module App =
     type Model =
@@ -37,13 +38,6 @@ module App =
         |> Async.map Msg.SearchResultReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
-
-    let searchResultReceivedCmd (result: GoodreadsResponseModel) =
-        match result.IsSuccessful with
-        | true -> Status.Success
-        | _ -> Status.Failure
-        |> Msg.UpdateSearchStatus
-        |> Cmd.ofMsg
 
     let updateSearchStatusCmd status = Cmd.none
 
@@ -74,7 +68,9 @@ module App =
         | Msg.PerformSearch text ->
             { model with EnteredText = text }, [ text |> PerformSearch ]
         | Msg.SearchResultReceived result ->
-            { model with ResponseModel = result }, [ result |> SearchResultReceived ]
+            { model with
+                  ResponseModel = result
+                  Status = statusFromBool (result.IsSuccessful) }, []
         | Msg.UpdateSearchStatus status -> { model with Status = status }, []
         | Msg.ChangeDisplayedPage page ->
             match page with
@@ -133,7 +129,7 @@ module App =
     let mapCommands cmdMsg =
         match cmdMsg with
         | PerformSearch searchText -> performSearchCmd searchText
-        | SearchResultReceived responseModel -> searchResultReceivedCmd responseModel
+        | SearchResultReceived _ -> []
         | UpdateSearchStatus status -> updateSearchStatusCmd status
         | ChangeDisplayedPage page -> changeDisplayedPageCmd page
         //details messages
