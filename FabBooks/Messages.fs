@@ -18,7 +18,7 @@ module MainMessages =
 
     type Msg =
         //search messages
-        | UpdateEnteredText of string
+        | PerformSearch of string
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateSearchStatus of Status
         | ChangeDisplayedPage of DisplayedPage
@@ -30,7 +30,7 @@ module MainMessages =
 
     type CmdMsg =
         //search messages
-        | UpdateEnteredText of string
+        | PerformSearch of string
         | SearchResultReceived of GoodreadsResponseModel
         | UpdateSearchStatus of Status
         | ChangeDisplayedPage of DisplayedPage

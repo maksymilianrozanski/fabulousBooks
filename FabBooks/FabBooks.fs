@@ -32,7 +32,7 @@ module App =
 
     let init () = initModel, []
 
-    let updateEnteredTextCmd text =
+    let performSearchCmd text =
         searchWithKey text
         |> Async.map Msg.SearchResultReceived
         |> Async.map (fun x -> Some x)
@@ -71,8 +71,8 @@ module App =
 
     let update msg (model: Model) =
         match msg with
-        | Msg.UpdateEnteredText text ->
-            { model with EnteredText = text }, [ text |> UpdateEnteredText ]
+        | Msg.PerformSearch text ->
+            { model with EnteredText = text }, [ text |> PerformSearch ]
         | Msg.SearchResultReceived result ->
             { model with ResponseModel = result }, [ result |> SearchResultReceived ]
         | Msg.UpdateSearchStatus status -> { model with Status = status }, []
@@ -110,7 +110,7 @@ module App =
                                   completed =
                                       fun textArgs ->
                                           Msg.UpdateSearchStatus Status.Loading |> dispatch
-                                          Msg.UpdateEnteredText textArgs |> dispatch)
+                                          Msg.PerformSearch textArgs |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
                                View.ScrollView
@@ -132,7 +132,7 @@ module App =
 
     let mapCommands cmdMsg =
         match cmdMsg with
-        | UpdateEnteredText s -> updateEnteredTextCmd s
+        | PerformSearch searchText -> performSearchCmd searchText
         | SearchResultReceived responseModel -> searchResultReceivedCmd responseModel
         | UpdateSearchStatus status -> updateSearchStatusCmd status
         | ChangeDisplayedPage page -> changeDisplayedPageCmd page
