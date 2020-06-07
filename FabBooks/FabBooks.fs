@@ -108,12 +108,10 @@ module App =
                                   completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
-                               View.ScrollView
-                                   (content =
-                                       View.StackLayout
-                                           (children =
-                                               [ for b in model.ResponseModel.BookItems do
-                                                   yield bookItemLayout (b, openDetailsPage) ])) ]))
+                               View.ListView
+                                   (items =
+                                       [ for b in model.ResponseModel.BookItems do
+                                           yield bookItemLayout (b, openDetailsPage) ], hasUnevenRows = true) ]))
 
         let rootView =
             View.NavigationPage
