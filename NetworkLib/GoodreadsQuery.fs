@@ -26,11 +26,10 @@ module GoodreadsQuery =
     let goodreadsSearchRequestBuilder query =
         UriBuilder(Scheme = "https", Host = "goodreads.com", Path = "search/index.xml", Query = query.ToString()).Uri
 
-    let queryWithPage (key:ApiKey) (search:string) (page:PageNum) =  (searchQuery key search  |> addPageToQuery) page
-    
-    let private searchGet (key: ApiKey) (search:SearchText) =
-        let getRequest = goodreadsSearchRequestBuilder (searchQuery key search)
-        getRequest.ToString()
+    let queryWithPage (key:ApiKey) (search:SearchText) (page:PageNum) =  (searchQuery key search  |> addPageToQuery) page
+
+    let searchGet builder queryFunc (searchedValue:SearchText) (page:PageNum)=
+         (builder ( queryFunc (searchedValue) (page))).ToString()
         |> Http.AsyncRequest
         |> Async.Catch
         |> Async.map (function
@@ -39,18 +38,7 @@ module GoodreadsQuery =
                 | Text text -> text |> goodreadsFromXml
                 | _ -> emptyGoodreadsModel
             | Choice2Of2 _ -> emptyGoodreadsModel)
-
-    let searchWithKey = searchGet goodreadsApiKey
-
-    let searchGet2 (searchedValue:SearchText) (page:PageNum) =
-        goodreadsSearchRequestBuilder(queryWithPage).ToString()
-        |> Http.AsyncRequest
-        |> Async.Catch
-        |> Async.map (function
-            | Choice1Of2 x ->
-                match x.Body with
-                | Text text -> text |> goodreadsFromXml
-                | _ -> emptyGoodreadsModel
-            | Choice2Of2 _ -> emptyGoodreadsModel)
-        
-    let searchWithKey2 = searchGet2 goodreadsApiKey
+   
+    let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
+                                  
+    let searchWithFirstPage search = searchWithPage search 1
