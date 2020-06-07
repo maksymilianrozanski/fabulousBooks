@@ -12,6 +12,7 @@ open GoodreadsResponseModelModule
 open NUnit.Framework
 open NUnit.Framework
 open NUnit.Framework
+open NUnit.Framework.Internal
 
 [<Test>]
 let shouldUpdateTextAndStatus () =
@@ -97,6 +98,7 @@ let ``should change displayed page to DetailsPage`` () =
 [<Test>]
 let ``should update BookDetailsPageModel on BookResultReceived`` () =
     let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+
     let initialModel =
         { EnteredText = "Init text"
           Status = Status.Success
@@ -108,6 +110,7 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
                      Status = Status.Loading }) }
 
     let response = SingleBookResponseModel(true, "book description", "https://example.com")
+
     let expected =
         { EnteredText = "Init text"
           Status = Status.Success
@@ -120,10 +123,11 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
 
     let result = App.update (Msg.BookResultReceived response) initialModel
     Assert.AreEqual(expected, result)
-    
+
 [<Test>]
 let ``should update BookDetailsPageModel on BookResultReceived - expected Failure status`` () =
     let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+
     let initialModel =
         { EnteredText = "Init text"
           Status = Status.Success
@@ -135,6 +139,7 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
                      Status = Status.Loading }) }
 
     let response = SingleBookResponseModel(false, "response was not successful", "https://example.com")
+
     let expected =
         { EnteredText = "Init text"
           Status = Status.Success
@@ -146,4 +151,31 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
                      Status = Status.Failure }) }, []
 
     let result = App.update (Msg.BookResultReceived response) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetailsCmd`` () =
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+
+    let initialModel =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel =
+              Some
+                  ({ DisplayedBook = Some(book)
+                     BookDetails = None
+                     Status = Status.Success }) }
+
+    let expected =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel =
+              Some
+                  ({ DisplayedBook = Some(book)
+                     BookDetails = None
+                     Status = Status.Loading }) }, [ UpdateBookDetailsCmd book ]
+
+    let result = App.update (Msg.UpdateBookDetails book) initialModel
     Assert.AreEqual(expected, result)
