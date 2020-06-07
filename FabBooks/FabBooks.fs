@@ -31,7 +31,7 @@ module App =
     let init () = initModel, []
 
     let performSearchCmd text pageNum =
-        searchWithFirstPage text
+        searchWithPage text pageNum
         |> Async.map Msg.SearchResultReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption

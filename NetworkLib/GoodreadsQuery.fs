@@ -40,5 +40,3 @@ module GoodreadsQuery =
             | Choice2Of2 _ -> emptyGoodreadsModel)
    
     let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
-    
-    let searchWithFirstPage search = searchWithPage search 1
