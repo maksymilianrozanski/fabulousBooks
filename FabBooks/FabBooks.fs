@@ -67,6 +67,10 @@ module App =
                              BookDetails = Some(result)
                              Status = statusFromBool (result.IsSuccessful) }) }, []
 
+    let private onUpdateBookDetails book model =
+        { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
+        [ book |> UpdateBookDetailsCmd ]
+
     let update msg (model: Model) =
         match msg with
         | Msg.PerformSearch text ->
@@ -78,8 +82,7 @@ module App =
         | Msg.BookResultReceived result ->
             onBookResultReceived result model
         | Msg.UpdateBookDetails book ->
-            { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
-            [ book |> UpdateBookDetailsCmd ]
+            onUpdateBookDetails book model
 
     let view model dispatch =
 
