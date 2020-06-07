@@ -47,14 +47,17 @@ module App =
               EnteredText = text
               Status = Status.Loading }, [ text |> PerformSearchCmd ]
 
+    let private onSearchResultReceived result model =
+        { model with
+              ResponseModel = result
+              Status = statusFromBool (result.IsSuccessful) }, []
+
     let update msg (model: Model) =
         match msg with
         | Msg.PerformSearch text ->
             onMsgPerformSearch text model
         | Msg.SearchResultReceived result ->
-            { model with
-                  ResponseModel = result
-                  Status = statusFromBool (result.IsSuccessful) }, []
+            onSearchResultReceived result model
         | Msg.ChangeDisplayedPage page ->
             match page with
             | SearchPage -> { model with BookDetailsPageModel = None }, []
