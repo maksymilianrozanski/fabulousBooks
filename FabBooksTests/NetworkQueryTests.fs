@@ -28,6 +28,17 @@ let shouldBuildSearchRequest () =
     Assert.AreEqual("https://goodreads.com/search/index.xml?Hello=World", result.ToString())
 
 [<Test>]
+let ``should build search request with page number`` () =
+    let apiKey = "123456abc"
+    let searchedValue = "functional programming"
+    let page = 3
+
+    let result = queryWithPage apiKey searchedValue page
+    Assert.AreEqual(searchedValue, result.Get("q"))
+    Assert.AreEqual(apiKey, result.Get("key"))
+    Assert.AreEqual(page.ToString(), result.Get("page"))
+
+[<Test>]
 let shouldBuildBookRequest () =
     let bookId = 42
     let query = HttpUtility.ParseQueryString(String.Empty)
