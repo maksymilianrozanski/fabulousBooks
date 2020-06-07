@@ -71,18 +71,18 @@ module App =
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
         [ book |> UpdateBookDetailsCmd ]
 
-    let update msg (model: Model) =
-        match msg with
+    let update =
+        function
         | Msg.PerformSearch text ->
-            onMsgPerformSearch text model
+            onMsgPerformSearch text
         | Msg.SearchResultReceived result ->
-            onSearchResultReceived result model
+            onSearchResultReceived result
         | Msg.ChangeDisplayedPage page ->
-            onChangeDisplayedPage page model
+            onChangeDisplayedPage page
         | Msg.BookResultReceived result ->
-            onBookResultReceived result model
+            onBookResultReceived result
         | Msg.UpdateBookDetails book ->
-            onUpdateBookDetails book model
+            onUpdateBookDetails book
 
     let view model dispatch =
 
