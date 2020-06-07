@@ -125,7 +125,9 @@ module App =
                                     itemAppearing =
                                         (fun idx ->
                                             if (idx >= model.ResponseModel.End - 2
-                                                && model.ResponseModel.End < model.ResponseModel.Total) then
+                                                && model.ResponseModel.End < model.ResponseModel.Total
+                                                && model.Status = Status.Success
+                                                ) then
                                                 dispatch
                                                     (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
 
