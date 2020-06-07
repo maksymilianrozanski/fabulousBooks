@@ -49,11 +49,6 @@ let shouldUpdateResponseModelAndStatus () =
           Total = 1
           BookItems = [ BookItem("Author", "Title", "https://example.com", "https://example.com", 42) ] }
 
-    //        GoodreadsResponseModel2
-    //            (true, 0, 1, 1,
-    //             System.Collections.Generic.List
-    //                 [ BookItem("Author", "Title", "https://example.com", "https://example.com", 42) ])
-
     let expected =
         { EnteredText = "Init text"
           Status = Status.Success
@@ -185,4 +180,38 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
                      Status = Status.Loading }) }, [ UpdateBookDetailsCmd book ]
 
     let result = App.update (Msg.UpdateBookDetails book) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should call MoreBooksRequestedCmd`` () =
+    let searchText = "Init text"
+    let lastLoadedBook = 20
+
+    let bookItems =
+        [ for i in 1 .. 20 do
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+
+    let initialModel =
+        { EnteredText = searchText
+          Status = Status.Success
+          ResponseModel =
+              { IsSuccessful = true
+                Start = 1
+                End = lastLoadedBook
+                Total = 125
+                BookItems = bookItems }
+          BookDetailsPageModel = None }
+
+    let expected =
+        { EnteredText = searchText
+          Status = Status.Loading
+          ResponseModel =
+              { IsSuccessful = true
+                Start = 1
+                End = lastLoadedBook
+                Total = 125
+                BookItems = bookItems }
+          BookDetailsPageModel = None }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
+
+    let result = App.update (Msg.MoreBooksRequested(searchText, lastLoadedBook)) initialModel
     Assert.AreEqual(expected, result)
