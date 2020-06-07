@@ -30,7 +30,7 @@ module App =
 
     let init () = initModel, []
 
-    let performSearchCmd text =
+    let performSearchCmd text pageNum =
         searchWithFirstPage text
         |> Async.map Msg.SearchResultReceived
         |> Async.map (fun x -> Some x)
@@ -42,10 +42,10 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
-    let private onMsgPerformSearch text model =
+    let private onMsgPerformSearch (text, pageNum) model =
         { model with
               EnteredText = text
-              Status = Status.Loading }, [ text |> PerformSearchCmd ]
+              Status = Status.Loading }, [ (text, pageNum) |> PerformSearchCmd ]
 
     let private onSearchResultReceived result model =
         { model with
@@ -73,8 +73,8 @@ module App =
 
     let update =
         function
-        | Msg.PerformSearch text ->
-            onMsgPerformSearch text
+        | Msg.PerformSearch (text, pageNum) ->
+            onMsgPerformSearch (text, pageNum)
         | Msg.SearchResultReceived result ->
             onSearchResultReceived result
         | Msg.ChangeDisplayedPage page ->
@@ -96,7 +96,7 @@ module App =
                          children =
                              [ View.Entry
                                  (width = 200.0, placeholder = "Search",
-                                  completed = fun textArgs -> Msg.PerformSearch textArgs |> dispatch)
+                                  completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
                                View.ScrollView
@@ -118,7 +118,7 @@ module App =
 
     let mapCommands cmdMsg =
         match cmdMsg with
-        | PerformSearchCmd searchText -> performSearchCmd searchText
+        | PerformSearchCmd (searchText, pageNum) -> performSearchCmd searchText pageNum
         | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
 
     // Note, this declaration is needed if you enable LiveUpdate

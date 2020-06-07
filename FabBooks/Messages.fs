@@ -5,6 +5,7 @@ open FabBooks
 open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 open SingleBookResponseModelModule
+open GoodreadsQuery
 
 module MainMessages =
     type DisplayedPage =
@@ -18,7 +19,7 @@ module MainMessages =
 
     type Msg =
         //search messages
-        | PerformSearch of string
+        | PerformSearch of SearchText * PageNum
         | SearchResultReceived of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
         //details messages
@@ -26,5 +27,5 @@ module MainMessages =
         | UpdateBookDetails of BookItem
 
     type CmdMsg =
-        | PerformSearchCmd of string
+        | PerformSearchCmd of SearchText * PageNum
         | UpdateBookDetailsCmd of BookItem

@@ -28,9 +28,9 @@ let shouldUpdateTextAndStatus () =
         { EnteredText = queryText
           Status = Status.Loading
           ResponseModel = emptyGoodreadsModel
-          BookDetailsPageModel = None }, [ PerformSearchCmd queryText ]
+          BookDetailsPageModel = None }, [ PerformSearchCmd(queryText, 1) ]
 
-    let result = App.update (Msg.PerformSearch queryText) (initialModel)
+    let result = App.update (Msg.PerformSearch(queryText, 1)) (initialModel)
     Assert.AreEqual(expected, result)
 
 [<Test>]
