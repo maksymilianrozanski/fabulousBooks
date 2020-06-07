@@ -183,6 +183,50 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
     Assert.AreEqual(expected, result)
 
 [<Test>]
+let ``should update model on MoreBooksReceived`` () =
+    let searchText = "Init text"
+
+    let initBookItems =
+        [ for i in 1 .. 20 do
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+
+    let initialModel =
+        { EnteredText = searchText
+          Status = Status.Success
+          ResponseModel =
+              { IsSuccessful = true
+                Start = 1
+                End = 21
+                Total = 125
+                BookItems = initBookItems }
+          BookDetailsPageModel = None }
+
+    let moreBookItems =
+        [ for i in 21 .. 41 do
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+
+    let receivedResponseModel =
+        { IsSuccessful = true
+          Start = 21
+          End = 41
+          Total = 125
+          BookItems = moreBookItems }
+
+    let expected =
+        { EnteredText = searchText
+          Status = Status.Success
+          ResponseModel =
+              { IsSuccessful = true
+                Start = 21
+                End = 41
+                Total = 125
+                BookItems = initBookItems @ moreBookItems }
+          BookDetailsPageModel = None }, []
+
+    let result = App.update (Msg.MoreBooksReceived receivedResponseModel) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
 let ``should call MoreBooksRequestedCmd`` () =
     let searchText = "Init text"
     let lastLoadedBook = 20
