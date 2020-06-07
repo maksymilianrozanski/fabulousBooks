@@ -28,8 +28,8 @@ module GoodreadsQuery =
 
     let queryWithPage (key:ApiKey) (search:SearchText) (page:PageNum) =  (searchQuery key search  |> addPageToQuery) page
 
-    let searchGet builder queryFunc (searchedValue:SearchText) (page:PageNum)=
-         (builder ( queryFunc (searchedValue) (page))).ToString()
+    let searchGet requestBuilder queryBuilder (searchedValue:SearchText) (page:PageNum)=
+        (queryBuilder searchedValue page|> requestBuilder).ToString()
         |> Http.AsyncRequest
         |> Async.Catch
         |> Async.map (function
@@ -40,5 +40,5 @@ module GoodreadsQuery =
             | Choice2Of2 _ -> emptyGoodreadsModel)
    
     let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
-                                  
+    
     let searchWithFirstPage search = searchWithPage search 1
