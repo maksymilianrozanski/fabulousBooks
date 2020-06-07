@@ -59,6 +59,14 @@ module App =
             { model with BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) },
             [ book |> UpdateBookDetailsCmd ]
 
+    let private onBookResultReceived result model =
+        { model with
+              BookDetailsPageModel =
+                  Some
+                      ({ model.BookDetailsPageModel.Value with
+                             BookDetails = Some(result)
+                             Status = statusFromBool (result.IsSuccessful) }) }, []
+
     let update msg (model: Model) =
         match msg with
         | Msg.PerformSearch text ->
@@ -68,12 +76,7 @@ module App =
         | Msg.ChangeDisplayedPage page ->
             onChangeDisplayedPage page model
         | Msg.BookResultReceived result ->
-            { model with
-                  BookDetailsPageModel =
-                      Some
-                          ({ model.BookDetailsPageModel.Value with
-                                 BookDetails = Some(result)
-                                 Status = statusFromBool (result.IsSuccessful) }) }, []
+            onBookResultReceived result model
         | Msg.UpdateBookDetails book ->
             { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
             [ book |> UpdateBookDetailsCmd ]
