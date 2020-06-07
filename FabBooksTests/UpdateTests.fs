@@ -11,6 +11,7 @@ open NUnit.Framework
 open App
 open GoodreadsResponseModelModule
 open NUnit.Framework
+open NUnit.Framework.Internal
 
 [<Test>]
 let shouldUpdateTextAndStatus () =
@@ -52,4 +53,23 @@ let shouldUpdateResponseModelAndStatus () =
           BookDetailsPageModel = None }, []
 
     let result = App.update (Msg.SearchResultReceived receivedResponseModel) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let shouldChangeDisplayedPageToSearchPage () =
+    let initialModel =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel = Some(BookDetailsPage.initFromBook (None)) }
+
+    let pageMsg = Msg.ChangeDisplayedPage SearchPage
+
+    let expected =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel = None }, []
+
+    let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
