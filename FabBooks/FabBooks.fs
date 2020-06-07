@@ -19,13 +19,13 @@ module App =
     type Model =
         { EnteredText: string
           Status: Status
-          ResponseModel: GoodreadsResponseModel2
+          ResponseModel: GoodreadsResponseModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
           Status = Success
-          ResponseModel = emptyGoodreadsModel2
+          ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
     let init () = initModel, []

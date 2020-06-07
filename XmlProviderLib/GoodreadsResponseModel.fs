@@ -6,17 +6,17 @@ open XmlProviderLib
 
 module GoodreadsResponseModelModule =
 
-    type GoodreadsResponseModel2 =
+    type GoodreadsResponseModel =
         { IsSuccessful: bool
           Start: int
           End: int
           Total: int
           BookItems: Collections.List<BookItem> }
 
-    let combineModels (oldModel: GoodreadsResponseModel2) (newModel: GoodreadsResponseModel2) =
+    let combineModels (oldModel: GoodreadsResponseModel) (newModel: GoodreadsResponseModel) =
         { newModel with BookItems = oldModel.BookItems @ newModel.BookItems }
 
-    let emptyGoodreadsModel2: GoodreadsResponseModel2 =
+    let emptyGoodreadsModel: GoodreadsResponseModel =
         { IsSuccessful = false
           Start = 0
           End = 0

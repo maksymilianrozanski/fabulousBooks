@@ -24,8 +24,8 @@ module MainMessages =
     type Msg =
         //search messages
         | PerformSearch of SearchText * PageNum
-        | SearchResultReceived of GoodreadsResponseModel2
-        | MoreBooksReceived of GoodreadsResponseModel2
+        | SearchResultReceived of GoodreadsResponseModel
+        | MoreBooksReceived of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
         | MoreBooksRequested of SearchText * LastLoadedBook
         //details messages
