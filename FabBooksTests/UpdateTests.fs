@@ -73,3 +73,23 @@ let shouldChangeDisplayedPageToSearchPage () =
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should change displayed page to DetailsPage`` () =
+    let initialModel =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel = None }
+
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+    let pageMsg = Msg.ChangeDisplayedPage(DetailsPage(book))
+
+    let expected =
+        { EnteredText = "Init text"
+          Status = Status.Success
+          ResponseModel = emptyGoodreadsModel
+          BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
+
+    let result = App.update pageMsg initialModel
+    Assert.AreEqual(expected, result)
