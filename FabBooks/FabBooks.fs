@@ -42,12 +42,15 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
+    let private onMsgPerformSearch text model =
+        { model with
+              EnteredText = text
+              Status = Status.Loading }, [ text |> PerformSearchCmd ]
+
     let update msg (model: Model) =
         match msg with
         | Msg.PerformSearch text ->
-            { model with
-                  EnteredText = text
-                  Status = Status.Loading }, [ text |> PerformSearchCmd ]
+            onMsgPerformSearch text model
         | Msg.SearchResultReceived result ->
             { model with
                   ResponseModel = result
