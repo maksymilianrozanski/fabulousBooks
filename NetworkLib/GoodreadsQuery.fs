@@ -36,7 +36,7 @@ module GoodreadsQuery =
             | Choice1Of2 x ->
                 match x.Body with
                 | Text text -> text |> goodreadsFromXml
-                | _ -> emptyGoodreadsModel
-            | Choice2Of2 _ -> emptyGoodreadsModel)
+                | _ -> emptyGoodreadsModel2
+            | Choice2Of2 _ -> emptyGoodreadsModel2)
    
     let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))

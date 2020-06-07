@@ -19,13 +19,13 @@ module App =
     type Model =
         { EnteredText: string
           Status: Status
-          ResponseModel: GoodreadsResponseModel
+          ResponseModel: GoodreadsResponseModel2
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
           Status = Success
-          ResponseModel = emptyGoodreadsModel
+          ResponseModel = emptyGoodreadsModel2
           BookDetailsPageModel = None }
 
     let init () = initModel, []
@@ -47,10 +47,18 @@ module App =
               EnteredText = text
               Status = Status.Loading }, [ (text, pageNum) |> PerformSearchCmd ]
 
+    let private onMoreBooksRequested (searchText, endBook) model =
+        { model with Status = Status.Loading }, [ (searchText, endBook) |> MoreBooksRequestedCmd ]
+
     let private onSearchResultReceived result model =
         { model with
               ResponseModel = result
               Status = statusFromBool (result.IsSuccessful) }, []
+
+    let private onMoreBooksReceived result model =
+        { model with
+              ResponseModel = combineModels model.ResponseModel result
+              Status = statusFromBool result.IsSuccessful }, []
 
     let private onChangeDisplayedPage page model =
         match page with
@@ -71,13 +79,17 @@ module App =
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
         [ book |> UpdateBookDetailsCmd ]
 
-    let private onMoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks) =
-        //        let booksRemaining = totalBooks - endBook
-        //        match booksRemaining with
-        //        | n when n > 0 ->
-        //            { model with Status = Status.Loading },
-        //todo: check are there any not displayed books remaining
-        performSearchCmd (searchText) (((endBook % 20) + 1))
+    let private onMoreBooksRequestedCmd (searchText, endBook) =
+        searchWithPage (searchText) ((endBook % 20) + 1)
+        |> Async.map Msg.MoreBooksReceived
+        |> Async.map (fun x -> Some x)
+        |> Cmd.ofAsyncMsgOption
+    //        let booksRemaining = totalBooks - endBook
+    //        match booksRemaining with
+    //        | n when n > 0 ->
+    //            { model with Status = Status.Loading },
+    //todo: check are there any not displayed books remaining
+    //        performSearchCmd (searchText) (((endBook % 20) + 1))
     //        | _ ->
 
     let update =
@@ -86,8 +98,12 @@ module App =
             onMsgPerformSearch (text, pageNum)
         | Msg.SearchResultReceived result ->
             onSearchResultReceived result
+        | Msg.MoreBooksReceived result ->
+            onMoreBooksReceived result
         | Msg.ChangeDisplayedPage page ->
             onChangeDisplayedPage page
+        | Msg.MoreBooksRequested (searchText, endBook) ->
+            onMoreBooksRequested (searchText, endBook)
         | Msg.BookResultReceived result ->
             onBookResultReceived result
         | Msg.UpdateBookDetails book ->
@@ -111,7 +127,13 @@ module App =
                                View.ListView
                                    (items =
                                        [ for b in model.ResponseModel.BookItems do
-                                           yield bookItemLayout (b, openDetailsPage) ], hasUnevenRows = true) ]))
+                                           yield bookItemLayout (b, openDetailsPage) ], hasUnevenRows = true,
+                                    itemAppearing =
+                                        (fun idx ->
+                                            if (idx >= model.ResponseModel.End - 2
+                                                && model.ResponseModel.End < model.ResponseModel.Total) then
+                                                dispatch
+                                                    (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
 
         let rootView =
             View.NavigationPage
@@ -127,8 +149,8 @@ module App =
         match cmdMsg with
         | PerformSearchCmd (searchText, pageNum) -> performSearchCmd searchText pageNum
         | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
-        | MoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks) ->
-            onMoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks)
+        | MoreBooksRequestedCmd (searchText, endBook) ->
+            onMoreBooksRequestedCmd (searchText, endBook)
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands

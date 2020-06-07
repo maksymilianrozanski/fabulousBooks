@@ -6,14 +6,22 @@ open XmlProviderLib
 
 module GoodreadsResponseModelModule =
 
-    type GoodreadsResponseModel(isSuccessful: bool, resultsStart: int, resultsEnd: int, totalResults: int, bookItems: List<BookItem>) =
-        member this.IsSuccessful = isSuccessful
-        member this.Start = resultsStart
-        member this.End = resultsEnd
-        member this.Total = totalResults
-        member this.BookItems = bookItems
+    type GoodreadsResponseModel2 =
+        { IsSuccessful: bool
+          Start: int
+          End: int
+          Total: int
+          BookItems: Collections.List<BookItem> }
 
-    let emptyGoodreadsModel = GoodreadsResponseModel(false, 0, 0, 0, List())
+    let combineModels (oldModel: GoodreadsResponseModel2) (newModel: GoodreadsResponseModel2) =
+        { newModel with BookItems = oldModel.BookItems @ newModel.BookItems }
+
+    let emptyGoodreadsModel2: GoodreadsResponseModel2 =
+        { IsSuccessful = false
+          Start = 0
+          End = 0
+          Total = 0
+          BookItems = [] }
 
     let goodreadsFromXml xmlString =
         let response = XmlParser.GoodreadsSearchResponse.Parse(xmlString)
@@ -26,6 +34,11 @@ module GoodreadsResponseModelModule =
                                child.BestBook.SmallImageUrl, child.BestBook.Id.Value)
             }
 
-        GoodreadsResponseModel
-            (true, response.Search.ResultsStart, response.Search.ResultsEnd, response.Search.TotalResults,
-             List(bookItems))
+        let m =
+            { IsSuccessful = true
+              Start = response.Search.ResultsStart
+              End = response.Search.ResultsEnd
+              Total = response.Search.TotalResults
+              BookItems = Collections.List.ofSeq (bookItems) }
+
+        m
