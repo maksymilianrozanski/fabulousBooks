@@ -17,6 +17,7 @@
     <ItemGroup>
         <Compile Include="NetworkQueryTests.fs" />
         <Compile Include="UpdateTests.fs" />
+        <Compile Include="UtilsTests.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
