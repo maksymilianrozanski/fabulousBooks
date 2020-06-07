@@ -80,17 +80,11 @@ module App =
         [ book |> UpdateBookDetailsCmd ]
 
     let private onMoreBooksRequestedCmd (searchText, endBook) =
-        searchWithPage (searchText) ((endBook % 20) + 1)
+        searchWithPage (searchText) (nextPageNumber (endBook))
         |> Async.map Msg.MoreBooksReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
-    //        let booksRemaining = totalBooks - endBook
-    //        match booksRemaining with
-    //        | n when n > 0 ->
-    //            { model with Status = Status.Loading },
     //todo: check are there any not displayed books remaining
-    //        performSearchCmd (searchText) (((endBook % 20) + 1))
-    //        | _ ->
 
     let update =
         function
