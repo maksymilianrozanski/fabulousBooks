@@ -71,6 +71,15 @@ module App =
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
         [ book |> UpdateBookDetailsCmd ]
 
+    let private onMoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks) =
+        //        let booksRemaining = totalBooks - endBook
+        //        match booksRemaining with
+        //        | n when n > 0 ->
+        //            { model with Status = Status.Loading },
+        //todo: check are there any not displayed books remaining
+        performSearchCmd (searchText) (((endBook % 20) + 1))
+    //        | _ ->
+
     let update =
         function
         | Msg.PerformSearch (text, pageNum) ->
@@ -120,6 +129,8 @@ module App =
         match cmdMsg with
         | PerformSearchCmd (searchText, pageNum) -> performSearchCmd searchText pageNum
         | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
+        | MoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks) ->
+            onMoreBooksRequestedCmd (searchText, pageNum, endBook, totalBooks)
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands

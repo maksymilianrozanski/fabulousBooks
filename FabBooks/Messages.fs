@@ -12,6 +12,9 @@ module MainMessages =
         | SearchPage
         | DetailsPage of BookItem
 
+    type LastLoadedBook = int
+    type TotalBooks = int
+    
     type Status =
         | Success
         | Failure
@@ -22,6 +25,7 @@ module MainMessages =
         | PerformSearch of SearchText * PageNum
         | SearchResultReceived of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
+//        | MoreBooksRequested of SearchText * PageNum * LastLoadedBook * TotalBooks
         //details messages
         | BookResultReceived of SingleBookResponseModel
         | UpdateBookDetails of BookItem
@@ -29,3 +33,4 @@ module MainMessages =
     type CmdMsg =
         | PerformSearchCmd of SearchText * PageNum
         | UpdateBookDetailsCmd of BookItem
+        | MoreBooksRequestedCmd of SearchText * PageNum * LastLoadedBook * TotalBooks
