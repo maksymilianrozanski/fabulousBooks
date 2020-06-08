@@ -20,4 +20,4 @@ module Either =
     let bind f (either: Either<'a, 'b>) =
         match either with
         | Right x -> f (x)
-        | Left -> either
+        | Left _ -> either
