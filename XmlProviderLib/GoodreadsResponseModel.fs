@@ -14,7 +14,7 @@ module GoodreadsResponseModelModule =
           BookItems: Collections.List<BookItem> }
 
     let combineModels (oldModel: GoodreadsResponseModel) (newModel: GoodreadsResponseModel) =
-        { newModel with BookItems = oldModel.BookItems @ newModel.BookItems }
+        { newModel with BookItems = List.append oldModel.BookItems newModel.BookItems }
 
     let emptyGoodreadsModel: GoodreadsResponseModel =
         { IsSuccessful = false
