@@ -108,6 +108,7 @@ module App =
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
 
         let searchPage =
+            let triggerFetchMargin = 4
             View.ContentPage
                 (content =
                     View.StackLayout
@@ -121,13 +122,12 @@ module App =
                                View.ListView
                                    (items =
                                        [ for b in model.ResponseModel.BookItems do
-                                           yield bookItemLayout (b, openDetailsPage) ], hasUnevenRows = true,
+                                           yield dependsOn b (fun m b -> bookItemLayout (b, openDetailsPage)) ],
+                                    hasUnevenRows = true,
                                     itemAppearing =
                                         (fun idx ->
-                                            if (idx >= model.ResponseModel.End - 2
-                                                && model.ResponseModel.End < model.ResponseModel.Total
-                                                && model.Status = Status.Success
-                                                ) then
+                                            if (shouldFetchMoreItems triggerFetchMargin model.ResponseModel.End
+                                                    model.ResponseModel.Total model.Status idx) then
                                                 dispatch
                                                     (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
 
