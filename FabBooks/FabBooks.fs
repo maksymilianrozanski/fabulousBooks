@@ -15,6 +15,7 @@ open GoodreadsBookQuery
 open BookItemModule
 open Utils
 open Xamarin.Forms
+open Xamarin.Forms
 
 module App =
     type Model =
@@ -112,7 +113,7 @@ module App =
             View.ContentPage
                 (content =
                     View.StackLayout
-                        (padding = Thickness 20.0, verticalOptions = LayoutOptions.Start,
+                        (padding = Thickness 8.0, verticalOptions = LayoutOptions.Start,
                          children =
                              [ View.Entry
                                  (width = 200.0, placeholder = "Search",
