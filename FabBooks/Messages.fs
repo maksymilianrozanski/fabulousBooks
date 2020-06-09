@@ -15,6 +15,8 @@ module MainMessages =
     type LastLoadedBook = int
 
     type TotalBooks = int
+    
+    type LastItemVisible = int
 
     type Status =
         | Success

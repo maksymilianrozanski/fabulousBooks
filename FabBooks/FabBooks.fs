@@ -14,6 +14,7 @@ open StatusLayout
 open GoodreadsBookQuery
 open BookItemModule
 open Utils
+open Xamarin.Forms
 
 module App =
     type Model =
@@ -108,7 +109,6 @@ module App =
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
 
         let searchPage =
-            let triggerFetchMargin = 4
             View.ContentPage
                 (content =
                     View.StackLayout
@@ -119,15 +119,15 @@ module App =
                                   completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                                View.Label(text = model.EnteredText)
                                statusLayout (model.Status)
-                               View.ListView
+                               View.CollectionView
                                    (items =
                                        [ for b in model.ResponseModel.BookItems do
                                            yield dependsOn b (fun m b -> bookItemLayout (b, openDetailsPage)) ],
-                                    hasUnevenRows = true,
-                                    itemAppearing =
-                                        (fun idx ->
-                                            if (shouldFetchMoreItems triggerFetchMargin model.ResponseModel.End
-                                                    model.ResponseModel.Total model.Status idx) then
+                                    remainingItemsThreshold = 2,
+                                    remainingItemsThresholdReachedCommand =
+                                        (fun () ->
+                                            if (shouldFetchMoreItems model.ResponseModel.End model.ResponseModel.Total
+                                                    model.Status) then
                                                 dispatch
                                                     (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
 

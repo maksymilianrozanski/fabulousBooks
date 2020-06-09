@@ -20,8 +20,7 @@ let ``should return Right if Status is success`` () =
     let data =
         { LastLoadedItem = 0
           TotalItems = 0
-          Status = Status.Success
-          Idx = 0 }
+          Status = Status.Success }
 
     let result = isSuccessStatus data
 
@@ -34,8 +33,7 @@ let ``should return Left if Status other than success`` () =
     let data =
         { LastLoadedItem = 0
           TotalItems = 0
-          Status = Status.Failure
-          Idx = 0 }
+          Status = Status.Failure }
 
     let verify (result: Either<ShouldStop, ShouldFetchArgs>) =
         match result with
@@ -50,8 +48,7 @@ let ``should return Right if at least one item remaining`` () =
     let data =
         { LastLoadedItem = 19
           TotalItems = 20
-          Status = Status.Success
-          Idx = 0 }
+          Status = Status.Success }
 
     match (areItemsRemaining data) with
     | Right x -> Assert.AreEqual(data, x)
@@ -62,8 +59,7 @@ let ``should return Left if fetched all items`` () =
     let data =
         { LastLoadedItem = 0
           TotalItems = 0
-          Status = Status.Success
-          Idx = 0 }
+          Status = Status.Success }
 
     let verify (result: Either<ShouldStop, ShouldFetchArgs>) =
         match result with
@@ -83,51 +79,3 @@ let ``should return Left if fetched all items`` () =
             { data with
                   LastLoadedItem = 10
                   TotalItems = 10 })
-
-[<Test>]
-let ``should return Right if close to the end of the list`` () =
-    let trigger = 2
-
-    let data =
-        { LastLoadedItem = 0
-          TotalItems = 20
-          Status = Status.Success
-          Idx = 0 }
-
-    match (isNearEnd trigger data) with
-    | Right x -> ()
-    | Left y ->
-        failwith (sprintf "should match to the right, items remaining: %i" (data.LastLoadedItem - (data.Idx + 1)))
-
-    let data2 =
-        { data with
-              LastLoadedItem = 10
-              Idx = 9 }
-    match (isNearEnd trigger data2) with
-    | Right x -> ()
-    | Left y ->
-        failwith (sprintf "should match to the right, items remaining: %i" (data2.LastLoadedItem - (data2.Idx + 1)))
-
-    let data3 =
-        { data with
-              LastLoadedItem = 10
-              Idx = 7 }
-    match (isNearEnd trigger data3) with
-    | Right x -> ()
-    | Left y ->
-        failwith (sprintf "should match to the right, items remaining: %i" (data3.LastLoadedItem - (data3.Idx + 1)))
-
-[<Test>]
-let ``should return Left if not close to the end of the list`` () =
-    let trigger = 2
-
-    let data =
-        { LastLoadedItem = 10
-          TotalItems = 20
-          Status = Status.Success
-          Idx = 6 }
-
-    match (isNearEnd trigger data) with
-    | Right x ->
-        failwith (sprintf "should match to the left, items remaining: %i" (data.LastLoadedItem - (data.Idx + 1)))
-    | Left y -> Assert.AreEqual(ShouldStop, y)
