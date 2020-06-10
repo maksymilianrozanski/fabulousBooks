@@ -35,3 +35,5 @@ module Utils =
         |> function
         | Right _ -> true
         | Left _ -> false
+
+    let hasImage (imageUrl: string) = not (imageUrl.StartsWith("https://s.gr-assets.com/assets/nophoto"))

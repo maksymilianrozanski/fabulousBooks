@@ -79,3 +79,13 @@ let ``should return Left if fetched all items`` () =
             { data with
                   LastLoadedItem = 10
                   TotalItems = 10 })
+
+[<Test>]
+let ``should return true if url contains photo`` () =
+    Assert.True
+        (hasImage
+            ("https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1456611934l/29354137._SX98_.jpg"))
+
+[<Test>]
+let ``should return false if url does not contain photo`` () =
+    Assert.False(hasImage ("https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"))
