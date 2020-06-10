@@ -8,11 +8,11 @@ module BookItemLayoutModule =
     open FabBooks.BookItemModule
     open Fabulous.XamarinForms
 
-    let private textInfo (b: BookItem) =
+    let textInfo (b: BookItem) =
         [ View.Label(text = b.Title)
           View.Label(text = b.Author) ]
 
-    let private bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 100.0, height = 100.0)
+    let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
 
     let private withImage (b: BookItem) =
         View.Grid

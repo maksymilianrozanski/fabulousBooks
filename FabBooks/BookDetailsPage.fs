@@ -1,12 +1,9 @@
 namespace FabBooks
 
-open System.Data
 open FabBooks.BookItemModule
 open FabBooks.SingleBookResponseModelModule
-open Fabulous
 open Fabulous.XamarinForms
 open MainMessages
-open Xamarin.Forms
 open Xamarin.Forms
 
 module BookDetailsPage =
@@ -32,15 +29,16 @@ module BookDetailsPage =
             | Some x -> View.Label(text = model.BookDetails.Value.Description, textType = TextType.Html)
             | None -> View.Label("no description...")
 
+        let imageView =
+            if (Utils.hasImage model.DisplayedBook.Value.ImageUrl)
+            then [ BookItemLayoutModule.bookImage model.DisplayedBook.Value ]
+            else []
+
         View.ContentPage
-            (content =
-                View.StackLayout
-                    (children =
-                        [ View.Label(text = "details page.")
-                          StatusLayout.statusLayout (model.Status)
-                          View.Label(text = "current title  = " + model.DisplayedBook.Value.Title.ToString())
-                          View.Label(text = "author:" + model.DisplayedBook.Value.Author.ToString())
-                          View.Image
-                              (source = ImagePath model.DisplayedBook.Value.ImageUrl, width = 250.0, height = 200.0,
-                               aspect = Aspect.AspectFit)
-                          descriptionView ]))
+            (View.ScrollView
+                (content =
+                    View.StackLayout
+                        (children =
+                            [ StatusLayout.statusLayout (model.Status) ]
+                            @ BookItemLayoutModule.textInfo (model.DisplayedBook.Value)
+                              @ imageView @ [ descriptionView ], padding = Thickness 8.0)))
