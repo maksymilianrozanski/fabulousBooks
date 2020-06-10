@@ -29,7 +29,7 @@ module BookDetailsPage =
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
         let descriptionView =
             match model.BookDetails with
-            | Some x -> View.Label(text = model.BookDetails.Value.Description)
+            | Some x -> View.Label(text = model.BookDetails.Value.Description, textType = TextType.Html)
             | None -> View.Label("no description...")
 
         View.ContentPage
@@ -43,5 +43,4 @@ module BookDetailsPage =
                           View.Image
                               (source = ImagePath model.DisplayedBook.Value.ImageUrl, width = 250.0, height = 200.0,
                                aspect = Aspect.AspectFit)
-                          //todo: handle html tags in description
                           descriptionView ]))
