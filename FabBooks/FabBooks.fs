@@ -15,20 +15,15 @@ open StatusLayout
 open BookDetailsQuery
 open BookItemModule
 open Utils
+open Xamarin.Forms
 
 module App =
     type Model =
-        { EnteredText: string
-          SearchStatus: Status
-          ResponseModel: GoodreadsResponseModel
-          SearchPageModel: SearchPageModel
+        { SearchPageModel: SearchPageModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
-        { EnteredText = ""
-          SearchStatus = Success
-          ResponseModel = emptyGoodreadsModel
-          SearchPageModel = SearchPageModelModule.initModel
+        { SearchPageModel = SearchPageModelModule.initModel
           BookDetailsPageModel = None }
 
     let init () = initModel, []
@@ -47,18 +42,16 @@ module App =
 
     let private onMsgPerformSearch (text, pageNum) model =
         { model with
-              EnteredText = text
-              SearchStatus = Status.Loading }, [ (text, pageNum) |> PerformSearchCmd ]
+              SearchPageModel =
+                  { model.SearchPageModel with
+                        Status = Status.Loading
+                        EnteredText = text } }, [ (text, pageNum) |> PerformSearchCmd ]
 
     let private onMoreBooksRequested (searchText, endBook) model =
-        { model with SearchStatus = Status.Loading }, [ (searchText, endBook) |> MoreBooksRequestedCmd ]
+        { model with SearchPageModel = { model.SearchPageModel with Status = Status.Loading } },
+        [ (searchText, endBook) |> MoreBooksRequestedCmd ]
 
     let private onSearchResultReceived result model =
-        { model with
-              ResponseModel = result
-              SearchStatus = statusFromBool (result.IsSuccessful) }, []
-
-    let private onSearchResultReceived2 result model =
         { model with
               SearchPageModel =
                   { model.SearchPageModel with
@@ -66,11 +59,6 @@ module App =
                         Status = statusFromBool (result.IsSuccessful) } }, []
 
     let private onMoreBooksReceived result model =
-        { model with
-              ResponseModel = combineModels model.ResponseModel result
-              SearchStatus = statusFromBool result.IsSuccessful }, []
-
-    let private onMoreBooksReceived2 result model =
         { model with
               SearchPageModel =
                   { model.SearchPageModel with
@@ -110,12 +98,8 @@ module App =
             onMsgPerformSearch (text, pageNum)
         | Msg.SearchResultReceived result ->
             onSearchResultReceived result
-        | Msg.SearchResultReceived2 result ->
-            onSearchResultReceived2 result
         | Msg.MoreBooksReceived result ->
             onMoreBooksReceived result
-        | Msg.MoreBooksReceived2 result ->
-            onMoreBooksReceived2 result
         | Msg.ChangeDisplayedPage page ->
             onChangeDisplayedPage page
         | Msg.MoreBooksRequested (searchText, endBook) ->
@@ -125,9 +109,23 @@ module App =
         | Msg.UpdateBookDetails book ->
             onUpdateBookDetails book
 
-    let view model dispatch =
+    let view (model: Model) dispatch =
 
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
+
+        let booksCollectionView searchPageModel =
+            match searchPageModel.ResponseModel with
+            | Some x ->
+                View.CollectionView
+                    (items =
+                        [ for b in x.BookItems do
+                            yield dependsOn b (fun m b -> bookItemLayout (b, openDetailsPage)) ],
+                     remainingItemsThreshold = 2,
+                     remainingItemsThresholdReachedCommand =
+                         (fun () ->
+                             if (shouldFetchMoreItems x.End x.Total searchPageModel.Status) then
+                                 dispatch (Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End))))
+            | None -> View.Label("nothing here yet")
 
         let searchPage =
             View.ContentPage
@@ -138,19 +136,9 @@ module App =
                              [ View.Entry
                                  (width = 200.0, placeholder = "Search",
                                   completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
-                               View.Label(text = model.EnteredText)
-                               statusLayout (model.SearchStatus)
-                               View.CollectionView
-                                   (items =
-                                       [ for b in model.ResponseModel.BookItems do
-                                           yield dependsOn b (fun m b -> bookItemLayout (b, openDetailsPage)) ],
-                                    remainingItemsThreshold = 2,
-                                    remainingItemsThresholdReachedCommand =
-                                        (fun () ->
-                                            if (shouldFetchMoreItems model.ResponseModel.End model.ResponseModel.Total
-                                                    model.SearchStatus) then
-                                                dispatch
-                                                    (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
+                               View.Label(text = model.SearchPageModel.EnteredText)
+                               statusLayout (model.SearchPageModel.Status)
+                               booksCollectionView (model.SearchPageModel) ]))
 
         let rootView =
             View.NavigationPage
