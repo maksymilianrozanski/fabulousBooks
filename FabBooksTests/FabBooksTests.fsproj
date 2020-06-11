@@ -16,7 +16,7 @@
 
     <ItemGroup>
         <Compile Include="NetworkQueryTests.fs" />
-        <Compile Include="GoodreadsResponseModelTests.fs" />
+        <Compile Include="SearchResponse.fs" />
         <Compile Include="UpdateTests.fs" />
         <Compile Include="UtilsTests.fs" />
         <Compile Include="Program.fs" />

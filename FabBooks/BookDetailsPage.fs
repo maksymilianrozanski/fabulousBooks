@@ -10,7 +10,7 @@ module BookDetailsPage =
 
     type BookDetailsPageModel =
         { DisplayedBook: Option<BookItem>
-          BookDetails: Option<SingleBookResponseModel>
+          BookDetails: Option<SingleBookResponse>
           Status: Status }
 
     let initModel =

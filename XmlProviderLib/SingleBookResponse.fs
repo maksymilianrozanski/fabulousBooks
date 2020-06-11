@@ -4,13 +4,13 @@ open XmlProviderLib
 
 module SingleBookResponseModelModule =
 
-    type SingleBookResponseModel(isSuccessful: bool, description: string, link: string) =
+    type SingleBookResponse(isSuccessful: bool, description: string, link: string) =
         member this.IsSuccessful = isSuccessful
         member this.Description = description
         member this.Link = link
 
-    let emptySingleBookModel = SingleBookResponseModel(false, "", "")
+    let emptySingleBookModel = SingleBookResponse(false, "", "")
 
     let singleBookFromXml xmlString =
         let response = XmlParser.GoodreadsBookResponse.Parse(xmlString)
-        SingleBookResponseModel(true, response.Book.Description, response.Book.Url)
+        SingleBookResponse(true, response.Book.Description, response.Book.Url)

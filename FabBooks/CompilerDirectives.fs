@@ -4,7 +4,6 @@ open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
 open Xamarin.Forms
-open ModelModule
    
 type App() as app =
     inherit Application()

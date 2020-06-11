@@ -13,7 +13,7 @@
         <Compile Include="Utils.fs" />
         <Compile Include="BookItemLayout.fs" />
         <Compile Include="StatusLayout.fs" />
-        <Compile Include="SearchPageModelModule.fs" />
+        <Compile Include="SearchPageModel.fs" />
         <Compile Include="BookDetailsPage.fs" />
         <Compile Include="ModelModule.fs" />
         <Compile Include="SearchPageViews.fs" />

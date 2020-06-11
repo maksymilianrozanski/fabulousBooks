@@ -11,7 +11,7 @@ open MainMessages
 
 module SearchPageViews =
     let private booksCollectionView searchPageModel openDetails dispatch =
-        match searchPageModel.ResponseModel with
+        match searchPageModel.SearchResponse with
         | Some x ->
             View.CollectionView
                 (items =

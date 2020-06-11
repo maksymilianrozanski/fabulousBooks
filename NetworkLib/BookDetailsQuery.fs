@@ -1,6 +1,5 @@
 namespace FabBooks
 
-open System.IO
 open System.Web
 open System
 open FSharp.Data

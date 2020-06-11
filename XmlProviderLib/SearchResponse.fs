@@ -1,24 +1,23 @@
 namespace FabBooks
 
-open System.Collections.Generic
 open BookItemModule
 open XmlProviderLib
 
-module GoodreadsResponseModelModule =
+module SearchResponseModule =
 
-    type GoodreadsResponseModel =
+    type SearchResponse =
         { IsSuccessful: bool
           Start: int
           End: int
           Total: int
           BookItems: Collections.List<BookItem> }
 
-    let combineModels (oldModel: GoodreadsResponseModel) (newModel: GoodreadsResponseModel) =
+    let combineModels (oldModel: SearchResponse) (newModel: SearchResponse) =
         match newModel.IsSuccessful with
         | true -> { newModel with BookItems = List.append oldModel.BookItems newModel.BookItems }
         | false -> { oldModel with IsSuccessful = false }
 
-    let emptyGoodreadsModel: GoodreadsResponseModel =
+    let emptyGoodreadsModel: SearchResponse =
         { IsSuccessful = false
           Start = 0
           End = 0

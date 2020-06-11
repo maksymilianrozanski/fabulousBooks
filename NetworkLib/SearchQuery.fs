@@ -5,7 +5,7 @@ open System.Collections.Specialized
 open System.Net
 open System.Web
 open FSharp.Data
-open GoodreadsResponseModelModule
+open SearchResponseModule
 open GoodreadsApiKey
 
 module SearchQuery =

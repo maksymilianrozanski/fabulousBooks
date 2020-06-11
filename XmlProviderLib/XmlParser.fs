@@ -1,7 +1,6 @@
 namespace XmlProviderLib
 
 open FSharp.Data
-open System.Linq
 
 module XmlParser =
     type GoodreadsSearchResponse = XmlProvider<"./searchresponse.xml", EmbeddedResource="XmlProviderLib, searchresponse.xml">

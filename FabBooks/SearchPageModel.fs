@@ -1,18 +1,17 @@
 namespace FabBooks
 
-open FabBooks.GoodreadsResponseModelModule
 open FabBooks.MainMessages
-
+open FabBooks.SearchResponseModule
 
 module SearchPageModelModule =
     type SearchPageModel =
         { Status: Status
           EnteredText: string
-          ResponseModel: Option<GoodreadsResponseModel> }
+          SearchResponse: Option<SearchResponse> }
 
     let initModel =
         {
             Status = Status.Success
             EnteredText = ""
-            ResponseModel = None
+            SearchResponse = None
         }

@@ -1,9 +1,8 @@
 namespace FabBooks
 
-open System.Data
 open FabBooks
 open FabBooks.BookItemModule
-open FabBooks.GoodreadsResponseModelModule
+open FabBooks.SearchResponseModule
 open SingleBookResponseModelModule
 open SearchQuery
 
@@ -26,12 +25,12 @@ module MainMessages =
     type Msg =
         //search messages
         | PerformSearch of SearchText * PageNum
-        | SearchResultReceived of GoodreadsResponseModel
-        | MoreBooksReceived of GoodreadsResponseModel
+        | SearchResultReceived of SearchResponse
+        | MoreBooksReceived of SearchResponse
         | ChangeDisplayedPage of DisplayedPage
         | MoreBooksRequested of SearchText * LastLoadedBook
         //details messages
-        | BookResultReceived of SingleBookResponseModel
+        | BookResultReceived of SingleBookResponse
         | UpdateBookDetails of BookItem
 
     type CmdMsg =

@@ -3,7 +3,7 @@ module FabBooksTests.UpdateTests
 open FabBooks
 open FabBooks.BookDetailsPage
 open FabBooks.BookItemModule
-open FabBooks.GoodreadsResponseModelModule
+open FabBooks.SearchResponseModule
 open FabBooks.MainMessages
 open FabBooks.SearchPageModelModule
 open FabBooks.SingleBookResponseModelModule
@@ -16,7 +16,7 @@ let shouldUpdateTextAndStatus () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = None }
 
     let queryText = "New text"
@@ -25,7 +25,7 @@ let shouldUpdateTextAndStatus () =
         { SearchPageModel =
               { Status = Loading
                 EnteredText = queryText
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = None }, [ PerformSearchCmd(queryText, 1) ]
 
     let result = App.update (Msg.PerformSearch(queryText, 1)) (initialModel)
@@ -37,7 +37,7 @@ let shouldUpdateResponseModelAndStatus () =
         { SearchPageModel =
               { Status = Loading
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = None }
 
     let receivedResponseModel =
@@ -51,7 +51,7 @@ let shouldUpdateResponseModelAndStatus () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = Some receivedResponseModel }
+                SearchResponse = Some receivedResponseModel }
           BookDetailsPageModel = None }, []
 
     let result = App.update (Msg.SearchResultReceived receivedResponseModel) initialModel
@@ -63,7 +63,7 @@ let shouldChangeDisplayedPageToSearchPage () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = Some(BookDetailsPage.initFromBook (None)) }
 
     let pageMsg = Msg.ChangeDisplayedPage SearchPage
@@ -72,7 +72,7 @@ let shouldChangeDisplayedPageToSearchPage () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = None }, []
 
     let result = App.update pageMsg initialModel
@@ -84,7 +84,7 @@ let ``should change displayed page to DetailsPage`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = None }
 
     let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
@@ -94,7 +94,7 @@ let ``should change displayed page to DetailsPage`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
 
     let result = App.update pageMsg initialModel
@@ -108,20 +108,20 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
                      Status = Status.Loading }) }
 
-    let response = SingleBookResponseModel(true, "book description", "https://example.com")
+    let response = SingleBookResponse(true, "book description", "https://example.com")
 
     let expected =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
@@ -139,20 +139,20 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
                      Status = Status.Loading }) }
 
-    let response = SingleBookResponseModel(false, "response was not successful", "https://example.com")
+    let response = SingleBookResponse(false, "response was not successful", "https://example.com")
 
     let expected =
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
@@ -170,7 +170,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
@@ -181,7 +181,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
         { SearchPageModel =
               { Status = Success
                 EnteredText = "Init text"
-                ResponseModel = None }
+                SearchResponse = None }
           BookDetailsPageModel =
               Some
                   ({ DisplayedBook = Some(book)
@@ -203,7 +203,7 @@ let ``should update model on MoreBooksReceived`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = searchText
-                ResponseModel =
+                SearchResponse =
                     Some
                         { IsSuccessful = true
                           Start = 1
@@ -227,7 +227,7 @@ let ``should update model on MoreBooksReceived`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = searchText
-                ResponseModel =
+                SearchResponse =
                     Some
                         { IsSuccessful = true
                           Start = 21
@@ -253,7 +253,7 @@ let ``should call MoreBooksRequestedCmd`` () =
         { SearchPageModel =
               { Status = Success
                 EnteredText = searchText
-                ResponseModel =
+                SearchResponse =
                     Some
                         { IsSuccessful = true
                           Start = 1
@@ -266,7 +266,7 @@ let ``should call MoreBooksRequestedCmd`` () =
         { SearchPageModel =
               { Status = Loading
                 EnteredText = searchText
-                ResponseModel =
+                SearchResponse =
                     Some
                         { IsSuccessful = true
                           Start = 1

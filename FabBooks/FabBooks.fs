@@ -7,17 +7,13 @@ open FabBooks.MainMessages
 open FabBooks.SearchPageModelModule
 open Fabulous
 open Fabulous.XamarinForms
-open Xamarin.Forms
-open BookItemLayoutModule
-open FabBooks.GoodreadsResponseModelModule
 open SearchQuery
-open StatusLayout
 open BookDetailsQuery
 open BookItemModule
 open Utils
-open Xamarin.Forms
 open ModelModule
 open SearchPageViews
+open FabBooks.SearchResponseModule
 
 module App =
 
@@ -48,15 +44,15 @@ module App =
         { model with
               SearchPageModel =
                   { model.SearchPageModel with
-                        ResponseModel = Some(result)
+                        SearchResponse = Some(result)
                         Status = statusFromBool (result.IsSuccessful) } }, []
 
     let private onMoreBooksReceived result model =
         { model with
               SearchPageModel =
                   { model.SearchPageModel with
-                        ResponseModel =
-                            match model.SearchPageModel.ResponseModel with
+                        SearchResponse =
+                            match model.SearchPageModel.SearchResponse with
                             | Some x -> (combineModels x result)
                             | None -> result
                             |> Some

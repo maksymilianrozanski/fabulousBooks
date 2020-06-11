@@ -3,8 +3,6 @@ module FabBooksTests.UtilsTests
 open FabBooks
 open FabBooks.MainMessages
 open NUnit.Framework
-open NUnit.Framework.Internal
-open NUnit.Framework.Internal
 open Utils
 
 [<Test>]

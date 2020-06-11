@@ -7,8 +7,8 @@
     <ItemGroup>
         <Compile Include="XmlParser.fs" />
         <Compile Include="BookItem.fs" />
-        <Compile Include="GoodreadsResponseModel.fs" />
-        <Compile Include="SingleBookResponseModel.fs" />
+        <Compile Include="SearchResponse.fs" />
+        <Compile Include="SingleBookResponse.fs" />
         <Compile Include="Library.fs" />
         <EmbeddedResource Include="searchresponse.xml">
           <Link>searchresponse.xml</Link>
