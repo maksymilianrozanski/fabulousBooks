@@ -9,9 +9,9 @@ open Fabulous.XamarinForms
 open Xamarin.Forms
 open BookItemLayoutModule
 open FabBooks.GoodreadsResponseModelModule
-open GoodreadsQuery
+open SearchQuery
 open StatusLayout
-open GoodreadsBookQuery
+open BookDetailsQuery
 open BookItemModule
 open Utils
 open Xamarin.Forms

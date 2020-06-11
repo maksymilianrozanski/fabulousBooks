@@ -7,7 +7,7 @@ open FSharp.Data
 open SingleBookResponseModelModule
 open GoodreadsApiKey
 
-module GoodreadsBookQuery =
+module BookDetailsQuery =
 
     let bookQuery key =
         let query = HttpUtility.ParseQueryString(String.Empty)

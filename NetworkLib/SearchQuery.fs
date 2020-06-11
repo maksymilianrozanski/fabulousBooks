@@ -8,7 +8,7 @@ open FSharp.Data
 open GoodreadsResponseModelModule
 open GoodreadsApiKey
 
-module GoodreadsQuery =
+module SearchQuery =
 
     type PageNum = int
     type SearchText = string

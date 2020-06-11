@@ -5,7 +5,7 @@ open FabBooks
 open FabBooks.BookItemModule
 open FabBooks.GoodreadsResponseModelModule
 open SingleBookResponseModelModule
-open GoodreadsQuery
+open SearchQuery
 
 module MainMessages =
     type DisplayedPage =

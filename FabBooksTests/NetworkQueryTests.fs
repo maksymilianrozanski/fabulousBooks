@@ -3,8 +3,8 @@ module FabBooksTests.NetworkQueryTests
 open System
 open System.Web
 open NUnit.Framework
-open FabBooks.GoodreadsQuery
-open FabBooks.GoodreadsBookQuery
+open FabBooks.SearchQuery
+open FabBooks.BookDetailsQuery
 
 [<Test>]
 let shouldBuildSearchQuery () =
