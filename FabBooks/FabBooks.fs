@@ -84,7 +84,6 @@ module App =
         |> Async.map Msg.MoreBooksReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
-    //todo: check are there any not displayed books remaining
 
     let update =
         function
