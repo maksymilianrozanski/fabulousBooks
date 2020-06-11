@@ -19,7 +19,7 @@ open NUnit.Framework.Internal
 let shouldUpdateTextAndStatus () =
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
@@ -27,7 +27,7 @@ let shouldUpdateTextAndStatus () =
 
     let expected =
         { EnteredText = queryText
-          Status = Status.Loading
+          SearchStatus = Status.Loading
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }, [ PerformSearchCmd(queryText, 1) ]
 
@@ -38,7 +38,7 @@ let shouldUpdateTextAndStatus () =
 let shouldUpdateResponseModelAndStatus () =
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Loading
+          SearchStatus = Status.Loading
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
@@ -51,7 +51,7 @@ let shouldUpdateResponseModelAndStatus () =
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = receivedResponseModel
           BookDetailsPageModel = None }, []
 
@@ -62,7 +62,7 @@ let shouldUpdateResponseModelAndStatus () =
 let shouldChangeDisplayedPageToSearchPage () =
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = Some(BookDetailsPage.initFromBook (None)) }
 
@@ -70,7 +70,7 @@ let shouldChangeDisplayedPageToSearchPage () =
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }, []
 
@@ -81,7 +81,7 @@ let shouldChangeDisplayedPageToSearchPage () =
 let ``should change displayed page to DetailsPage`` () =
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
@@ -90,7 +90,7 @@ let ``should change displayed page to DetailsPage`` () =
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
 
@@ -103,7 +103,7 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
 
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -115,7 +115,7 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -132,7 +132,7 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
 
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -144,7 +144,7 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -161,7 +161,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
 
     let initialModel =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -171,7 +171,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
 
     let expected =
         { EnteredText = "Init text"
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel =
               Some
@@ -192,7 +192,7 @@ let ``should update model on MoreBooksReceived`` () =
 
     let initialModel =
         { EnteredText = searchText
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel =
               { IsSuccessful = true
                 Start = 1
@@ -214,7 +214,7 @@ let ``should update model on MoreBooksReceived`` () =
 
     let expected =
         { EnteredText = searchText
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel =
               { IsSuccessful = true
                 Start = 21
@@ -237,7 +237,7 @@ let ``should call MoreBooksRequestedCmd`` () =
 
     let initialModel =
         { EnteredText = searchText
-          Status = Status.Success
+          SearchStatus = Status.Success
           ResponseModel =
               { IsSuccessful = true
                 Start = 1
@@ -248,7 +248,7 @@ let ``should call MoreBooksRequestedCmd`` () =
 
     let expected =
         { EnteredText = searchText
-          Status = Status.Loading
+          SearchStatus = Status.Loading
           ResponseModel =
               { IsSuccessful = true
                 Start = 1

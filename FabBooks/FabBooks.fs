@@ -14,19 +14,17 @@ open StatusLayout
 open BookDetailsQuery
 open BookItemModule
 open Utils
-open Xamarin.Forms
-open Xamarin.Forms
 
 module App =
     type Model =
         { EnteredText: string
-          Status: Status
+          SearchStatus: Status
           ResponseModel: GoodreadsResponseModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
-          Status = Success
+          SearchStatus = Success
           ResponseModel = emptyGoodreadsModel
           BookDetailsPageModel = None }
 
@@ -47,20 +45,20 @@ module App =
     let private onMsgPerformSearch (text, pageNum) model =
         { model with
               EnteredText = text
-              Status = Status.Loading }, [ (text, pageNum) |> PerformSearchCmd ]
+              SearchStatus = Status.Loading }, [ (text, pageNum) |> PerformSearchCmd ]
 
     let private onMoreBooksRequested (searchText, endBook) model =
-        { model with Status = Status.Loading }, [ (searchText, endBook) |> MoreBooksRequestedCmd ]
+        { model with SearchStatus = Status.Loading }, [ (searchText, endBook) |> MoreBooksRequestedCmd ]
 
     let private onSearchResultReceived result model =
         { model with
               ResponseModel = result
-              Status = statusFromBool (result.IsSuccessful) }, []
+              SearchStatus = statusFromBool (result.IsSuccessful) }, []
 
     let private onMoreBooksReceived result model =
         { model with
               ResponseModel = combineModels model.ResponseModel result
-              Status = statusFromBool result.IsSuccessful }, []
+              SearchStatus = statusFromBool result.IsSuccessful }, []
 
     let private onChangeDisplayedPage page model =
         match page with
@@ -119,7 +117,7 @@ module App =
                                  (width = 200.0, placeholder = "Search",
                                   completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                                View.Label(text = model.EnteredText)
-                               statusLayout (model.Status)
+                               statusLayout (model.SearchStatus)
                                View.CollectionView
                                    (items =
                                        [ for b in model.ResponseModel.BookItems do
@@ -128,7 +126,7 @@ module App =
                                     remainingItemsThresholdReachedCommand =
                                         (fun () ->
                                             if (shouldFetchMoreItems model.ResponseModel.End model.ResponseModel.Total
-                                                    model.Status) then
+                                                    model.SearchStatus) then
                                                 dispatch
                                                     (Msg.MoreBooksRequested(model.EnteredText, model.ResponseModel.End)))) ]))
 
