@@ -22,13 +22,10 @@ module GoodreadsBookQuery =
     let private bookGet (key: ApiKey) (goodreadsBookId: int) =
         let getRequest = goodreadsBookRequestBuilder goodreadsBookId (bookQuery key)
         getRequest.ToString()
-        |> Http.AsyncRequest
+        |> Http.AsyncRequestString
         |> Async.Catch
         |> Async.map (function
-            | Choice1Of2 x ->
-                match x.Body with
-                | Text text -> text |> singleBookFromXml
-                | _ -> emptySingleBookModel
+            | Choice1Of2 x -> x |> singleBookFromXml
             | Choice2Of2 _ -> emptySingleBookModel)
 
     let bookWithKey = bookGet goodreadsApiKey
