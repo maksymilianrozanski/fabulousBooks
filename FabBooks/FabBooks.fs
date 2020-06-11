@@ -107,15 +107,12 @@ module App =
 
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
 
-        let rootView =
-            View.NavigationPage
-                (pages =
-                    [ yield searchPageView model.SearchPageModel openDetailsPage dispatch
-                      match model.BookDetailsPageModel with
-                      | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
-                      | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
-
-        rootView
+        View.NavigationPage
+            (pages =
+                [ yield searchPageView model.SearchPageModel openDetailsPage dispatch
+                  match model.BookDetailsPageModel with
+                  | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
+                  | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
 
     let mapCommands cmdMsg =
         match cmdMsg with
