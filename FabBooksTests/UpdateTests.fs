@@ -1,6 +1,5 @@
 module FabBooksTests.UpdateTests
 
-open System
 open FabBooks
 open FabBooks.BookDetailsPage
 open FabBooks.BookItemModule
@@ -9,12 +8,7 @@ open FabBooks.MainMessages
 open FabBooks.SearchPageModelModule
 open FabBooks.SingleBookResponseModelModule
 open NUnit.Framework
-open App
-open GoodreadsResponseModelModule
-open NUnit.Framework
-open NUnit.Framework
-open NUnit.Framework
-open NUnit.Framework.Internal
+open ModelModule
 
 [<Test>]
 let shouldUpdateTextAndStatus () =

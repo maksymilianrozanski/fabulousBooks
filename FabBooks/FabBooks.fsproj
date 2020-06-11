@@ -15,6 +15,8 @@
         <Compile Include="StatusLayout.fs" />
         <Compile Include="SearchPageModelModule.fs" />
         <Compile Include="BookDetailsPage.fs" />
+        <Compile Include="ModelModule.fs" />
+        <Compile Include="SearchPageViews.fs" />
         <Compile Include="FabBooks.fs" />
         <Compile Include="CompilerDirectives.fs" />
     </ItemGroup>
