@@ -4,6 +4,7 @@ namespace FabBooks
 
 open FabBooks.BookDetailsPage
 open FabBooks.MainMessages
+open FabBooks.SearchPageModelModule
 open Fabulous
 open Fabulous.XamarinForms
 open Xamarin.Forms
@@ -20,12 +21,14 @@ module App =
         { EnteredText: string
           SearchStatus: Status
           ResponseModel: GoodreadsResponseModel
+          SearchPageModel: SearchPageModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let initModel =
         { EnteredText = ""
           SearchStatus = Success
           ResponseModel = emptyGoodreadsModel
+          SearchPageModel = SearchPageModelModule.initModel
           BookDetailsPageModel = None }
 
     let init () = initModel, []
@@ -54,6 +57,13 @@ module App =
         { model with
               ResponseModel = result
               SearchStatus = statusFromBool (result.IsSuccessful) }, []
+
+    let private onSearchResultReceived2 result model =
+        { model with
+              SearchPageModel =
+                  { model.SearchPageModel with
+                        ResponseModel = Some(result)
+                        Status = statusFromBool (result.IsSuccessful) } }, []
 
     let private onMoreBooksReceived result model =
         { model with
@@ -92,6 +102,8 @@ module App =
             onMsgPerformSearch (text, pageNum)
         | Msg.SearchResultReceived result ->
             onSearchResultReceived result
+        | Msg.SearchResultReceived2 result ->
+            onSearchResultReceived2 result
         | Msg.MoreBooksReceived result ->
             onMoreBooksReceived result
         | Msg.ChangeDisplayedPage page ->
