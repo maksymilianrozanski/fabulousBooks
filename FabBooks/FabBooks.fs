@@ -21,7 +21,6 @@ open SearchPageViews
 
 module App =
 
-
     let performSearchCmd text pageNum =
         searchWithPage text pageNum
         |> Async.map Msg.SearchResultReceived
@@ -56,8 +55,11 @@ module App =
         { model with
               SearchPageModel =
                   { model.SearchPageModel with
-                        //todo: check for 'None' in combineModels
-                        ResponseModel = Some(combineModels model.SearchPageModel.ResponseModel.Value result)
+                        ResponseModel =
+                            match model.SearchPageModel.ResponseModel with
+                            | Some x -> (combineModels x result)
+                            | None -> result
+                            |> Some
                         Status = statusFromBool result.IsSuccessful } }, []
 
     let private onChangeDisplayedPage page model =
