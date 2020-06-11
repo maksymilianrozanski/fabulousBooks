@@ -29,6 +29,7 @@ module MainMessages =
         | SearchResultReceived of GoodreadsResponseModel
         | SearchResultReceived2 of GoodreadsResponseModel
         | MoreBooksReceived of GoodreadsResponseModel
+        | MoreBooksReceived2 of GoodreadsResponseModel
         | ChangeDisplayedPage of DisplayedPage
         | MoreBooksRequested of SearchText * LastLoadedBook
         //details messages

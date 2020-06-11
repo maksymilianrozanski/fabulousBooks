@@ -70,6 +70,14 @@ module App =
               ResponseModel = combineModels model.ResponseModel result
               SearchStatus = statusFromBool result.IsSuccessful }, []
 
+    let private onMoreBooksReceived2 result model =
+        { model with
+              SearchPageModel =
+                  { model.SearchPageModel with
+                        //todo: check for 'None' in combineModels
+                        ResponseModel = Some(combineModels model.SearchPageModel.ResponseModel.Value result)
+                        Status = statusFromBool result.IsSuccessful } }, []
+
     let private onChangeDisplayedPage page model =
         match page with
         | SearchPage -> { model with BookDetailsPageModel = None }, []
@@ -106,6 +114,8 @@ module App =
             onSearchResultReceived2 result
         | Msg.MoreBooksReceived result ->
             onMoreBooksReceived result
+        | Msg.MoreBooksReceived2 result ->
+            onMoreBooksReceived2 result
         | Msg.ChangeDisplayedPage page ->
             onChangeDisplayedPage page
         | Msg.MoreBooksRequested (searchText, endBook) ->
