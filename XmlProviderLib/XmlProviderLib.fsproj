@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <Compile Include="XmlParser.fs" />
-        <Compile Include="BookItem.fs" />
         <Compile Include="SearchResponse.fs" />
         <Compile Include="SingleBookResponse.fs" />
         <Compile Include="Library.fs" />
@@ -22,6 +21,10 @@
 
     <ItemGroup>
       <PackageReference Include="FSharp.Data" Version="3.3.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TypesLib\TypesLib.fsproj" />
     </ItemGroup>
 
 </Project>

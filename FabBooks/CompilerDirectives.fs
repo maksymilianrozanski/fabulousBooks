@@ -42,7 +42,7 @@ type App() as app =
             | true, (:? string as json) ->
 
                 Console.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<ModelModule.Model>(json)
+                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<MainModel.Model>(json)
 
                 Console.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
                 runner.SetCurrentModel (model, Cmd.none)

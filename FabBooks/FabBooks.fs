@@ -4,14 +4,14 @@ namespace FabBooks
 
 open FabBooks.BookDetailsPage
 open FabBooks.MainMessages
-open FabBooks.SearchPageModelModule
+open Models
 open Fabulous
 open Fabulous.XamarinForms
 open SearchQuery
 open BookDetailsQuery
 open BookItemModule
 open Utils
-open ModelModule
+open MainModel
 open SearchPageViews
 open FabBooks.SearchResponseModule
 
@@ -62,7 +62,7 @@ module App =
         match page with
         | SearchPage -> { model with BookDetailsPageModel = None }, []
         | DetailsPage book ->
-            { model with BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) },
+            { model with BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book))) },
             [ book |> UpdateBookDetailsCmd ]
 
     let private onBookResultReceived result model =

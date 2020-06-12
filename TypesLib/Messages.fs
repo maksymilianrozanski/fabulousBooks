@@ -2,9 +2,7 @@ namespace FabBooks
 
 open FabBooks
 open FabBooks.BookItemModule
-open FabBooks.SearchResponseModule
-open SingleBookResponseModelModule
-open SearchQuery
+open FabBooks.Responses
 
 module MainMessages =
     type DisplayedPage =
@@ -13,9 +11,9 @@ module MainMessages =
 
     type LastLoadedBook = int
 
-    type TotalBooks = int
-    
-    type LastItemVisible = int
+    type PageNum = int
+
+    type SearchText = string
 
     type Status =
         | Success

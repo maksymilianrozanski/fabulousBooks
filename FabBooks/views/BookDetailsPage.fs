@@ -1,27 +1,10 @@
 namespace FabBooks
 
-open FabBooks.BookItemModule
-open FabBooks.SingleBookResponseModelModule
 open Fabulous.XamarinForms
-open MainMessages
 open Xamarin.Forms
+open Models
 
 module BookDetailsPage =
-
-    type BookDetailsPageModel =
-        { DisplayedBook: Option<BookItem>
-          BookDetails: Option<SingleBookResponse>
-          Status: Status }
-
-    let initModel =
-        { DisplayedBook = None
-          BookDetails = None
-          Status = Success }
-
-    let initFromBook id =
-        { DisplayedBook = id
-          BookDetails = None
-          Status = Loading }
 
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
         let descriptionView =

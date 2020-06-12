@@ -1,6 +1,6 @@
 namespace FabBooks
 
-open FabBooks.SearchPageModelModule
+open FabBooks.Models
 open Fabulous.XamarinForms
 open Fabulous
 open BookItemLayoutModule

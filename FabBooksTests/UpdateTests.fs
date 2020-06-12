@@ -5,10 +5,11 @@ open FabBooks.BookDetailsPage
 open FabBooks.BookItemModule
 open FabBooks.SearchResponseModule
 open FabBooks.MainMessages
-open FabBooks.SearchPageModelModule
+open Models
 open FabBooks.SingleBookResponseModelModule
 open NUnit.Framework
-open ModelModule
+open MainModel
+open Responses
 
 [<Test>]
 let shouldUpdateTextAndStatus () =
@@ -64,7 +65,7 @@ let shouldChangeDisplayedPageToSearchPage () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = Some(BookDetailsPage.initFromBook (None)) }
+          BookDetailsPageModel = Some(initBookDetailsFromBook (None)) }
 
     let pageMsg = Msg.ChangeDisplayedPage SearchPage
 
@@ -95,7 +96,7 @@ let ``should change displayed page to DetailsPage`` () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = Some(BookDetailsPage.initFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
+          BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)

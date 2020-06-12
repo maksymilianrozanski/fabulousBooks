@@ -1,8 +1,10 @@
 module FabBooksTests.GoodreadsResponseModelTests
 
+open FabBooks
 open FabBooks.BookItemModule
 open NUnit.Framework
-open FabBooks.SearchResponseModule
+open Responses
+open SearchResponseModule
 
 [<Test>]
 let ``should combine two successful models`` () =
