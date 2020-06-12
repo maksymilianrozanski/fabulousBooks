@@ -27,6 +27,7 @@ module MainMessages =
         | MoreBooksReceived of SearchResponse
         | ChangeDisplayedPage of DisplayedPage
         | MoreBooksRequested of SearchText * LastLoadedBook
+        | BookSortingRequested
         //details messages
         | BookResultReceived of SingleBookResponse
         | UpdateBookDetails of BookItem

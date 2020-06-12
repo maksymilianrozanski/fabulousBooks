@@ -19,7 +19,7 @@ module SearchResponseModule =
                 for child in response.Search.Results.Works do
                     yield BookItem
                               (child.BestBook.Author.Name, child.BestBook.Title, child.BestBook.ImageUrl,
-                               child.BestBook.SmallImageUrl, child.BestBook.Id.Value)
+                               child.BestBook.SmallImageUrl, child.BestBook.Id.Value, child.AverageRating |> float)
             }
 
         { IsSuccessful = true

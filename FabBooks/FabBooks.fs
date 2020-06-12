@@ -77,6 +77,15 @@ module App =
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
         [ book |> UpdateBookDetailsCmd ]
 
+    let private onBookSortingRequested model =
+        { model with
+              SearchPageModel =
+                  { model.SearchPageModel with
+                        SearchResponse =
+                            match model.SearchPageModel.SearchResponse with
+                            | Some x -> Some({ x with BookItems = Utils.bookItemsSortedByRatingDesc x.BookItems })
+                            | None -> None } }, []
+
     let private onMoreBooksRequestedCmd (searchText, endBook) =
         searchWithPage (searchText) (nextPageNumber (endBook))
         |> Async.map Msg.MoreBooksReceived
@@ -99,14 +108,16 @@ module App =
             onBookResultReceived result
         | Msg.UpdateBookDetails book ->
             onUpdateBookDetails book
+        | Msg.BookSortingRequested -> onBookSortingRequested
 
     let view (model: Model) dispatch =
 
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
+        let sortByRating = fun () -> Msg.BookSortingRequested |> dispatch
 
         View.NavigationPage
             (pages =
-                [ yield searchPageView model.SearchPageModel openDetailsPage dispatch
+                [ yield searchPageView model.SearchPageModel openDetailsPage sortByRating dispatch
                   match model.BookDetailsPageModel with
                   | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                   | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)

@@ -10,20 +10,21 @@ open StatusLayout
 open MainMessages
 
 module SearchPageViews =
-    let private booksCollectionView searchPageModel openDetails dispatch =
+    let private booksCollectionView searchPageModel openDetails sortByRating dispatch =
         match searchPageModel.SearchResponse with
         | Some x ->
             View.CollectionView
                 (items =
-                    [ for b in x.BookItems do
-                        yield dependsOn b (fun m b -> bookItemLayout (b, openDetails)) ], remainingItemsThreshold = 2,
+                    [ yield View.Button(text = "Sort by rating", cornerRadius = 10, command = sortByRating)
+                      for b in x.BookItems do
+                          yield dependsOn b (fun m b -> bookItemLayout (b, openDetails)) ], remainingItemsThreshold = 2,
                  remainingItemsThresholdReachedCommand =
                      (fun () ->
                          if (shouldFetchMoreItems x.End x.Total searchPageModel.Status) then
                              dispatch (Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End))))
         | None -> View.Label("nothing here yet")
 
-    let searchPageView searchPageModel openDetails dispatch =
+    let searchPageView searchPageModel openDetails sortByRating dispatch =
         View.ContentPage
             (content =
                 View.StackLayout
@@ -34,4 +35,4 @@ module SearchPageViews =
                               completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                            View.Label(text = searchPageModel.EnteredText)
                            statusLayout (searchPageModel.Status)
-                           booksCollectionView searchPageModel openDetails dispatch ]))
+                           booksCollectionView searchPageModel openDetails sortByRating dispatch ]))

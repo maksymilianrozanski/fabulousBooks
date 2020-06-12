@@ -1,6 +1,7 @@
 module FabBooksTests.UtilsTests
 
 open FabBooks
+open FabBooks.BookItemModule
 open FabBooks.MainMessages
 open NUnit.Framework
 open Utils
@@ -87,3 +88,20 @@ let ``should return true if url contains photo`` () =
 [<Test>]
 let ``should return false if url does not contain photo`` () =
     Assert.False(hasImage ("https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png"))
+
+[<Test>]
+let ``should sort books by rating from highest to lowest`` () =
+    let bookItems =
+        [ BookItem("Author1", "Title1", "https://example.com", "https://example.com", 42, 4.2)
+          BookItem("Author2", "Title2", "https://example.com", "https://example.com", 45, 4.3)
+          BookItem("Author3", "Title3", "https://example.com", "https://example.com", 44, 4.4)
+          BookItem("Author4", "Title4", "https://example.com", "https://example.com", 46, 4.0) ]
+
+    let expected =
+        [ bookItems.[2]
+          bookItems.[1]
+          bookItems.[0]
+          bookItems.[3] ]
+
+    let result = Utils.bookItemsSortedByRatingDesc bookItems
+    Assert.AreEqual(expected, result)

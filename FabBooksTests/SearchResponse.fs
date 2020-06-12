@@ -10,11 +10,11 @@ open SearchResponseModule
 let ``should combine two successful models`` () =
     let initBookItems =
         [ for i in 1 .. 20 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.2) ]
 
     let moreBookItems =
         [ for i in 21 .. 41 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.2) ]
 
     let oldModel =
         { IsSuccessful = true
@@ -44,7 +44,7 @@ let ``should combine two successful models`` () =
 let ``should return old model with Status.Failure`` () =
     let initBookItems =
         [ for i in 1 .. 20 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.2) ]
 
     let oldModel =
         { IsSuccessful = true

@@ -1,5 +1,6 @@
 namespace FabBooks
 
+open FabBooks.BookItemModule
 open FabBooks.MainMessages
 
 module Utils =
@@ -37,3 +38,6 @@ module Utils =
         | Left _ -> false
 
     let hasImage (imageUrl: string) = not (imageUrl.StartsWith("https://s.gr-assets.com/assets/nophoto"))
+
+    let bookItemsSortedByRatingDesc (bookItems: Collections.List<BookItem>) =
+        List.sortByDescending (fun (x: BookItem) -> x.Rating) bookItems

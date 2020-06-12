@@ -10,7 +10,8 @@ module BookItemLayoutModule =
 
     let textInfo (b: BookItem) =
         [ View.Label(text = b.Title)
-          View.Label(text = b.Author) ]
+          View.Label(text = b.Author)
+          View.Label(text = sprintf "Avg rating: %.2f*" b.Rating) ]
 
     let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
 

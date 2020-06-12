@@ -46,7 +46,7 @@ let shouldUpdateResponseModelAndStatus () =
           Start = 0
           End = 1
           Total = 1
-          BookItems = [ BookItem("Author", "Title", "https://example.com", "https://example.com", 42) ] }
+          BookItems = [ BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3) ] }
 
     let expected =
         { SearchPageModel =
@@ -88,7 +88,7 @@ let ``should change displayed page to DetailsPage`` () =
                 SearchResponse = None }
           BookDetailsPageModel = None }
 
-    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3)
     let pageMsg = Msg.ChangeDisplayedPage(DetailsPage(book))
 
     let expected =
@@ -103,7 +103,7 @@ let ``should change displayed page to DetailsPage`` () =
 
 [<Test>]
 let ``should update BookDetailsPageModel on BookResultReceived`` () =
-    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3)
 
     let initialModel =
         { SearchPageModel =
@@ -134,7 +134,7 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
 
 [<Test>]
 let ``should update BookDetailsPageModel on BookResultReceived - expected Failure status`` () =
-    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3)
 
     let initialModel =
         { SearchPageModel =
@@ -165,7 +165,7 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
 
 [<Test>]
 let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetailsCmd`` () =
-    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42)
+    let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3)
 
     let initialModel =
         { SearchPageModel =
@@ -198,7 +198,7 @@ let ``should update model on MoreBooksReceived`` () =
 
     let initBookItems =
         [ for i in 1 .. 20 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.3) ]
 
     let initialModel =
         { SearchPageModel =
@@ -215,7 +215,7 @@ let ``should update model on MoreBooksReceived`` () =
 
     let moreBookItems =
         [ for i in 21 .. 41 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.3) ]
 
     let receivedResponseModel =
         { IsSuccessful = true
@@ -248,7 +248,7 @@ let ``should call MoreBooksRequestedCmd`` () =
 
     let bookItems =
         [ for i in 1 .. 20 do
-            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30) ]
+            yield BookItem("authorName", "title", "https://example.com", "https://example.com", i + 30, 4.3) ]
 
     let initialModel =
         { SearchPageModel =
@@ -278,4 +278,60 @@ let ``should call MoreBooksRequestedCmd`` () =
           BookDetailsPageModel = None }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
 
     let result = App.update (Msg.MoreBooksRequested(searchText, lastLoadedBook)) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should return items sorted by rating`` () =
+    let initialBookItems =
+        [ BookItem("Author1", "Title1", "https://example.com", "https://example.com", 42, 4.2)
+          BookItem("Author2", "Title2", "https://example.com", "https://example.com", 45, 4.3)
+          BookItem("Author3", "Title3", "https://example.com", "https://example.com", 44, 4.4)
+          BookItem("Author4", "Title4", "https://example.com", "https://example.com", 46, 4.0) ]
+
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Search-text"
+                SearchResponse =
+                    Some
+                        { IsSuccessful = true
+                          Start = 1
+                          End = 4
+                          Total = 125
+                          BookItems = initialBookItems } }
+          BookDetailsPageModel = None }
+
+    let expectedBooks =
+        [ initialBookItems.[2]
+          initialBookItems.[1]
+          initialBookItems.[0]
+          initialBookItems.[3] ]
+
+    let expected =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Search-text"
+                SearchResponse =
+                    Some
+                        { IsSuccessful = true
+                          Start = 1
+                          End = 4
+                          Total = 125
+                          BookItems = expectedBooks } }
+          BookDetailsPageModel = None }, []
+
+    let result = App.update (Msg.BookSortingRequested) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should return 'None' when empty items`` () =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Search-text"
+                SearchResponse = None }
+          BookDetailsPageModel = None }
+
+    let expected = initialModel, []
+    let result = App.update (Msg.BookSortingRequested) initialModel
     Assert.AreEqual(expected, result)
