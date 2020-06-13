@@ -9,8 +9,8 @@ module BookDetailsPage =
     let bookDetailsPageView (model: BookDetailsPageModel) dispatch =
         let descriptionView =
             match model.BookDetails with
-            | Some x -> View.Label(text = model.BookDetails.Value.Description, textType = TextType.Html)
-            | None -> View.Label("no description...")
+            | Some x -> Label.labelHtml model.BookDetails.Value.Description
+            | None -> Label.label "no description..."
 
         let imageView =
             if (Utils.hasImage model.DisplayedBook.Value.ImageUrl)

@@ -22,7 +22,7 @@ module SearchPageViews =
                      (fun () ->
                          if (shouldFetchMoreItems x.End x.Total searchPageModel.Status) then
                              dispatch (Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End))))
-        | None -> View.Label("nothing here yet")
+        | None -> Label.label "nothing here yet"
 
     let searchPageView searchPageModel openDetails sortByRating dispatch =
         View.ContentPage
@@ -33,6 +33,6 @@ module SearchPageViews =
                          [ View.Entry
                              (width = 200.0, placeholder = "Search",
                               completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
-                           View.Label(text = searchPageModel.EnteredText)
+                           Label.label searchPageModel.EnteredText
                            statusLayout (searchPageModel.Status)
                            booksCollectionView searchPageModel openDetails sortByRating dispatch ]))

@@ -9,9 +9,9 @@ module BookItemLayoutModule =
     open Fabulous.XamarinForms
 
     let textInfo (b: BookItem) =
-        [ View.Label(text = b.Title)
-          View.Label(text = b.Author)
-          View.Label(text = sprintf "Avg rating: %.2f*" b.Rating) ]
+        [ Label.label b.Title
+          Label.label b.Author
+          Label.label (sprintf "Avg rating: %.2f*" b.Rating) ]
 
     let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
 
@@ -30,8 +30,7 @@ module BookItemLayoutModule =
 
     let bookItemLayout (b: BookItem, action) =
         View.Frame
-            (padding = Thickness 6.0,
-             backgroundColor = Color.Transparent,
+            (padding = Thickness 6.0, backgroundColor = Color.Transparent,
              content =
                  View.Frame
                      (cornerRadius = 10.0, backgroundColor = Colors.backgroundSecondary, content = chooseBookLayout b,
