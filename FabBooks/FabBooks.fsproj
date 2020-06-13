@@ -11,6 +11,7 @@
         <Compile Include="utils\Either.fs" />
         <Compile Include="utils\Utils.fs" />
         <Compile Include="views\Colors.fs" />
+        <Compile Include="views\Button.fs" />
         <Compile Include="views\BookItemLayout.fs" />
         <Compile Include="views\StatusLayout.fs" />
         <Compile Include="views\BookDetailsPage.fs" />
