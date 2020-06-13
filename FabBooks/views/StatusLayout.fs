@@ -7,6 +7,6 @@ open MainMessages
 module StatusLayout =
     let statusLayout status =
         match status with
-        | Success -> View.Label(text = "Success", textColor = Color.Green)
-        | Failure -> View.Label(text = "Failed", textColor = Color.Red)
-        | Loading -> View.Label(text = "Loading...", textColor = Color.Yellow)
+        | Success -> View.Label(text = "Success", textColor = Colors.success)
+        | Failure -> View.Label(text = "Failed", textColor = Colors.failure)
+        | Loading -> View.Label(text = "Loading...", textColor = Colors.loading)

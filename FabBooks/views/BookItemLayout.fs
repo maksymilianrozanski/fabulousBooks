@@ -31,7 +31,8 @@ module BookItemLayoutModule =
     let bookItemLayout (b: BookItem, action) =
         View.Frame
             (padding = Thickness 6.0,
+             backgroundColor = Color.Transparent,
              content =
                  View.Frame
-                     (cornerRadius = 10.0, backgroundColor = Color.Wheat, content = chooseBookLayout b,
+                     (cornerRadius = 10.0, backgroundColor = Colors.backgroundSecondary, content = chooseBookLayout b,
                       gestureRecognizers = [ View.TapGestureRecognizer(command = action b) ]))

@@ -15,7 +15,9 @@ module SearchPageViews =
         | Some x ->
             View.CollectionView
                 (items =
-                    [ yield View.Button(text = "Sort by rating", cornerRadius = 10, command = sortByRating)
+                    [ yield View.Button
+                                (text = "Sort by rating", backgroundColor = Colors.accentPrimaryLight, cornerRadius = 10,
+                                 command = sortByRating)
                       for b in x.BookItems do
                           yield dependsOn b (fun m b -> bookItemLayout (b, openDetails)) ], remainingItemsThreshold = 2,
                  remainingItemsThresholdReachedCommand =
