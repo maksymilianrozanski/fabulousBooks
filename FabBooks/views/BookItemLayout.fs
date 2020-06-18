@@ -16,7 +16,7 @@ module BookItemLayoutModule =
 
     let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
 
-    let openBrowser (b: BookItem) openBrowserAction = View.Button(text = "open browser", command = openBrowserAction(b))
+    let openBrowser (b: BookItem) openBrowserAction =  Button.button "open goodreads" (openBrowserAction(b))
 
     let private withImage (b: BookItem) =
         View.Grid
