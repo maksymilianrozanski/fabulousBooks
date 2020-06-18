@@ -2,6 +2,7 @@ namespace FabBooks
 
 open Xamarin.Forms
 open Utils
+open Xamarin.Essentials
 
 module BookItemLayoutModule =
 
@@ -14,6 +15,8 @@ module BookItemLayoutModule =
           Label.label (sprintf "Avg rating: %.2f*" b.Rating) ]
 
     let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
+
+    let openBrowser (b: BookItem) openBrowserAction = View.Button(text = "open browser", command = openBrowserAction(b))
 
     let private withImage (b: BookItem) =
         View.Grid
@@ -28,10 +31,15 @@ module BookItemLayoutModule =
     let private chooseBookLayout (b: BookItem) =
         if hasImage (b.ImageUrl) then withImage (b) else withoutImage (b)
 
-    let bookItemLayout (b: BookItem, action) =
+    let bookItemLayout (b: BookItem, action, openBrowserAction) =
         View.Frame
             (padding = Thickness 6.0, backgroundColor = Color.Transparent,
              content =
                  View.Frame
-                     (cornerRadius = 10.0, backgroundColor = Colors.backgroundSecondary, content = chooseBookLayout b,
-                      gestureRecognizers = [ View.TapGestureRecognizer(command = action b) ]))
+                     (cornerRadius = 10.0, backgroundColor = Colors.backgroundSecondary,
+                      content =
+                          View.StackLayout
+                              (children =
+                                  [ chooseBookLayout b
+                                    openBrowser b openBrowserAction ],
+                               gestureRecognizers = [ View.TapGestureRecognizer(command = action b) ])))

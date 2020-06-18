@@ -2,7 +2,10 @@
 
 namespace FabBooks
 
+open System.Runtime.CompilerServices
 open FabBooks.BookDetailsPage
+open FabBooks.MainMessages
+open FabBooks.MainMessages
 open FabBooks.MainMessages
 open Models
 open Fabulous
@@ -14,6 +17,7 @@ open Utils
 open MainModel
 open SearchPageViews
 open FabBooks.SearchResponseModule
+open Xamarin.Essentials
 
 module App =
 
@@ -86,11 +90,23 @@ module App =
                             | Some x -> Some({ x with BookItems = Utils.bookItemsSortedByRatingDesc x.BookItems })
                             | None -> None } }, []
 
+    let onOpenInBrowser book model =
+        model, [ book |> OpenBrowserCmd ]
+
+    let onBrowserOpened model = model, []
+
     let private onMoreBooksRequestedCmd (searchText, endBook) =
         searchWithPage (searchText) (nextPageNumber (endBook))
         |> Async.map Msg.MoreBooksReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
+
+    let private onOpenBrowserCmd (book: BookItem) =
+        Browser.OpenAsync
+            (sprintf ("https://www.goodreads.com/book/show/%i") book.Id, BrowserLaunchMode.SystemPreferred)
+        |> Async.AwaitIAsyncResult
+        |> Async.map Msg.BrowserOpened
+        |> Cmd.ofAsyncMsg
 
     let update =
         function
@@ -106,6 +122,8 @@ module App =
             onMoreBooksRequested (searchText, endBook)
         | Msg.BookResultReceived result ->
             onBookResultReceived result
+        | Msg.OpenBrowserRequested book -> onOpenInBrowser book
+        | Msg.BrowserOpened _ -> onBrowserOpened
         | Msg.UpdateBookDetails book ->
             onUpdateBookDetails book
         | Msg.BookSortingRequested -> onBookSortingRequested
@@ -113,13 +131,13 @@ module App =
     let view (model: Model) dispatch =
 
         let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
+        let openBrowser bookItem = fun () -> Msg.OpenBrowserRequested bookItem |> dispatch
         let sortByRating = fun () -> Msg.BookSortingRequested |> dispatch
 
         View.NavigationPage
-            (
-             backgroundColor = Colors.backgroundPrimary,
+            (backgroundColor = Colors.backgroundPrimary,
              pages =
-                 [ yield searchPageView model.SearchPageModel openDetailsPage sortByRating dispatch
+                 [ yield searchPageView model.SearchPageModel openDetailsPage openBrowser sortByRating dispatch
                    match model.BookDetailsPageModel with
                    | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                    | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
@@ -130,6 +148,7 @@ module App =
         | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
         | MoreBooksRequestedCmd (searchText, endBook) ->
             onMoreBooksRequestedCmd (searchText, endBook)
+        | OpenBrowserCmd book -> onOpenBrowserCmd (book)
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands

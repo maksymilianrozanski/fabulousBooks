@@ -1,5 +1,6 @@
 namespace FabBooks
 
+open System
 open FabBooks
 open FabBooks.BookItemModule
 open FabBooks.Responses
@@ -28,6 +29,8 @@ module MainMessages =
         | ChangeDisplayedPage of DisplayedPage
         | MoreBooksRequested of SearchText * LastLoadedBook
         | BookSortingRequested
+        | OpenBrowserRequested of BookItem
+        | BrowserOpened of Boolean
         //details messages
         | BookResultReceived of SingleBookResponse
         | UpdateBookDetails of BookItem
@@ -36,3 +39,4 @@ module MainMessages =
         | PerformSearchCmd of SearchText * PageNum
         | UpdateBookDetailsCmd of BookItem
         | MoreBooksRequestedCmd of SearchText * LastLoadedBook
+        | OpenBrowserCmd of BookItem
