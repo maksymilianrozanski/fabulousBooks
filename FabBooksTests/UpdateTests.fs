@@ -9,7 +9,10 @@ open Models
 open FabBooks.SingleBookResponseModelModule
 open NUnit.Framework
 open MainModel
+open NUnit.Framework
 open Responses
+
+let exampleApiKey = Some("ExampleApiKey")
 
 [<Test>]
 let shouldUpdateTextAndStatus () =
@@ -18,7 +21,8 @@ let shouldUpdateTextAndStatus () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let queryText = "New text"
 
@@ -27,7 +31,8 @@ let shouldUpdateTextAndStatus () =
               { Status = Loading
                 EnteredText = queryText
                 SearchResponse = None }
-          BookDetailsPageModel = None }, [ PerformSearchCmd(queryText, 1) ]
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, [ PerformSearchCmd(queryText, 1) ]
 
     let result = App.update (Msg.PerformSearch(queryText, 1)) (initialModel)
     Assert.AreEqual(expected, result)
@@ -39,7 +44,8 @@ let shouldUpdateResponseModelAndStatus () =
               { Status = Loading
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let receivedResponseModel =
         { IsSuccessful = true
@@ -53,7 +59,8 @@ let shouldUpdateResponseModelAndStatus () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = Some receivedResponseModel }
-          BookDetailsPageModel = None }, []
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update (Msg.SearchResultReceived receivedResponseModel) initialModel
     Assert.AreEqual(expected, result)
@@ -65,7 +72,8 @@ let shouldChangeDisplayedPageToSearchPage () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = Some(initBookDetailsFromBook (None)) }
+          BookDetailsPageModel = Some(initBookDetailsFromBook (None))
+          GoodreadsApiKey = exampleApiKey }
 
     let pageMsg = Msg.ChangeDisplayedPage SearchPage
 
@@ -74,7 +82,8 @@ let shouldChangeDisplayedPageToSearchPage () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = None }, []
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
@@ -86,7 +95,8 @@ let ``should change displayed page to DetailsPage`` () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let book = BookItem("Author", "Title", "https://example.com", "https://example.com", 42, 4.3)
     let pageMsg = Msg.ChangeDisplayedPage(DetailsPage(book))
@@ -96,7 +106,8 @@ let ``should change displayed page to DetailsPage`` () =
               { Status = Success
                 EnteredText = "Init text"
                 SearchResponse = None }
-          BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book))) }, [ book |> UpdateBookDetailsCmd ]
+          BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book)))
+          GoodreadsApiKey = exampleApiKey }, [ book |> UpdateBookDetailsCmd ]
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
@@ -114,7 +125,8 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
-                     Status = Status.Loading }) }
+                     Status = Status.Loading })
+          GoodreadsApiKey = exampleApiKey }
 
     let response = SingleBookResponse(true, "book description", "https://example.com")
 
@@ -127,7 +139,8 @@ let ``should update BookDetailsPageModel on BookResultReceived`` () =
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = Some(response)
-                     Status = Status.Success }) }, []
+                     Status = Status.Success })
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update (Msg.BookResultReceived response) initialModel
     Assert.AreEqual(expected, result)
@@ -145,7 +158,8 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
-                     Status = Status.Loading }) }
+                     Status = Status.Loading })
+          GoodreadsApiKey = exampleApiKey }
 
     let response = SingleBookResponse(false, "response was not successful", "https://example.com")
 
@@ -158,7 +172,8 @@ let ``should update BookDetailsPageModel on BookResultReceived - expected Failur
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = Some(response)
-                     Status = Status.Failure }) }, []
+                     Status = Status.Failure })
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update (Msg.BookResultReceived response) initialModel
     Assert.AreEqual(expected, result)
@@ -176,7 +191,8 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
-                     Status = Status.Success }) }
+                     Status = Status.Success })
+          GoodreadsApiKey = exampleApiKey }
 
     let expected =
         { SearchPageModel =
@@ -187,7 +203,8 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
               Some
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
-                     Status = Status.Loading }) }, [ UpdateBookDetailsCmd book ]
+                     Status = Status.Loading })
+          GoodreadsApiKey = exampleApiKey }, [ UpdateBookDetailsCmd book ]
 
     let result = App.update (Msg.UpdateBookDetails book) initialModel
     Assert.AreEqual(expected, result)
@@ -211,7 +228,8 @@ let ``should update model on MoreBooksReceived`` () =
                           End = 21
                           Total = 125
                           BookItems = initBookItems } }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let moreBookItems =
         [ for i in 21 .. 41 do
@@ -236,7 +254,8 @@ let ``should update model on MoreBooksReceived`` () =
                           Total = 125
                           BookItems = initBookItems @ moreBookItems } }
 
-          BookDetailsPageModel = None }, []
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update (Msg.MoreBooksReceived receivedResponseModel) initialModel
     Assert.AreEqual(expected, result)
@@ -261,7 +280,8 @@ let ``should call MoreBooksRequestedCmd`` () =
                           End = lastLoadedBook
                           Total = 125
                           BookItems = bookItems } }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let expected =
         { SearchPageModel =
@@ -275,7 +295,8 @@ let ``should call MoreBooksRequestedCmd`` () =
                           Total = 125
                           BookItems = bookItems } }
 
-          BookDetailsPageModel = None }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
 
     let result = App.update (Msg.MoreBooksRequested(searchText, lastLoadedBook)) initialModel
     Assert.AreEqual(expected, result)
@@ -299,7 +320,8 @@ let ``should return items sorted by rating`` () =
                           End = 4
                           Total = 125
                           BookItems = initialBookItems } }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let expectedBooks =
         [ initialBookItems.[2]
@@ -318,7 +340,8 @@ let ``should return items sorted by rating`` () =
                           End = 4
                           Total = 125
                           BookItems = expectedBooks } }
-          BookDetailsPageModel = None }, []
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }, []
 
     let result = App.update (Msg.BookSortingRequested) initialModel
     Assert.AreEqual(expected, result)
@@ -330,8 +353,83 @@ let ``should return 'None' when empty items`` () =
               { Status = Success
                 EnteredText = "Search-text"
                 SearchResponse = None }
-          BookDetailsPageModel = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = exampleApiKey }
 
     let expected = initialModel, []
     let result = App.update (Msg.BookSortingRequested) initialModel
+    Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should call function saving api key when key is empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = None }
+        
+    let savingFunc key=
+        sprintf ("%s World!") key
+    
+    let expected =
+        {initialModel with GoodreadsApiKey = Some("Hello World!")}, []
+    let result = App.update ((Msg.SaveGoodreadsKey) ("Hello", savingFunc)) initialModel
+    Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should call function saving api key when key is not empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = Some("old key") }
+        
+    let savingFunc key=
+        sprintf ("%s World!") key
+    
+    let expected =
+        {initialModel with GoodreadsApiKey = Some("Hello World!")}, []
+    let result = App.update ((Msg.SaveGoodreadsKey) ("Hello", savingFunc)) initialModel
+    Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should call function deleting api key when key is not empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = Some("old key") }
+        
+    let deletingFunc () =
+        true
+        
+    let expected =
+        {initialModel with GoodreadsApiKey = None}, []
+        
+    let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should call function deleting api key when key is empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = None }
+        
+    let deletingFunc () =
+        false
+        
+    let expected =
+        {initialModel with GoodreadsApiKey = None}, []
+        
+    let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
     Assert.AreEqual(expected, result)

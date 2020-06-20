@@ -31,6 +31,9 @@ module MainMessages =
         | BookSortingRequested
         | OpenBrowserRequested of BookItem
         | BrowserOpened of Boolean
+        //api key
+        | SaveGoodreadsKey of (string * (string -> string))
+        | RemoveGoodreadsKey of (unit -> bool)
         //details messages
         | BookResultReceived of SingleBookResponse
         | UpdateBookDetails of BookItem

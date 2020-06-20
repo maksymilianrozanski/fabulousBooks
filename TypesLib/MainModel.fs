@@ -5,9 +5,11 @@ open Models
 
 module MainModel =
     type Model =
-        { SearchPageModel: SearchPageModel
+        { GoodreadsApiKey: Option<string>
+          SearchPageModel: SearchPageModel
           BookDetailsPageModel: Option<BookDetailsPageModel> }
 
     let init () =
-        { SearchPageModel = initSearchPageModel
+        { GoodreadsApiKey = None
+          SearchPageModel = initSearchPageModel
           BookDetailsPageModel = None }, []

@@ -34,6 +34,7 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\NetworkLib\NetworkLib.fsproj" />
+      <ProjectReference Include="..\StorageLib\StorageLib.fsproj" />
       <ProjectReference Include="..\TypesLib\TypesLib.fsproj" />
       <ProjectReference Include="..\XmlProviderLib\XmlProviderLib.fsproj" />
     </ItemGroup>
