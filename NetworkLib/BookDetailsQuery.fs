@@ -3,9 +3,9 @@ namespace FabBooks
 open System.Web
 open System
 open FSharp.Data
+open FabBooks.MainMessages
 open FabBooks.Responses
 open SingleBookResponseModelModule
-open GoodreadsApiKey
 
 module BookDetailsQuery =
 
@@ -21,7 +21,7 @@ module BookDetailsQuery =
 
     let private emptySingleBookResponse = SingleBookResponse(false, "", "")
 
-    let private bookGet (key: ApiKey) (goodreadsBookId: int) =
+    let bookGet (key: ApiKey) (goodreadsBookId: int) =
         let getRequest = goodreadsBookRequestBuilder goodreadsBookId (bookQuery key)
         getRequest.ToString()
         |> Http.AsyncRequestString
@@ -29,5 +29,3 @@ module BookDetailsQuery =
         |> Async.map (function
             | Choice1Of2 x -> x |> singleBookFromXml
             | Choice2Of2 _ -> emptySingleBookResponse)
-
-    let bookWithKey = bookGet goodreadsApiKey

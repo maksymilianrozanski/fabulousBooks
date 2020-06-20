@@ -17,6 +17,8 @@
         <Compile Include="views\StatusLayout.fs" />
         <Compile Include="views\BookDetailsPage.fs" />
         <Compile Include="views\SearchPageViews.fs" />
+        <Compile Include="Update.fs" />
+        <Compile Include="UpdateCmd.fs" />
         <Compile Include="FabBooks.fs" />
         <Compile Include="CompilerDirectives.fs" />
     </ItemGroup>

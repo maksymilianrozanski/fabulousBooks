@@ -6,7 +6,6 @@
 
     <ItemGroup>
         <Compile Include="Async.fs" />
-        <Compile Include="GoodreadsApiKey.fs" />
         <Compile Include="SearchQuery.fs" />
         <Compile Include="BookDetailsQuery.fs" />
         <Compile Include="Library.fs" />

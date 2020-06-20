@@ -15,6 +15,8 @@ module MainMessages =
     type PageNum = int
 
     type SearchText = string
+    type ApiKey = string
+    let deleteApiKeyCommand = "-deleteapikey"
 
     type Status =
         | Success
@@ -23,7 +25,7 @@ module MainMessages =
 
     type Msg =
         //search messages
-        | PerformSearch of SearchText * PageNum
+        | SearchTextEntered of SearchText * PageNum
         | SearchResultReceived of SearchResponse
         | MoreBooksReceived of SearchResponse
         | ChangeDisplayedPage of DisplayedPage
@@ -39,7 +41,8 @@ module MainMessages =
         | UpdateBookDetails of BookItem
 
     type CmdMsg =
-        | PerformSearchCmd of SearchText * PageNum
-        | UpdateBookDetailsCmd of BookItem
-        | MoreBooksRequestedCmd of SearchText * LastLoadedBook
+        | PerformSearchCmd of ApiKey * SearchText * PageNum
+        | UpdateBookDetailsCmd of ApiKey * BookItem
+        | MoreBooksRequestedCmd of ApiKey * SearchText * LastLoadedBook
         | OpenBrowserCmd of BookItem
+        | DeleteApiKeyCmd

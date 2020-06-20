@@ -10,6 +10,7 @@ open FabBooks.SingleBookResponseModelModule
 open NUnit.Framework
 open MainModel
 open NUnit.Framework
+open NUnit.Framework
 open Responses
 
 let exampleApiKey = Some("ExampleApiKey")
@@ -32,9 +33,9 @@ let shouldUpdateTextAndStatus () =
                 EnteredText = queryText
                 SearchResponse = None }
           BookDetailsPageModel = None
-          GoodreadsApiKey = exampleApiKey }, [ PerformSearchCmd(queryText, 1) ]
+          GoodreadsApiKey = exampleApiKey }, [ PerformSearchCmd(exampleApiKey.Value, queryText, 1) ]
 
-    let result = App.update (Msg.PerformSearch(queryText, 1)) (initialModel)
+    let result = App.update (Msg.SearchTextEntered(queryText, 1)) (initialModel)
     Assert.AreEqual(expected, result)
 
 [<Test>]
@@ -107,7 +108,7 @@ let ``should change displayed page to DetailsPage`` () =
                 EnteredText = "Init text"
                 SearchResponse = None }
           BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book)))
-          GoodreadsApiKey = exampleApiKey }, [ book |> UpdateBookDetailsCmd ]
+          GoodreadsApiKey = exampleApiKey }, [ (exampleApiKey.Value,  book) |> UpdateBookDetailsCmd ]
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
@@ -204,7 +205,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
                      Status = Status.Loading })
-          GoodreadsApiKey = exampleApiKey }, [ UpdateBookDetailsCmd book ]
+          GoodreadsApiKey = exampleApiKey }, [ UpdateBookDetailsCmd (exampleApiKey.Value,  book) ]
 
     let result = App.update (Msg.UpdateBookDetails book) initialModel
     Assert.AreEqual(expected, result)
@@ -296,7 +297,7 @@ let ``should call MoreBooksRequestedCmd`` () =
                           BookItems = bookItems } }
 
           BookDetailsPageModel = None
-          GoodreadsApiKey = exampleApiKey }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
+          GoodreadsApiKey = exampleApiKey }, [ (exampleApiKey.Value, searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
 
     let result = App.update (Msg.MoreBooksRequested(searchText, lastLoadedBook)) initialModel
     Assert.AreEqual(expected, result)
@@ -432,4 +433,19 @@ let ``should call function deleting api key when key is empty``() =
         {initialModel with GoodreadsApiKey = None}, []
         
     let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
+    Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should delete api key when -deleteapikey entered to search text``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = Some("old key") }
+
+    let expected =
+        Update.modelWithoutKey, [CmdMsg.DeleteApiKeyCmd]
+    let result = App.update (Msg.SearchTextEntered (MainMessages.deleteApiKeyCommand, 1)) initialModel
     Assert.AreEqual(expected, result)

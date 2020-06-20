@@ -8,7 +8,6 @@ open FSharp.Data
 open FabBooks.MainMessages
 open FabBooks.Responses
 open SearchResponseModule
-open GoodreadsApiKey
 
 module SearchQuery =
     
@@ -41,5 +40,5 @@ module SearchQuery =
         |> Async.map (function
             | Choice1Of2 x -> x |> goodreadsFromXml
             | Choice2Of2 _ -> emptySearchResponse)
-   
-    let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
+    
+    let searchWithPage apiKey =  searchGet goodreadsSearchRequestBuilder (queryWithPage (apiKey))

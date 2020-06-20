@@ -1,20 +1,21 @@
 namespace FabBooks
 
-module PreferencesModule =
+open Xamarin.Essentials
 
-    open Xamarin.Essentials
+module PreferencesModule =
 
     let private apiKey = "preferencesGoodreadsApiKey"
 
     let saveApiKey (key: string) =
+        Preferences.Remove(apiKey)
         Preferences.Set(apiKey, key)
         key
 
-    let getApiKey =
+    let getApiKey () =
         match Preferences.Get(apiKey, "") with
         | "" -> Option.None
         | x -> Some(x)
 
-    let deleteKey =
+    let deleteKey () =
         Preferences.Remove(apiKey)
         true
