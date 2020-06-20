@@ -8,6 +8,7 @@ module PreferencesModule =
 
     let saveApiKey (key: string) =
         Preferences.Set(apiKey, key)
+        key
 
     let getApiKey =
         match Preferences.Get(apiKey, "") with
