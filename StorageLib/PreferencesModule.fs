@@ -15,4 +15,6 @@ module PreferencesModule =
         | "" -> Option.None
         | x -> Some(x)
 
-    let deleteKey = Preferences.Remove(apiKey)
+    let deleteKey =
+        Preferences.Remove(apiKey)
+        true

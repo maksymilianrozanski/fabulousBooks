@@ -395,3 +395,41 @@ let ``should call function saving api key when key is not empty``() =
         {initialModel with GoodreadsApiKey = Some("Hello World!")}, []
     let result = App.update ((Msg.SaveGoodreadsKey) ("Hello", savingFunc)) initialModel
     Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should call function deleting api key when key is not empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = Some("old key") }
+        
+    let deletingFunc () =
+        true
+        
+    let expected =
+        {initialModel with GoodreadsApiKey = None}, []
+        
+    let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
+    Assert.AreEqual(expected, result)
+
+[<Test>]
+let ``should call function deleting api key when key is empty``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = None }
+        
+    let deletingFunc () =
+        false
+        
+    let expected =
+        {initialModel with GoodreadsApiKey = None}, []
+        
+    let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
+    Assert.AreEqual(expected, result)

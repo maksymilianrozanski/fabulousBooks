@@ -78,7 +78,11 @@ module App =
                              Status = statusFromBool (result.IsSuccessful) }) }, []
 
     let private onSavingGoodreadsKey (key, savingFunc) model =
-        { model with GoodreadsApiKey = Some(savingFunc(key)) }, []
+        { model with GoodreadsApiKey = Some(savingFunc (key)) }, []
+
+    let private onRemoveGoodreadsKey (deletingFunc: unit -> bool) model =
+        deletingFunc () |> ignore
+        { model with GoodreadsApiKey = None }, []
 
     let private onUpdateBookDetails book model =
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
@@ -128,7 +132,8 @@ module App =
         | Msg.OpenBrowserRequested book -> onOpenInBrowser book
         | Msg.BrowserOpened _ -> onBrowserOpened
         | Msg.SaveGoodreadsKey (key, savingFunc) ->
-            onSavingGoodreadsKey(key, savingFunc)
+            onSavingGoodreadsKey (key, savingFunc)
+        | Msg.RemoveGoodreadsKey deletingFunc -> onRemoveGoodreadsKey (deletingFunc)
         | Msg.UpdateBookDetails book ->
             onUpdateBookDetails book
         | Msg.BookSortingRequested -> onBookSortingRequested
