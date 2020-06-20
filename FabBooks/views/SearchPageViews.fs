@@ -1,5 +1,6 @@
 namespace FabBooks
 
+open FabBooks.MainModel
 open FabBooks.Models
 open Fabulous.XamarinForms
 open Fabulous
@@ -17,22 +18,36 @@ module SearchPageViews =
                 (items =
                     [ yield (Button.button "Sort by rating" sortByRating)
                       for b in x.BookItems do
-                          yield dependsOn b (fun m b -> bookItemLayout (b, openDetails, openBrowser)) ], remainingItemsThreshold = 2,
+                          yield dependsOn b (fun m b -> bookItemLayout (b, openDetails, openBrowser)) ],
+                 remainingItemsThreshold = 2,
                  remainingItemsThresholdReachedCommand =
                      (fun () ->
                          if (shouldFetchMoreItems x.End x.Total searchPageModel.Status) then
                              dispatch (Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End))))
         | None -> Label.label "nothing here yet"
 
-    let searchPageView searchPageModel openDetails openBrowser sortByRating dispatch =
+    let searchPageView (model: Model) openDetails openBrowser sortByRating dispatch =
+        let searchPageViewContent =
+            View.StackLayout
+                (padding = Thickness 8.0, verticalOptions = LayoutOptions.Start,
+                 children =
+                     [ View.Entry
+                         (width = 200.0, placeholder = "Search",
+                          completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
+                       Label.label model.SearchPageModel.EnteredText
+                       statusLayout model.SearchPageModel.Status
+                       booksCollectionView model.SearchPageModel openDetails openBrowser sortByRating dispatch ])
+
+        let apiKeyInput =
+            View.StackLayout
+                (children =
+                    [ View.Entry
+                        (width = 200.0, placeholder = "enter goodreads api key",
+                         completed =
+                             fun textArgs -> Msg.SaveGoodreadsKey(textArgs, PreferencesModule.saveApiKey) |> dispatch) ])
+
         View.ContentPage
             (content =
-                View.StackLayout
-                    (padding = Thickness 8.0, verticalOptions = LayoutOptions.Start,
-                     children =
-                         [ View.Entry
-                             (width = 200.0, placeholder = "Search",
-                              completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
-                           Label.label searchPageModel.EnteredText
-                           statusLayout (searchPageModel.Status)
-                           booksCollectionView searchPageModel openDetails openBrowser sortByRating dispatch ]))
+                match model.GoodreadsApiKey with
+                | None -> apiKeyInput
+                | Some x -> searchPageViewContent)

@@ -2,10 +2,7 @@
 
 namespace FabBooks
 
-open System.Runtime.CompilerServices
 open FabBooks.BookDetailsPage
-open FabBooks.MainMessages
-open FabBooks.MainMessages
 open FabBooks.MainMessages
 open Models
 open Fabulous
@@ -147,7 +144,7 @@ module App =
         View.NavigationPage
             (backgroundColor = Colors.backgroundPrimary,
              pages =
-                 [ yield searchPageView model.SearchPageModel openDetailsPage openBrowser sortByRating dispatch
+                 [ yield searchPageView model openDetailsPage openBrowser sortByRating dispatch
                    match model.BookDetailsPageModel with
                    | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                    | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
@@ -159,6 +156,11 @@ module App =
         | MoreBooksRequestedCmd (searchText, endBook) ->
             onMoreBooksRequestedCmd (searchText, endBook)
         | OpenBrowserCmd book -> onOpenBrowserCmd (book)
+
+    let init () =
+        { GoodreadsApiKey = PreferencesModule.getApiKey
+          SearchPageModel = initSearchPageModel
+          BookDetailsPageModel = None }, []
 
     // Note, this declaration is needed if you enable LiveUpdate
     let program = Program.mkProgramWithCmdMsg init update view mapCommands
