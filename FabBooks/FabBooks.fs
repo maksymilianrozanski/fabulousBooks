@@ -30,12 +30,20 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
+    let modelWithoutKey =
+        { GoodreadsApiKey = None
+          SearchPageModel = initSearchPageModel
+          BookDetailsPageModel = None }
+
     let private onMsgPerformSearch (text, pageNum) model =
-        { model with
-              SearchPageModel =
-                  { model.SearchPageModel with
-                        Status = Status.Loading
-                        EnteredText = text } }, [ (model.GoodreadsApiKey.Value, text, pageNum) |> PerformSearchCmd ]
+        if (text = MainMessages.deleteApiKeyCommand) then
+            modelWithoutKey, [ DeleteApiKeyCmd ]
+        else
+            { model with
+                  SearchPageModel =
+                      { model.SearchPageModel with
+                            Status = Status.Loading
+                            EnteredText = text } }, [ (model.GoodreadsApiKey.Value, text, pageNum) |> PerformSearchCmd ]
 
     let private onMoreBooksRequested (searchText, endBook) model =
         { model with SearchPageModel = { model.SearchPageModel with Status = Status.Loading } },
@@ -113,6 +121,10 @@ module App =
         |> Async.map Msg.BrowserOpened
         |> Cmd.ofAsyncMsg
 
+    let private onDeleteApiKeyCmd () =
+        PreferencesModule.deleteKey |> ignore
+        Cmd.none
+
     let update =
         function
         | Msg.SearchTextEntered (text, pageNum) ->
@@ -157,6 +169,7 @@ module App =
         | MoreBooksRequestedCmd (apiKey, searchText, endBook) ->
             onMoreBooksRequestedCmd (apiKey, searchText, endBook)
         | OpenBrowserCmd book -> onOpenBrowserCmd (book)
+        | DeleteApiKeyCmd -> onDeleteApiKeyCmd ()
 
     let init () =
         { GoodreadsApiKey = PreferencesModule.getApiKey

@@ -10,6 +10,7 @@ open FabBooks.SingleBookResponseModelModule
 open NUnit.Framework
 open MainModel
 open NUnit.Framework
+open NUnit.Framework
 open Responses
 
 let exampleApiKey = Some("ExampleApiKey")
@@ -432,4 +433,19 @@ let ``should call function deleting api key when key is empty``() =
         {initialModel with GoodreadsApiKey = None}, []
         
     let result = App.update (Msg.RemoveGoodreadsKey deletingFunc) initialModel
+    Assert.AreEqual(expected, result)
+    
+[<Test>]
+let ``should delete api key when -deleteapikey entered to search text``() =
+    let initialModel =
+        { SearchPageModel =
+              { Status = Success
+                EnteredText = "Init text"
+                SearchResponse = None }
+          BookDetailsPageModel = None
+          GoodreadsApiKey = Some("old key") }
+
+    let expected =
+        App.modelWithoutKey, [CmdMsg.DeleteApiKeyCmd]
+    let result = App.update (Msg.SearchTextEntered (MainMessages.deleteApiKeyCommand, 1)) initialModel
     Assert.AreEqual(expected, result)
