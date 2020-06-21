@@ -446,6 +446,6 @@ let ``should delete api key when -deleteapikey entered to search text``() =
           GoodreadsApiKey = Some("old key") }
 
     let expected =
-        App.modelWithoutKey, [CmdMsg.DeleteApiKeyCmd]
+        Update.modelWithoutKey, [CmdMsg.DeleteApiKeyCmd]
     let result = App.update (Msg.SearchTextEntered (MainMessages.deleteApiKeyCommand, 1)) initialModel
     Assert.AreEqual(expected, result)
