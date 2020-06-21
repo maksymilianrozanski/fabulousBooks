@@ -8,7 +8,6 @@ open FSharp.Data
 open FabBooks.MainMessages
 open FabBooks.Responses
 open SearchResponseModule
-open GoodreadsApiKey
 
 module SearchQuery =
     

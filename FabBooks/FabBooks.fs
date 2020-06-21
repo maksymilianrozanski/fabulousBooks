@@ -24,8 +24,8 @@ module App =
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
 
-    let updateBookDetailsCmd (bookItem: BookItem) =
-        bookWithKey bookItem.Id
+    let updateBookDetailsCmd apiKey (bookItem: BookItem) =
+        bookGet apiKey bookItem.Id
         |> Async.map Msg.BookResultReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
@@ -64,7 +64,7 @@ module App =
         | SearchPage -> { model with BookDetailsPageModel = None }, []
         | DetailsPage book ->
             { model with BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book))) },
-            [ book |> UpdateBookDetailsCmd ]
+            [ (model.GoodreadsApiKey.Value, book) |> UpdateBookDetailsCmd ]
 
     let private onBookResultReceived result model =
         { model with
@@ -82,8 +82,9 @@ module App =
         { model with GoodreadsApiKey = None }, []
 
     let private onUpdateBookDetails book model =
+        //todo: add refresh button in book details view
         { model with BookDetailsPageModel = Some({ model.BookDetailsPageModel.Value with Status = Status.Loading }) },
-        [ book |> UpdateBookDetailsCmd ]
+        [ (model.GoodreadsApiKey.Value, book) |> UpdateBookDetailsCmd ]
 
     let private onBookSortingRequested model =
         { model with
@@ -152,7 +153,7 @@ module App =
     let mapCommands cmdMsg =
         match cmdMsg with
         | PerformSearchCmd (apiKey, searchText, pageNum) -> performSearchCmd apiKey searchText pageNum
-        | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
+        | UpdateBookDetailsCmd (apiKey, bookItem) -> updateBookDetailsCmd apiKey bookItem
         | MoreBooksRequestedCmd (apiKey, searchText, endBook) ->
             onMoreBooksRequestedCmd (apiKey, searchText, endBook)
         | OpenBrowserCmd book -> onOpenBrowserCmd (book)

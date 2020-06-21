@@ -107,7 +107,7 @@ let ``should change displayed page to DetailsPage`` () =
                 EnteredText = "Init text"
                 SearchResponse = None }
           BookDetailsPageModel = Some(initBookDetailsFromBook (Some(book)))
-          GoodreadsApiKey = exampleApiKey }, [ book |> UpdateBookDetailsCmd ]
+          GoodreadsApiKey = exampleApiKey }, [ (exampleApiKey.Value,  book) |> UpdateBookDetailsCmd ]
 
     let result = App.update pageMsg initialModel
     Assert.AreEqual(expected, result)
@@ -204,7 +204,7 @@ let ``should set Loading status in BookDetailsPageModel and call UpdateBookDetai
                   ({ DisplayedBook = Some(book)
                      BookDetails = None
                      Status = Status.Loading })
-          GoodreadsApiKey = exampleApiKey }, [ UpdateBookDetailsCmd book ]
+          GoodreadsApiKey = exampleApiKey }, [ UpdateBookDetailsCmd (exampleApiKey.Value,  book) ]
 
     let result = App.update (Msg.UpdateBookDetails book) initialModel
     Assert.AreEqual(expected, result)

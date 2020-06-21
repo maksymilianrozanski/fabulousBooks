@@ -41,6 +41,6 @@ module MainMessages =
 
     type CmdMsg =
         | PerformSearchCmd of ApiKey * SearchText * PageNum
-        | UpdateBookDetailsCmd of BookItem
+        | UpdateBookDetailsCmd of ApiKey * BookItem
         | MoreBooksRequestedCmd of ApiKey * SearchText * LastLoadedBook
         | OpenBrowserCmd of BookItem
