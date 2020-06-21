@@ -296,7 +296,7 @@ let ``should call MoreBooksRequestedCmd`` () =
                           BookItems = bookItems } }
 
           BookDetailsPageModel = None
-          GoodreadsApiKey = exampleApiKey }, [ (searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
+          GoodreadsApiKey = exampleApiKey }, [ (exampleApiKey.Value, searchText, lastLoadedBook) |> MoreBooksRequestedCmd ]
 
     let result = App.update (Msg.MoreBooksRequested(searchText, lastLoadedBook)) initialModel
     Assert.AreEqual(expected, result)

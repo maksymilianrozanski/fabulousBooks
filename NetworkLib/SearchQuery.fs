@@ -41,7 +41,5 @@ module SearchQuery =
         |> Async.map (function
             | Choice1Of2 x -> x |> goodreadsFromXml
             | Choice2Of2 _ -> emptySearchResponse)
-   
-    let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
     
-    let searchWithPage2 apiKey =  searchGet goodreadsSearchRequestBuilder (queryWithPage (apiKey))
+    let searchWithPage apiKey =  searchGet goodreadsSearchRequestBuilder (queryWithPage (apiKey))
