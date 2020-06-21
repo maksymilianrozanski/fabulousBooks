@@ -1,5 +1,6 @@
 namespace FabBooks
 
+open FabBooks.MainMessages
 open Xamarin.Forms
 open Utils
 open Xamarin.Essentials
@@ -16,7 +17,8 @@ module BookItemLayoutModule =
 
     let bookImage (b: BookItem) = View.Image(source = ImagePath b.SmallImageUrl, width = 240.0, height = 240.0)
 
-    let openBrowser (b: BookItem) openBrowserAction =  Button.button "open goodreads" (openBrowserAction(b))
+    let openBrowserButton (b: BookItem) dispatch =
+        Button.button "open goodreads" (fun () -> Msg.OpenBrowserRequested b |> dispatch)
 
     let private withImage (b: BookItem) =
         View.Grid
@@ -31,7 +33,7 @@ module BookItemLayoutModule =
     let private chooseBookLayout (b: BookItem) =
         if hasImage (b.ImageUrl) then withImage (b) else withoutImage (b)
 
-    let bookItemLayout (b: BookItem, action, openBrowserAction) =
+    let bookItemLayout (b: BookItem) dispatch =
         View.Frame
             (padding = Thickness 6.0, backgroundColor = Color.Transparent,
              content =
@@ -41,5 +43,7 @@ module BookItemLayoutModule =
                           View.StackLayout
                               (children =
                                   [ chooseBookLayout b
-                                    openBrowser b openBrowserAction ],
-                               gestureRecognizers = [ View.TapGestureRecognizer(command = action b) ])))
+                                    openBrowserButton b dispatch ],
+                               gestureRecognizers =
+                                   [ View.TapGestureRecognizer
+                                       (command = fun () -> Msg.ChangeDisplayedPage(DetailsPage b) |> dispatch) ])))

@@ -11,22 +11,24 @@ open StatusLayout
 open MainMessages
 
 module SearchPageViews =
-    let private booksCollectionView searchPageModel openDetails openBrowser sortByRating dispatch =
+    let private booksCollectionView searchPageModel dispatch =
+        let sortByRatingButton =
+            Button.button "Sort by rating" (fun () -> Msg.BookSortingRequested |> dispatch)
+
         match searchPageModel.SearchResponse with
         | Some x ->
             View.CollectionView
                 (items =
-                    [ yield (Button.button "Sort by rating" sortByRating)
+                    [ yield (sortByRatingButton)
                       for b in x.BookItems do
-                          yield dependsOn b (fun m b -> bookItemLayout (b, openDetails, openBrowser)) ],
-                 remainingItemsThreshold = 2,
+                          yield dependsOn b (fun m b -> bookItemLayout b dispatch) ], remainingItemsThreshold = 2,
                  remainingItemsThresholdReachedCommand =
                      (fun () ->
                          if (shouldFetchMoreItems x.End x.Total searchPageModel.Status) then
-                             dispatch (Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End))))
+                             Msg.MoreBooksRequested(searchPageModel.EnteredText, x.End) |> dispatch))
         | None -> Label.label "nothing here yet"
 
-    let searchPageView (model: Model) openDetails openBrowser sortByRating dispatch =
+    let searchPageView (model: Model) dispatch =
         let searchPageViewContent =
             View.StackLayout
                 (padding = Thickness 8.0, verticalOptions = LayoutOptions.Start,
@@ -37,7 +39,7 @@ module SearchPageViews =
                        Label.label model.SearchPageModel.EnteredText
                        statusLayout model.SearchPageModel.Status
                        //todo: should not display sort by rating when status failed and empty results
-                       booksCollectionView model.SearchPageModel openDetails openBrowser sortByRating dispatch ])
+                       booksCollectionView model.SearchPageModel dispatch ])
 
         let apiKeyInput =
             View.StackLayout

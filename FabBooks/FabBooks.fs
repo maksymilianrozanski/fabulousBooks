@@ -122,7 +122,7 @@ module App =
         |> Cmd.ofAsyncMsg
 
     let private onDeleteApiKeyCmd () =
-        PreferencesModule.deleteKey |> ignore
+        PreferencesModule.deleteKey () |> ignore
         Cmd.none
 
     let update =
@@ -149,15 +149,10 @@ module App =
         | Msg.BookSortingRequested -> onBookSortingRequested
 
     let view (model: Model) dispatch =
-
-        let openDetailsPage bookItem = fun () -> Msg.ChangeDisplayedPage(DetailsPage bookItem) |> dispatch
-        let openBrowser bookItem = fun () -> Msg.OpenBrowserRequested bookItem |> dispatch
-        let sortByRating = fun () -> Msg.BookSortingRequested |> dispatch
-
         View.NavigationPage
             (backgroundColor = Colors.backgroundPrimary,
              pages =
-                 [ yield searchPageView model openDetailsPage openBrowser sortByRating dispatch
+                 [ yield searchPageView model dispatch
                    match model.BookDetailsPageModel with
                    | Some x -> yield bookDetailsPageView model.BookDetailsPageModel.Value dispatch
                    | _ -> () ], popped = fun _ -> Msg.ChangeDisplayedPage SearchPage |> dispatch)
@@ -172,7 +167,7 @@ module App =
         | DeleteApiKeyCmd -> onDeleteApiKeyCmd ()
 
     let init () =
-        { GoodreadsApiKey = PreferencesModule.getApiKey
+        { GoodreadsApiKey = PreferencesModule.getApiKey ()
           SearchPageModel = initSearchPageModel
           BookDetailsPageModel = None }, []
 
