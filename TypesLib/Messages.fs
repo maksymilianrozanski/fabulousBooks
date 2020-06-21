@@ -24,7 +24,7 @@ module MainMessages =
 
     type Msg =
         //search messages
-        | PerformSearch of SearchText * PageNum
+        | SearchTextEntered of SearchText * PageNum
         | SearchResultReceived of SearchResponse
         | MoreBooksReceived of SearchResponse
         | ChangeDisplayedPage of DisplayedPage

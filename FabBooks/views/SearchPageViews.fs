@@ -33,7 +33,7 @@ module SearchPageViews =
                  children =
                      [ View.Entry
                          (width = 200.0, placeholder = "Search",
-                          completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
+                          completed = fun textArgs -> Msg.SearchTextEntered(textArgs, 1) |> dispatch)
                        Label.label model.SearchPageModel.EnteredText
                        statusLayout model.SearchPageModel.Status
                        //todo: should not display sort by rating when status failed and empty results

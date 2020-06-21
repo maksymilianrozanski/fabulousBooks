@@ -115,7 +115,7 @@ module App =
 
     let update =
         function
-        | Msg.PerformSearch (text, pageNum) ->
+        | Msg.SearchTextEntered (text, pageNum) ->
             onMsgPerformSearch (text, pageNum)
         | Msg.SearchResultReceived result ->
             onSearchResultReceived result
