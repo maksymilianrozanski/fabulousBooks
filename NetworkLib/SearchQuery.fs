@@ -43,3 +43,5 @@ module SearchQuery =
             | Choice2Of2 _ -> emptySearchResponse)
    
     let searchWithPage = searchGet goodreadsSearchRequestBuilder (queryWithPage (goodreadsApiKey))
+    
+    let searchWithPage2 apiKey =  searchGet goodreadsSearchRequestBuilder (queryWithPage (apiKey))

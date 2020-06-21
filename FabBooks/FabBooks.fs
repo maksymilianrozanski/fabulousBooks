@@ -18,8 +18,8 @@ open Xamarin.Essentials
 
 module App =
 
-    let performSearchCmd text pageNum =
-        searchWithPage text pageNum
+    let performSearchCmd apiKey text pageNum =
+        searchWithPage2 apiKey text pageNum
         |> Async.map Msg.SearchResultReceived
         |> Async.map (fun x -> Some x)
         |> Cmd.ofAsyncMsgOption
@@ -35,7 +35,7 @@ module App =
               SearchPageModel =
                   { model.SearchPageModel with
                         Status = Status.Loading
-                        EnteredText = text } }, [ (text, pageNum) |> PerformSearchCmd ]
+                        EnteredText = text } }, [ (model.GoodreadsApiKey.Value, text, pageNum) |> PerformSearchCmd ]
 
     let private onMoreBooksRequested (searchText, endBook) model =
         { model with SearchPageModel = { model.SearchPageModel with Status = Status.Loading } },
@@ -151,7 +151,7 @@ module App =
 
     let mapCommands cmdMsg =
         match cmdMsg with
-        | PerformSearchCmd (searchText, pageNum) -> performSearchCmd searchText pageNum
+        | PerformSearchCmd (apiKey, searchText, pageNum) -> performSearchCmd apiKey searchText pageNum
         | UpdateBookDetailsCmd bookItem -> updateBookDetailsCmd bookItem
         | MoreBooksRequestedCmd (searchText, endBook) ->
             onMoreBooksRequestedCmd (searchText, endBook)

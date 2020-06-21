@@ -15,6 +15,7 @@ module MainMessages =
     type PageNum = int
 
     type SearchText = string
+    type ApiKey = string
 
     type Status =
         | Success
@@ -39,7 +40,7 @@ module MainMessages =
         | UpdateBookDetails of BookItem
 
     type CmdMsg =
-        | PerformSearchCmd of SearchText * PageNum
+        | PerformSearchCmd of ApiKey * SearchText * PageNum
         | UpdateBookDetailsCmd of BookItem
         | MoreBooksRequestedCmd of SearchText * LastLoadedBook
         | OpenBrowserCmd of BookItem

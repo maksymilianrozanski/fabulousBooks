@@ -36,6 +36,7 @@ module SearchPageViews =
                           completed = fun textArgs -> Msg.PerformSearch(textArgs, 1) |> dispatch)
                        Label.label model.SearchPageModel.EnteredText
                        statusLayout model.SearchPageModel.Status
+                       //todo: should not display sort by rating when status failed and empty results
                        booksCollectionView model.SearchPageModel openDetails openBrowser sortByRating dispatch ])
 
         let apiKeyInput =

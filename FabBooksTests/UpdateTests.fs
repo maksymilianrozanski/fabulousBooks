@@ -32,7 +32,7 @@ let shouldUpdateTextAndStatus () =
                 EnteredText = queryText
                 SearchResponse = None }
           BookDetailsPageModel = None
-          GoodreadsApiKey = exampleApiKey }, [ PerformSearchCmd(queryText, 1) ]
+          GoodreadsApiKey = exampleApiKey }, [ PerformSearchCmd(exampleApiKey.Value, queryText, 1) ]
 
     let result = App.update (Msg.PerformSearch(queryText, 1)) (initialModel)
     Assert.AreEqual(expected, result)
