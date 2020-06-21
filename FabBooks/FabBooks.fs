@@ -8,28 +8,15 @@ open Models
 open Fabulous
 open Fabulous.XamarinForms
 open SearchQuery
-open BookDetailsQuery
 open BookItemModule
 open Utils
 open MainModel
 open SearchPageViews
 open FabBooks.SearchResponseModule
 open Xamarin.Essentials
+open UpdateCmd
 
 module App =
-
-    let performSearchCmd apiKey text pageNum =
-        searchWithPage apiKey text pageNum
-        |> Async.map Msg.SearchResultReceived
-        |> Async.map (fun x -> Some x)
-        |> Cmd.ofAsyncMsgOption
-
-    let updateBookDetailsCmd apiKey (bookItem: BookItem) =
-        bookGet apiKey bookItem.Id
-        |> Async.map Msg.BookResultReceived
-        |> Async.map (fun x -> Some x)
-        |> Cmd.ofAsyncMsgOption
-
     let modelWithoutKey =
         { GoodreadsApiKey = None
           SearchPageModel = initSearchPageModel
@@ -107,23 +94,6 @@ module App =
         model, [ book |> OpenBrowserCmd ]
 
     let onBrowserOpened model = model, []
-
-    let private onMoreBooksRequestedCmd (apiKey, searchText, endBook) =
-        searchWithPage apiKey (searchText) (nextPageNumber (endBook))
-        |> Async.map Msg.MoreBooksReceived
-        |> Async.map (fun x -> Some x)
-        |> Cmd.ofAsyncMsgOption
-
-    let private onOpenBrowserCmd (book: BookItem) =
-        Browser.OpenAsync
-            (sprintf ("https://www.goodreads.com/book/show/%i") book.Id, BrowserLaunchMode.SystemPreferred)
-        |> Async.AwaitIAsyncResult
-        |> Async.map Msg.BrowserOpened
-        |> Cmd.ofAsyncMsg
-
-    let private onDeleteApiKeyCmd () =
-        PreferencesModule.deleteKey () |> ignore
-        Cmd.none
 
     let update =
         function
