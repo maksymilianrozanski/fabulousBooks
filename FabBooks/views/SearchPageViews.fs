@@ -33,9 +33,7 @@ module SearchPageViews =
             View.StackLayout
                 (padding = Thickness 8.0, verticalOptions = LayoutOptions.Start,
                  children =
-                     [ View.Entry
-                         (width = 200.0, placeholder = "Search",
-                          completed = fun textArgs -> Msg.SearchTextEntered(textArgs, 1) |> dispatch)
+                     [ Entry.entry "Search" (fun textArgs -> Msg.SearchTextEntered(textArgs, 1) |> dispatch)
                        Label.label model.SearchPageModel.EnteredText
                        statusLayout model.SearchPageModel.Status
                        //todo: should not display sort by rating when status failed and empty results
@@ -44,10 +42,8 @@ module SearchPageViews =
         let apiKeyInput =
             View.StackLayout
                 (children =
-                    [ View.Entry
-                        (width = 200.0, placeholder = "enter goodreads api key",
-                         completed =
-                             fun textArgs -> Msg.SaveGoodreadsKey(textArgs, PreferencesModule.saveApiKey) |> dispatch) ])
+                    [ Entry.entry "enter goodreads api key" (fun textArgs ->
+                          Msg.SaveGoodreadsKey(textArgs, PreferencesModule.saveApiKey) |> dispatch) ])
 
         View.ContentPage
             (content =
