@@ -36,8 +36,8 @@ module SearchPageViews =
                      [ Entry.entry "Search" (fun textArgs -> Msg.SearchTextEntered(textArgs, 1) |> dispatch)
                        Label.label model.SearchPageModel.EnteredText
                        statusLayout model.SearchPageModel.Status
-                       //todo: should not display sort by rating when status failed and empty results
-                       booksCollectionView model.SearchPageModel dispatch ])
+                       if (model.SearchPageModel.Status <> Status.Failure) then
+                           booksCollectionView model.SearchPageModel dispatch ])
 
         let apiKeyInput =
             View.StackLayout
