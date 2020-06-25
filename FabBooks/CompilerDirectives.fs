@@ -1,5 +1,7 @@
 module FabBooks.CompilerDirectives
 open System
+open FabBooks
+open FabBooks.MainModel
 open Fabulous
 open Fabulous.XamarinForms
 open Fabulous.XamarinForms.LiveUpdate
@@ -28,6 +30,28 @@ type App() as app =
     // See https://fsprojects.github.io/Fabulous/Fabulous.XamarinForms/models.html#saving-application-state for further  instructions.
 
     let modelId = "model"
+    
+    let removeBookDetailsPageModel (model:Model) =
+        {model with BookDetailsPageModel =  None}
+    
+    let restoreModel modelTransformation  =
+        Console.WriteLine "OnResume: checking for model in app.Properties"
+        try
+            match app.Properties.TryGetValue modelId with
+            | true, (:? string as json) ->
+
+                Console.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
+                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<MainModel.Model>(json)
+                let newModel = modelTransformation model
+                
+                Console.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
+                Console.WriteLine("OnResume: transformedModel, newModel = {0}", (sprintf "%0A" newModel))                
+                runner.SetCurrentModel (newModel, Cmd.none)
+
+            | _ -> ()
+        with ex ->
+            App.program.onError("Error while restoring model found in app.Properties", ex)
+            
     override __.OnSleep() =
 
         let json = Newtonsoft.Json.JsonConvert.SerializeObject(runner.CurrentModel)
@@ -36,34 +60,7 @@ type App() as app =
         app.Properties.[modelId] <- json
 
     override __.OnResume() =
-        Console.WriteLine "OnResume: checking for model in app.Properties"
-        try
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) ->
-
-                Console.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<MainModel.Model>(json)
-
-                Console.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
-                runner.SetCurrentModel (model, Cmd.none)
-
-            | _ -> ()
-        with ex ->
-            App.program.onError("Error while restoring model found in app.Properties", ex)
+        restoreModel (fun x -> x)
 
     override this.OnStart() =
-        Console.WriteLine "OnResume: checking for model in app.Properties"
-        try
-            match app.Properties.TryGetValue modelId with
-            | true, (:? string as json) ->
-
-                Console.WriteLine("OnResume: restoring model from app.Properties, json = {0}", json)
-                let model = Newtonsoft.Json.JsonConvert.DeserializeObject<MainModel.Model>(json)
-                let modelWithoutDetails = {model with BookDetailsPageModel =  None}
-
-                Console.WriteLine("OnResume: restoring model from app.Properties, model = {0}", (sprintf "%0A" model))
-                runner.SetCurrentModel (modelWithoutDetails, Cmd.none)
-
-            | _ -> ()
-        with ex ->
-            App.program.onError("Error while restoring model found in app.Properties", ex)        
+        restoreModel removeBookDetailsPageModel     
